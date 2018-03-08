@@ -11,10 +11,12 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
-URL: https://github.com/mstrimas/smoothr
+URL: http://strimas.com/smoothr, https://github.com/mstrimas/smoothr
 BugReports: https://github.com/mstrimas/smoothr/issues
 Imports:
     sf,
     stats,
     methods
-Suggests: sp
+Suggests: 
+    sp,
+    covr

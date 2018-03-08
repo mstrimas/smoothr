@@ -5,3 +5,7 @@
 ^data-raw$
 ^_pkgdown\.yml$
 ^docs$
+^LICENSE\.md$
+^\.travis\.yml$
+^appveyor\.yml$
+^codecov\.yml$
