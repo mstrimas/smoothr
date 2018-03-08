@@ -4,7 +4,7 @@ Title: Spatial Feature Smoothing
 Version: 0.1.0
 Authors@R: person("Matthew", "Strimas-Mackey", email = "mes335@cornell.edu", role = c("aut", "cre"))
 Description: Smooth out sharp vertices in spatial features to make edges appear 
-  more natural or aesthetically pleasing.
+    more natural or aesthetically pleasing.
 Depends: R (>= 3.1.2)
 License: GPL-3
 Encoding: UTF-8
@@ -13,3 +13,8 @@ RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/mstrimas/smoothr
 BugReports: https://github.com/mstrimas/smoothr/issues
+Imports:
+    sf,
+    stats,
+    methods
+Suggests: sp
