@@ -4,7 +4,7 @@
 #'   packages.
 #' @param method character; specifies the type of smoothing method to use.
 #'   Possible methods are:
-#'   - `"spline"`: uses Bézier spline interpolation via the [stats::spline()]
+#'   - `"spline"`: uses spline interpolation via the [stats::spline()]
 #'   function. This method interpolates between existing vertices and the
 #'   resulting smoothed feature will pass through the vertices of the input
 #'   feature.
@@ -25,7 +25,7 @@
 #'   plot(st_geometry(smoothed), col = NA, border = NA)
 #'   plot(st_geometry(p), col = "grey20", border = NA, add = TRUE)
 #'   plot(st_geometry(smoothed), col = NA, border = "red", lwd = 2, add = TRUE)
-#'   title("Smoothed Polygons (Bézier Spline)", cex.main = 2, outer = TRUE)
+#'   title("Smoothed Polygons (Spline Interpolation)", cex.main = 2, outer = TRUE)
 #' }
 #' par(po)
 #'
@@ -37,7 +37,7 @@
 #'   plot(st_geometry(smoothed), col = NA)
 #'   plot(st_geometry(l), col = "grey20", lwd = 2, add = TRUE)
 #'   plot(st_geometry(smoothed), col = "red", lwd = 2, add = TRUE)
-#'   title("Smoothed Lines (Bézier Spline)", cex.main = 2, outer = TRUE)
+#'   title("Smoothed Lines (Spline Interpolation)", cex.main = 2, outer = TRUE)
 #' }
 #' par(po)
 smooth <- function(x, method = c("spline")) {

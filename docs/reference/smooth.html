@@ -101,7 +101,7 @@ packages.</p></td>
       <th>method</th>
       <td><p>character; specifies the type of smoothing method to use.
 Possible methods are:</p><ul>
-<li><p><code>"spline"</code>: uses Bézier spline interpolation via the <code><a href='http://www.rdocumentation.org/packages/stats/topics/splinefun'>stats::spline()</a></code>
+<li><p><code>"spline"</code>: uses spline interpolation via the <code><a href='http://www.rdocumentation.org/packages/stats/topics/splinefun'>stats::spline()</a></code>
 function. This method interpolates between existing vertices and the
 resulting smoothed feature will pass through the vertices of the input
 feature.</p></li>
@@ -122,8 +122,7 @@ feature.</p></li>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>sf</span>)
-<span class='co'># spline smoothing</span>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>sf</span>)</div><div class='output co'>#&gt; <span class='message'>Linking to GEOS 3.6.1, GDAL 2.1.3, proj.4 4.9.3</span></div><div class='input'><span class='co'># spline smoothing</span>
 <span class='co'># example polygons</span>
 <span class='no'>po</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mar</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>), <span class='kw'>oma</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>0</span>), <span class='kw'>mfrow</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>3</span>))
 <span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fu'>nrow</span>(<span class='no'>jagged_polygons</span>)) {
@@ -132,8 +131,8 @@ feature.</p></li>
   <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>smoothed</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>)
   <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>p</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey20"</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
   <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>smoothed</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-  <span class='fu'>title</span>(<span class='st'>"Smoothed Polygons (Bézier Spline)"</span>, <span class='kw'>cex.main</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>outer</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-}</div><div class='img'><img src='smooth-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>po</span>)
+  <span class='fu'>title</span>(<span class='st'>"Smoothed Polygons (Spline Interpolation)"</span>, <span class='kw'>cex.main</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>outer</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+}</div><div class='img'><img src='smooth-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>po</span>)
 
 <span class='co'># example lines</span>
 <span class='no'>po</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mar</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>), <span class='kw'>oma</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>0</span>), <span class='kw'>mfrow</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>3</span>))
@@ -143,8 +142,8 @@ feature.</p></li>
   <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>smoothed</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>)
   <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>l</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey20"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
   <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>smoothed</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-  <span class='fu'>title</span>(<span class='st'>"Smoothed Lines (Bézier Spline)"</span>, <span class='kw'>cex.main</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>outer</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-}</div><div class='img'><img src='smooth-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>po</span>)</div></pre>
+  <span class='fu'>title</span>(<span class='st'>"Smoothed Lines (Spline Interpolation)"</span>, <span class='kw'>cex.main</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>outer</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+}</div><div class='img'><img src='smooth-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>po</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

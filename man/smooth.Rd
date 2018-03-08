@@ -13,7 +13,7 @@ packages.}
 \item{method}{character; specifies the type of smoothing method to use.
 Possible methods are:
 \itemize{
-\item \code{"spline"}: uses Bézier spline interpolation via the \code{\link[stats:spline]{stats::spline()}}
+\item \code{"spline"}: uses spline interpolation via the \code{\link[stats:spline]{stats::spline()}}
 function. This method interpolates between existing vertices and the
 resulting smoothed feature will pass through the vertices of the input
 feature.
@@ -36,7 +36,7 @@ for (i in 1:nrow(jagged_polygons)) {
   plot(st_geometry(smoothed), col = NA, border = NA)
   plot(st_geometry(p), col = "grey20", border = NA, add = TRUE)
   plot(st_geometry(smoothed), col = NA, border = "red", lwd = 2, add = TRUE)
-  title("Smoothed Polygons (Bézier Spline)", cex.main = 2, outer = TRUE)
+  title("Smoothed Polygons (Spline Interpolation)", cex.main = 2, outer = TRUE)
 }
 par(po)
 
@@ -48,7 +48,7 @@ for (i in 1:nrow(jagged_lines)) {
   plot(st_geometry(smoothed), col = NA)
   plot(st_geometry(l), col = "grey20", lwd = 2, add = TRUE)
   plot(st_geometry(smoothed), col = "red", lwd = 2, add = TRUE)
-  title("Smoothed Lines (Bézier Spline)", cex.main = 2, outer = TRUE)
+  title("Smoothed Lines (Spline Interpolation)", cex.main = 2, outer = TRUE)
 }
 par(po)
 }
