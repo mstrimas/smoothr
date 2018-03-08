@@ -87,7 +87,7 @@
     <p>Smooth a spatial feature</p>
     
 
-    <pre class="usage"><span class='fu'>smooth</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"spline"</span>))</pre>
+    <pre class="usage"><span class='fu'>smooth</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"spline"</span>, <span class='st'>"chaikin"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -101,10 +101,12 @@ packages.</p></td>
       <th>method</th>
       <td><p>character; specifies the type of smoothing method to use.
 Possible methods are:</p><ul>
-<li><p><code>"spline"</code>: uses spline interpolation via the <code><a href='http://www.rdocumentation.org/packages/stats/topics/splinefun'>stats::spline()</a></code>
-function. This method interpolates between existing vertices and the
-resulting smoothed feature will pass through the vertices of the input
-feature.</p></li>
+<li><p><code>"spline"</code>: spline interpolation via the <code><a href='http://www.rdocumentation.org/packages/stats/topics/splinefun'>stats::spline()</a></code> function. This
+method interpolates between existing vertices and the resulting smoothed
+feature will pass through the vertices of the input feature.</p></li>
+<li><p><code>"chaikin"</code>: Chaikin's corner cutting algorithm, which smooths a line by
+iteratively replacing every point by two new points: one 25<!-- % of the way to -->
+the next point and one 25<!-- % of the way to the previous point. --></p></li>
 </ul></td>
     </tr>
     </table>
@@ -115,15 +117,22 @@ feature.</p></li>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>This function was inspired by the following StackExchange posts:</p><ul>
-<li><p><a href='https://stackoverflow.com/questions/26087772/#26089377'>Create polygon from set of points distributed</a></p></li>
-<li><p><a href='https://gis.stackexchange.com/questions/24827/#24929'>Smoothing polygons in contour map?</a></p></li>
+    <p>A variety of resources were used in the implementation of each of
+the methods in this function. The spline method was inspired by the
+following StackExchange posts:</p><ul>
+<li><p><a href='https://stackoverflow.com/questions/26087772/26089377'>Create polygon from set of points distributed</a></p></li>
+<li><p><a href='https://gis.stackexchange.com/questions/24827/24929'>Smoothing polygons in contour map?</a></p></li>
+</ul>
+    <p>Chaikin's corner curring algorithm was based on:</p><ul>
+<li><p><code>Chaikin, G. An algorithm for high speed curve generation. Computer Graphics and Image Processing 3 (1974), 346–349</code></p></li>
+<li><p><a href='https://stackoverflow.com/a/47255374/3591386'>Where to find Python implementation of Chaikin's corner cutting algorithm?</a></p></li>
 </ul>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>sf</span>)</div><div class='output co'>#&gt; <span class='message'>Linking to GEOS 3.6.1, GDAL 2.1.3, proj.4 4.9.3</span></div><div class='input'><span class='co'># spline smoothing</span>
-<span class='co'># example polygons</span>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>sf</span>)
+<span class='co'># spline interpolation</span>
+<span class='co'># polygons</span>
 <span class='no'>po</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mar</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>), <span class='kw'>oma</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>0</span>), <span class='kw'>mfrow</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>3</span>))
 <span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fu'>nrow</span>(<span class='no'>jagged_polygons</span>)) {
   <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='no'>jagged_polygons</span>[<span class='no'>i</span>, ]
@@ -132,9 +141,8 @@ feature.</p></li>
   <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>p</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey20"</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
   <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>smoothed</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
   <span class='fu'>title</span>(<span class='st'>"Smoothed Polygons (Spline Interpolation)"</span>, <span class='kw'>cex.main</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>outer</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-}</div><div class='img'><img src='smooth-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>po</span>)
-
-<span class='co'># example lines</span>
+}</div><div class='img'><img src='smooth-9.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>po</span>)
+<span class='co'># lines</span>
 <span class='no'>po</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mar</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>), <span class='kw'>oma</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>0</span>), <span class='kw'>mfrow</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>3</span>))
 <span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fu'>nrow</span>(<span class='no'>jagged_lines</span>)) {
   <span class='no'>l</span> <span class='kw'>&lt;-</span> <span class='no'>jagged_lines</span>[<span class='no'>i</span>, ]
@@ -143,7 +151,27 @@ feature.</p></li>
   <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>l</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey20"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
   <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>smoothed</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
   <span class='fu'>title</span>(<span class='st'>"Smoothed Lines (Spline Interpolation)"</span>, <span class='kw'>cex.main</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>outer</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-}</div><div class='img'><img src='smooth-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>po</span>)</div></pre>
+}</div><div class='img'><img src='smooth-10.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>po</span>)
+
+<span class='co'># chaikin's corner cutting</span>
+<span class='co'># polygons</span>
+<span class='no'>po</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mar</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>), <span class='kw'>oma</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>0</span>), <span class='kw'>mfrow</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>3</span>))
+<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fu'>nrow</span>(<span class='no'>jagged_polygons</span>)) {
+  <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='no'>jagged_polygons</span>[<span class='no'>i</span>, ]
+  <span class='no'>smoothed</span> <span class='kw'>&lt;-</span> <span class='fu'>smooth</span>(<span class='no'>p</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"chaikin"</span>)
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>p</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey20"</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>)
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>smoothed</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='fu'>title</span>(<span class='st'>"Smoothed Polygons (Chaikin's Corner Cutting)"</span>, <span class='kw'>cex.main</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>outer</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+}</div><div class='img'><img src='smooth-11.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>po</span>)
+<span class='co'># lines</span>
+<span class='no'>po</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mar</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>), <span class='kw'>oma</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>0</span>), <span class='kw'>mfrow</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>3</span>))
+<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fu'>nrow</span>(<span class='no'>jagged_lines</span>)) {
+  <span class='no'>l</span> <span class='kw'>&lt;-</span> <span class='no'>jagged_lines</span>[<span class='no'>i</span>, ]
+  <span class='no'>smoothed</span> <span class='kw'>&lt;-</span> <span class='fu'>smooth</span>(<span class='no'>l</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"chaikin"</span>)
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>l</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey20"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>smoothed</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='fu'>title</span>(<span class='st'>"Smoothed Lines (Chaikin's Corner Cutting)"</span>, <span class='kw'>cex.main</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>outer</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+}</div><div class='img'><img src='smooth-12.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>po</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

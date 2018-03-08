@@ -4,7 +4,7 @@
 \alias{smooth}
 \title{Smooth a spatial feature}
 \usage{
-smooth(x, method = c("spline"))
+smooth(x, method = c("spline", "chaikin"))
 }
 \arguments{
 \item{x}{spatial features; lines or polygons from either the sf or sp
@@ -13,10 +13,12 @@ packages.}
 \item{method}{character; specifies the type of smoothing method to use.
 Possible methods are:
 \itemize{
-\item \code{"spline"}: uses spline interpolation via the \code{\link[stats:spline]{stats::spline()}}
-function. This method interpolates between existing vertices and the
-resulting smoothed feature will pass through the vertices of the input
-feature.
+\item \code{"spline"}: spline interpolation via the \code{\link[stats:spline]{stats::spline()}} function. This
+method interpolates between existing vertices and the resulting smoothed
+feature will pass through the vertices of the input feature.
+\item \code{"chaikin"}: Chaikin's corner cutting algorithm, which smooths a line by
+iteratively replacing every point by two new points: one 25% of the way to
+the next point and one 25% of the way to the previous point.
 }}
 }
 \value{
@@ -27,8 +29,8 @@ Smooth a spatial feature
 }
 \examples{
 library(sf)
-# spline smoothing
-# example polygons
+# spline interpolation
+# polygons
 po <- par(mar = c(0, 0, 0, 0), oma = c(0, 0, 2, 0), mfrow = c(3, 3))
 for (i in 1:nrow(jagged_polygons)) {
   p <- jagged_polygons[i, ]
@@ -39,8 +41,7 @@ for (i in 1:nrow(jagged_polygons)) {
   title("Smoothed Polygons (Spline Interpolation)", cex.main = 2, outer = TRUE)
 }
 par(po)
-
-# example lines
+# lines
 po <- par(mar = c(0, 0, 0, 0), oma = c(0, 0, 2, 0), mfrow = c(3, 3))
 for (i in 1:nrow(jagged_lines)) {
   l <- jagged_lines[i, ]
@@ -51,11 +52,41 @@ for (i in 1:nrow(jagged_lines)) {
   title("Smoothed Lines (Spline Interpolation)", cex.main = 2, outer = TRUE)
 }
 par(po)
+
+# chaikin's corner cutting
+# polygons
+po <- par(mar = c(0, 0, 0, 0), oma = c(0, 0, 2, 0), mfrow = c(3, 3))
+for (i in 1:nrow(jagged_polygons)) {
+  p <- jagged_polygons[i, ]
+  smoothed <- smooth(p, method = "chaikin")
+  plot(st_geometry(p), col = "grey20", border = NA)
+  plot(st_geometry(smoothed), col = NA, border = "red", lwd = 2, add = TRUE)
+  title("Smoothed Polygons (Chaikin's Corner Cutting)", cex.main = 2, outer = TRUE)
+}
+par(po)
+# lines
+po <- par(mar = c(0, 0, 0, 0), oma = c(0, 0, 2, 0), mfrow = c(3, 3))
+for (i in 1:nrow(jagged_lines)) {
+  l <- jagged_lines[i, ]
+  smoothed <- smooth(l, method = "chaikin")
+  plot(st_geometry(l), col = "grey20", lwd = 2)
+  plot(st_geometry(smoothed), col = "red", lwd = 2, add = TRUE)
+  title("Smoothed Lines (Chaikin's Corner Cutting)", cex.main = 2, outer = TRUE)
+}
+par(po)
 }
 \references{
-This function was inspired by the following StackExchange posts:
+A variety of resources were used in the implementation of each of
+the methods in this function. The spline method was inspired by the
+following StackExchange posts:
 \itemize{
-\item \href{https://stackoverflow.com/questions/26087772/#26089377}{Create polygon from set of points distributed}
-\item \href{https://gis.stackexchange.com/questions/24827/#24929}{Smoothing polygons in contour map?}
+\item \href{https://stackoverflow.com/questions/26087772/26089377}{Create polygon from set of points distributed}
+\item \href{https://gis.stackexchange.com/questions/24827/24929}{Smoothing polygons in contour map?}
+}
+
+Chaikin's corner curring algorithm was based on:
+\itemize{
+\item \code{Chaikin, G. An algorithm for high speed curve generation. Computer Graphics and Image Processing 3 (1974), 346–349}
+\item \href{https://stackoverflow.com/a/47255374/3591386}{Where to find Python implementation of Chaikin's corner cutting algorithm?}
 }
 }

@@ -4,20 +4,31 @@
 #'   packages.
 #' @param method character; specifies the type of smoothing method to use.
 #'   Possible methods are:
-#'   - `"spline"`: uses spline interpolation via the [stats::spline()]
-#'   function. This method interpolates between existing vertices and the
-#'   resulting smoothed feature will pass through the vertices of the input
-#'   feature.
+#'
+#'   - `"spline"`: spline interpolation via the [stats::spline()] function. This
+#'   method interpolates between existing vertices and the resulting smoothed
+#'   feature will pass through the vertices of the input feature.
+#'   - `"chaikin"`: Chaikin's corner cutting algorithm, which smooths a line by
+#'   iteratively replacing every point by two new points: one 25% of the way to
+#'   the next point and one 25% of the way to the previous point.
 #'
 #' @return A smoothed polygon or line in the same format as the input data.
-#' @references This function was inspired by the following StackExchange posts:
-#' - [Create polygon from set of points distributed](https://stackoverflow.com/questions/26087772/#26089377)
-#' - [Smoothing polygons in contour map?](https://gis.stackexchange.com/questions/24827/#24929)
+#' @references A variety of resources were used in the implementation of each of
+#'   the methods in this function. The spline method was inspired by the
+#'   following StackExchange posts:
+#'
+#'   - [Create polygon from set of points distributed](https://stackoverflow.com/questions/26087772/26089377)
+#'   - [Smoothing polygons in contour map?](https://gis.stackexchange.com/questions/24827/24929)
+#'
+#'   Chaikin's corner curring algorithm was based on:
+#'
+#'   - `Chaikin, G. An algorithm for high speed curve generation. Computer Graphics and Image Processing 3 (1974), 346–349`
+#'   - [Where to find Python implementation of Chaikin's corner cutting algorithm?](https://stackoverflow.com/a/47255374/3591386)
 #' @export
 #' @examples
 #' library(sf)
-#' # spline smoothing
-#' # example polygons
+#' # spline interpolation
+#' # polygons
 #' po <- par(mar = c(0, 0, 0, 0), oma = c(0, 0, 2, 0), mfrow = c(3, 3))
 #' for (i in 1:nrow(jagged_polygons)) {
 #'   p <- jagged_polygons[i, ]
@@ -28,8 +39,7 @@
 #'   title("Smoothed Polygons (Spline Interpolation)", cex.main = 2, outer = TRUE)
 #' }
 #' par(po)
-#'
-#' # example lines
+#' # lines
 #' po <- par(mar = c(0, 0, 0, 0), oma = c(0, 0, 2, 0), mfrow = c(3, 3))
 #' for (i in 1:nrow(jagged_lines)) {
 #'   l <- jagged_lines[i, ]
@@ -40,27 +50,63 @@
 #'   title("Smoothed Lines (Spline Interpolation)", cex.main = 2, outer = TRUE)
 #' }
 #' par(po)
-smooth <- function(x, method = c("spline")) {
+#'
+#' # chaikin's corner cutting
+#' # polygons
+#' po <- par(mar = c(0, 0, 0, 0), oma = c(0, 0, 2, 0), mfrow = c(3, 3))
+#' for (i in 1:nrow(jagged_polygons)) {
+#'   p <- jagged_polygons[i, ]
+#'   smoothed <- smooth(p, method = "chaikin")
+#'   plot(st_geometry(p), col = "grey20", border = NA)
+#'   plot(st_geometry(smoothed), col = NA, border = "red", lwd = 2, add = TRUE)
+#'   title("Smoothed Polygons (Chaikin's Corner Cutting)", cex.main = 2, outer = TRUE)
+#' }
+#' par(po)
+#' # lines
+#' po <- par(mar = c(0, 0, 0, 0), oma = c(0, 0, 2, 0), mfrow = c(3, 3))
+#' for (i in 1:nrow(jagged_lines)) {
+#'   l <- jagged_lines[i, ]
+#'   smoothed <- smooth(l, method = "chaikin")
+#'   plot(st_geometry(l), col = "grey20", lwd = 2)
+#'   plot(st_geometry(smoothed), col = "red", lwd = 2, add = TRUE)
+#'   title("Smoothed Lines (Chaikin's Corner Cutting)", cex.main = 2, outer = TRUE)
+#' }
+#' par(po)
+smooth <- function(x, method = c("spline", "chaikin")) {
   UseMethod("smooth")
 }
 
 #' @export
-smooth.sfg <- function(x, method = c("spline")) {
+smooth.sfg <- function(x, method = c("spline", "chaikin")) {
   method <- match.arg(method)
+  # choose smoother
+  if (method == "spline") {
+    smoother <- function(x, type) {
+      smooth_spline(x = x, type = type, n_vertices = 1000)
+    }
+  } else if (method == "chaikin") {
+    smoother <- function(x, type) {
+      smooth_chaikin(x = x, type = type, refinements = 5)
+    }
+  } else {
+    stop(paste("Invalid smoothing method:", method))
+  }
+
+  # perform smoothing
   if (sf::st_is(x, "LINESTRING")) {
-    x <- sf::st_linestring(smooth_spline(x[], type = "line"))
+    x <- sf::st_linestring(smoother(x[], type = "line"))
   } else if (sf::st_is(x, "POLYGON")) {
     for (i in seq_along(x)) {
-      x[[i]] <- smooth_spline(x[[i]], type = "polygon")
+      x[[i]] <- smoother(x[[i]], type = "polygon")
     }
   } else if (sf::st_is(x, "MULTILINESTRING")) {
     for (i in seq_along(x)) {
-      x[[i]] <- smooth_spline(x[[i]], type = "line")
+      x[[i]] <- smoother(x[[i]], type = "line")
     }
   } else if (sf::st_is(x, "MULTIPOLYGON")) {
     for (i in seq_along(x)) {
       for (j in seq_along(x[[i]])) {
-        x[[i]][[j]] <- smooth_spline(x[[i]][[j]], type = "polygon")
+        x[[i]][[j]] <- smoother(x[[i]][[j]], type = "polygon")
       }
     }
   } else {
@@ -70,7 +116,7 @@ smooth.sfg <- function(x, method = c("spline")) {
 }
 
 #' @export
-smooth.sfc <- function(x, method = c("spline")) {
+smooth.sfc <- function(x, method = c("spline", "chaikin")) {
   method <- match.arg(method)
   for (i in seq_along(x)) {
     x[[i]] <- smooth(x[[i]], method = method)
@@ -79,14 +125,14 @@ smooth.sfc <- function(x, method = c("spline")) {
 }
 
 #' @export
-smooth.sf <- function(x, method = c("spline")) {
+smooth.sf <- function(x, method = c("spline", "chaikin")) {
   method <- match.arg(method)
   sf::st_geometry(x) <- smooth(sf::st_geometry(x), method = method)
   x
 }
 
 #' @export
-smooth.Spatial <- function(x, method = c("spline")) {
+smooth.Spatial <- function(x, method = c("spline", "chaikin")) {
   if (!requireNamespace("sp", quietly = TRUE)) {
     stop("Install the sp package to smooth sp features.")
   }
@@ -100,21 +146,4 @@ smooth.Spatial <- function(x, method = c("spline")) {
     stop(paste("No smooth method for class", class(x)))
   }
   methods::as(smoothed, "Spatial")
-}
-
-smooth_spline <- function(x, type = c("line", "polygon")) {
-  stopifnot(is.matrix(x), ncol(x) == 2)
-  type <- match.arg(type)
-  if (type == "line") {
-    if (all(x[1, ] == x[nrow(x), ])) {
-      method <- "periodic"
-    } else {
-      method <- "fmm"
-    }
-  } else {
-    method <- "periodic"
-  }
-  x1 <- stats::spline(1:nrow(x), x[, 1], n = 1000, method = method)$y
-  x2 <- stats::spline(1:nrow(x), x[, 2], n = 1000, method = method)$y
-  cbind(x1, x2)
 }
