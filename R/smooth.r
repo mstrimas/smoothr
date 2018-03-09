@@ -1,92 +1,88 @@
 #' Smooth a spatial feature
 #'
+#' Smooth out the jagged or sharp corners of spatial lines or polygons to make
+#' them appear more aesthetically pleasing and natural.
+#'
 #' @param x spatial features; lines or polygons from either the sf or sp
 #'   packages.
 #' @param method character; specifies the type of smoothing method to use.
-#'   Possible methods are:
+#'   Possible methods are: `"chaikin"` and `"spline"`. Each method has one or
+#'   more parameters specifying the amount of smoothing to perform. See Details
+#'   for descriptions.
+#' @param ... additional arguments specifying the amount of smoothing, passed on
+#'   to the specific smoothing function, see Details below.
 #'
-#'   - `"spline"`: spline interpolation via the [stats::spline()] function. This
-#'   method interpolates between existing vertices and the resulting smoothed
-#'   feature will pass through the vertices of the input feature.
-#'   - `"chaikin"`: Chaikin's corner cutting algorithm, which smooths a line by
-#'   iteratively replacing every point by two new points: one 25% of the way to
-#'   the next point and one 25% of the way to the previous point.
+#' @details Specifying a method calls one of the following underlying smoothing
+#'   functions. Each smoothing method has one or more parameters that specify
+#'   the extent of smoothing. Note that for multiple features, or multipart
+#'   features, these parameters applies to each individual, singlepart feature.
+#'
+#'   - [smooth_chaikin()]: Chaikin's corner cutting algorithm smooths a curve by
+#'   iteratively replacing every point by two new points: one 1/4 of the way to
+#'   the next point and one 1/4 of the way to the previous point. Smoothing
+#'   arameters:
+#'     - `refinements`: number of corner cutting iterations to apply.
+#'   - [smooth_spline()]: spline interpolation via the [stats::spline()]
+#'   function. This method interpolates between existing vertices and the
+#'   resulting smoothed feature will pass through the vertices of the input
+#'   feature. Smoothing arameters:
+#'     - `n`: number of vertices in each smoothed feature. Ignored if
+#'     `smoothness` is specified.
+#'     - `smoothness`: the proportional increase in the number of vertices in
+#'     the smooth feature. For example, if the oringal feature has 10 vertices,
+#'     a value of 2.5 will yield a new, smoothed feature with 250 vertices.
 #'
 #' @return A smoothed polygon or line in the same format as the input data.
-#' @references A variety of resources were used in the implementation of each of
-#'   the methods in this function. The spline method was inspired by the
-#'   following StackExchange posts:
-#'
-#'   - [Create polygon from set of points distributed](https://stackoverflow.com/questions/26087772/26089377)
-#'   - [Smoothing polygons in contour map?](https://gis.stackexchange.com/questions/24827/24929)
-#'
-#'   Chaikin's corner curring algorithm was based on:
-#'
-#'   - `Chaikin, G. An algorithm for high speed curve generation. Computer Graphics and Image Processing 3 (1974), 346–349`
-#'   - [Where to find Python implementation of Chaikin's corner cutting algorithm?](https://stackoverflow.com/a/47255374/3591386)
+#' @references See specific smoothing function help pages for references.
+#' @seealso [smooth_chaikin()] [smooth_spline()]
 #' @export
 #' @examples
 #' library(sf)
-#' # spline interpolation
+#' # compare different smoothing methods
 #' # polygons
-#' po <- par(mar = c(0, 0, 0, 0), oma = c(0, 0, 2, 0), mfrow = c(3, 3))
+#' par(mar = c(0, 0, 0, 0), oma = c(4, 0, 0, 0), mfrow = c(3, 3))
+#' p_smooth_spline <- smooth(jagged_polygons, method = "spline")
+#' p_smooth_chaikin <- smooth(jagged_polygons, method = "chaikin")
 #' for (i in 1:nrow(jagged_polygons)) {
-#'   p <- jagged_polygons[i, ]
-#'   smoothed <- smooth(p, method = "spline")
-#'   plot(st_geometry(smoothed), col = NA, border = NA)
-#'   plot(st_geometry(p), col = "grey20", border = NA, add = TRUE)
-#'   plot(st_geometry(smoothed), col = NA, border = "red", lwd = 2, add = TRUE)
-#'   title("Smoothed Polygons (Spline Interpolation)", cex.main = 2, outer = TRUE)
+#'   plot(st_geometry(p_smooth_spline[i, ]), col = NA, border = NA)
+#'   plot(st_geometry(jagged_polygons[i, ]), col = "grey40", border = NA, add = TRUE)
+#'   plot(st_geometry(p_smooth_chaikin[i, ]), col = NA, border = "#E41A1C", lwd = 2, add = TRUE)
+#'   plot(st_geometry(p_smooth_spline[i, ]), col = NA, border = "#377EB8", lwd = 2, add = TRUE)
 #' }
-#' par(po)
-#' # lines
-#' po <- par(mar = c(0, 0, 0, 0), oma = c(0, 0, 2, 0), mfrow = c(3, 3))
-#' for (i in 1:nrow(jagged_lines)) {
-#'   l <- jagged_lines[i, ]
-#'   smoothed <- smooth(l, method = "spline")
-#'   plot(st_geometry(smoothed), col = NA)
-#'   plot(st_geometry(l), col = "grey20", lwd = 2, add = TRUE)
-#'   plot(st_geometry(smoothed), col = "red", lwd = 2, add = TRUE)
-#'   title("Smoothed Lines (Spline Interpolation)", cex.main = 2, outer = TRUE)
-#' }
-#' par(po)
+#' par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), new = TRUE)
+#' plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n", axes = FALSE)
+#' legend("bottom", legend = c("chaikin", "spline"), col = c("#E41A1C", "#377EB8"),
+#'        lwd = 2, cex = 2, box.lwd = 0, inset = 0, horiz = TRUE)
 #'
-#' # chaikin's corner cutting
-#' # polygons
-#' po <- par(mar = c(0, 0, 0, 0), oma = c(0, 0, 2, 0), mfrow = c(3, 3))
-#' for (i in 1:nrow(jagged_polygons)) {
-#'   p <- jagged_polygons[i, ]
-#'   smoothed <- smooth(p, method = "chaikin")
-#'   plot(st_geometry(p), col = "grey20", border = NA)
-#'   plot(st_geometry(smoothed), col = NA, border = "red", lwd = 2, add = TRUE)
-#'   title("Smoothed Polygons (Chaikin's Corner Cutting)", cex.main = 2, outer = TRUE)
-#' }
-#' par(po)
 #' # lines
-#' po <- par(mar = c(0, 0, 0, 0), oma = c(0, 0, 2, 0), mfrow = c(3, 3))
+#' par(mar = c(0, 0, 0, 0), oma = c(4, 0, 0, 0), mfrow = c(3, 3))
+#' l_smooth_spline <- smooth(jagged_lines, method = "spline")
+#' l_smooth_chaikin <- smooth(jagged_lines, method = "chaikin")
 #' for (i in 1:nrow(jagged_lines)) {
-#'   l <- jagged_lines[i, ]
-#'   smoothed <- smooth(l, method = "chaikin")
-#'   plot(st_geometry(l), col = "grey20", lwd = 2)
-#'   plot(st_geometry(smoothed), col = "red", lwd = 2, add = TRUE)
-#'   title("Smoothed Lines (Chaikin's Corner Cutting)", cex.main = 2, outer = TRUE)
+#'   plot(st_geometry(l_smooth_spline[i, ]), col = NA)
+#'   plot(st_geometry(jagged_lines[i, ]), col = "grey20", lwd = 3, add = TRUE)
+#'   plot(st_geometry(l_smooth_spline[i, ]), col = "#E41A1C", lwd = 2, lty = 2, add = TRUE)
+#'   plot(st_geometry(l_smooth_chaikin[i, ]), col = "#377EB8", lwd = 2, lty = 2, add = TRUE)
 #' }
-#' par(po)
-smooth <- function(x, method = c("spline", "chaikin")) {
+#' par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), new = TRUE)
+#' plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n", axes = FALSE)
+#' legend("bottom", legend = c("chaikin", "spline"), col = c("#E41A1C", "#377EB8"),
+#'        lwd = 2, cex = 2, box.lwd = 0, inset = 0, horiz = TRUE)
+smooth <- function(x, method = c("chaikin", "spline"), ...) {
   UseMethod("smooth")
 }
 
 #' @export
-smooth.sfg <- function(x, method = c("spline", "chaikin")) {
+smooth.sfg <- function(x, method = c("chaikin", "spline"), ...) {
   method <- match.arg(method)
   # choose smoother
   if (method == "spline") {
     smoother <- function(x, type) {
-      smooth_spline(x = x, type = type, n_vertices = 1000)
+      smooth_spline(x = x, type = type, ...)
     }
   } else if (method == "chaikin") {
     smoother <- function(x, type) {
-      smooth_chaikin(x = x, type = type, refinements = 5)
+      smooth_chaikin(x = x, type = type, ...)
     }
   } else {
     stop(paste("Invalid smoothing method:", method))
@@ -116,7 +112,7 @@ smooth.sfg <- function(x, method = c("spline", "chaikin")) {
 }
 
 #' @export
-smooth.sfc <- function(x, method = c("spline", "chaikin")) {
+smooth.sfc <- function(x, method = c("chaikin", "spline"), ...) {
   method <- match.arg(method)
   for (i in seq_along(x)) {
     x[[i]] <- smooth(x[[i]], method = method)
@@ -125,14 +121,14 @@ smooth.sfc <- function(x, method = c("spline", "chaikin")) {
 }
 
 #' @export
-smooth.sf <- function(x, method = c("spline", "chaikin")) {
+smooth.sf <- function(x, method = c("chaikin", "spline"), ...) {
   method <- match.arg(method)
   sf::st_geometry(x) <- smooth(sf::st_geometry(x), method = method)
   x
 }
 
 #' @export
-smooth.Spatial <- function(x, method = c("spline", "chaikin")) {
+smooth.Spatial <- function(x, method = c("chaikin", "spline"), ...) {
   if (!requireNamespace("sp", quietly = TRUE)) {
     stop("Install the sp package to smooth sp features.")
   }
