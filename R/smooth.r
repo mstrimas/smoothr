@@ -27,8 +27,8 @@
 #'   resulting smoothed feature will pass through the vertices of the input
 #'   feature. Smoothing arameters:
 #'     - `n`: number of vertices in each smoothed feature. Ignored if
-#'     `smoothness` is specified.
-#'     - `smoothness`: the proportional increase in the number of vertices in
+#'     `vertex_factor` is specified.
+#'     - `vertex_factor`: the proportional increase in the number of vertices in
 #'     the smooth feature. For example, if the oringal feature has 10 vertices,
 #'     a value of 2.5 will yield a new, smoothed feature with 250 vertices.
 #'
@@ -134,11 +134,11 @@ smooth.Spatial <- function(x, method = c("chaikin", "spline"), ...) {
   }
   method <- match.arg(method)
   # convert to sf object then back
-  if (inherits(x, c("SpatialPolygons", "SpatialLines"))) {
-    smoothed <- smooth(sf::st_as_sfc(x), method = method)
-  } else if (inherits(x, c("SpatialPolygonsDataFrame", "SpatialLinesDataFrame"))) {
+  if (inherits(x, c("SpatialPolygonsDataFrame", "SpatialLinesDataFrame"))) {
     smoothed <- smooth(sf::st_as_sf(x), method = method)
-  } else {
+  } else if (inherits(x, c("SpatialPolygons", "SpatialLines"))) {
+    smoothed <- smooth(sf::st_as_sfc(x), method = method)
+  } else{
     stop(paste("No smooth method for class", class(x)))
   }
   methods::as(smoothed, "Spatial")

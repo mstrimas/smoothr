@@ -25,24 +25,23 @@
 #' @seealso [smooth()]
 #' @export
 #' @examples
-#' library(sf)
-#' # smooth polygons
-#' p_smoothed <- smooth(jagged_polygons, method = "chaikin")
-#' par(mar = c(0, 0, 0, 0), oma = c(0, 0, 2, 0), mfrow = c(3, 3))
-#' for (i in 1:nrow(jagged_polygons)) {
-#'   plot(st_geometry(jagged_polygons[i, ]), col = "grey20", border = NA)
-#'   plot(st_geometry(p_smoothed[i, ]), col = NA, border = "red", lwd = 2, add = TRUE)
-#'   title("Smoothed Polygons (Chaikin's Corner Cutting)", cex.main = 2, outer = TRUE)
-#' }
+#' # smooth_chaikin works on matrices of coordinates
+#' # use the matrix of coordinates defining a polygon as an example
+#' m <- jagged_polygons$geometry[[2]][[1]]
+#' m_smooth <- smooth_chaikin(m)
+#' class(m)
+#' class(m_smooth)
+#' plot(m, type = "l", axes = FALSE, xlab = NA, ylab = NA)
+#' lines(m_smooth, col = "red")
 #'
-#' # smooth lines
-#' l_smoothed <- smooth(jagged_lines, method = "chaikin")
-#' par(mar = c(0, 0, 0, 0), oma = c(0, 0, 2, 0), mfrow = c(3, 3))
-#' for (i in 1:nrow(jagged_lines)) {
-#'   plot(st_geometry(jagged_lines[i, ]), col = "grey20", lwd = 2)
-#'   plot(st_geometry(l_smoothed[i, ]), col = "red", lwd = 2, add = TRUE)
-#'   title("Smoothed Lines (Chaikin's Corner Cutting)", cex.main = 2, outer = TRUE)
-#' }
+#' # smooth is a wrapper for smooth_chaikin that works on spatial features
+#' library(sf)
+#' p <- jagged_polygons$geometry[[2]]
+#' p_smooth <- smooth(p, method = "chaikin")
+#' class(p)
+#' class(p_smooth)
+#' plot(p)
+#' plot(p_smooth, border = "red", add = TRUE)
 smooth_chaikin <- function(x, type = c("polygon", "line"), refinements = 4L) {
   stopifnot(is.matrix(x), ncol(x) == 2)
   stopifnot(is_count(refinements), refinements <= 10)

@@ -17,6 +17,7 @@ Imports:
     sf,
     stats,
     methods
-Suggests: 
+Suggests:
     sp,
-    covr
+    covr,
+    testthat

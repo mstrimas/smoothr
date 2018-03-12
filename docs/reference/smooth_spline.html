@@ -89,7 +89,8 @@ vertices using piecewise cubic polynomials. The <code>x</code> and <code>y</code
 interpolated independently, and .</p>
     
 
-    <pre class="usage"><span class='fu'>smooth_spline</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"polygon"</span>, <span class='st'>"line"</span>), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>smoothness</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>smooth_spline</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"polygon"</span>, <span class='st'>"line"</span>), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>,
+  <span class='kw'>vertex_factor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -106,13 +107,13 @@ polygon.</p></td>
     <tr>
       <th>n</th>
       <td><p>integer; number of vertices in the smoothed curve. Ignored if
-<code>smoothness</code> is specified.</p></td>
+<code>vertex_factor</code> is specified.</p></td>
     </tr>
     <tr>
-      <th>smoothness</th>
-      <td><p>double; the proportional increase in the number of vertices
-in the smooth curve. For example, if the oringal curve has 10 points, a
-value of <code>2.5</code> will yield a new smoothed curve with 250 points.</p></td>
+      <th>vertex_factor</th>
+      <td><p>double; the proportional increase in the number of
+vertices in the smooth curve. For example, if the oringal curve has 10
+points, a value of <code>2.5</code> will yield a new smoothed curve with 250 points.</p></td>
     </tr>
     </table>
     
@@ -140,25 +141,16 @@ posts:</p><ul>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>sf</span>)
-<span class='co'># smooth polygons</span>
-<span class='no'>p_smoothed</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='smooth.html'>smooth</a></span>(<span class='no'>jagged_polygons</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"spline"</span>)
-<span class='fu'>par</span>(<span class='kw'>mar</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>), <span class='kw'>oma</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>0</span>), <span class='kw'>mfrow</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>3</span>))
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fu'>nrow</span>(<span class='no'>jagged_polygons</span>)) {
-  <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>p_smoothed</span>[<span class='no'>i</span>, ]), <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>)
-  <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>jagged_polygons</span>[<span class='no'>i</span>, ]), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey20"</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-  <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>p_smoothed</span>[<span class='no'>i</span>, ]), <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-  <span class='fu'>title</span>(<span class='st'>"Smoothed Polygons (Spline Interpolation)"</span>, <span class='kw'>cex.main</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>outer</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-}</div><div class='img'><img src='smooth_spline-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
-<span class='co'># smooth lines</span>
-<span class='no'>l_smoothed</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='smooth.html'>smooth</a></span>(<span class='no'>jagged_lines</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"spline"</span>)
-<span class='fu'>par</span>(<span class='kw'>mar</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>), <span class='kw'>oma</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>0</span>), <span class='kw'>mfrow</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>3</span>))
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fu'>nrow</span>(<span class='no'>jagged_lines</span>)) {
-  <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>l_smoothed</span>[<span class='no'>i</span>, ]), <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>)
-  <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>jagged_lines</span>[<span class='no'>i</span>, ]), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey20"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-  <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>l_smoothed</span>[<span class='no'>i</span>, ]), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-  <span class='fu'>title</span>(<span class='st'>"Smoothed Lines (Spline Interpolation)"</span>, <span class='kw'>cex.main</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>outer</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-}</div><div class='img'><img src='smooth_spline-2.png' alt='' width='700' height='432.632880098887' /></div></pre>
+    <pre class="examples"><div class='input'><span class='co'># smooth_spline works on matrices of coordinates</span>
+<span class='co'># use the matrix of coordinates defining a polygon as an example</span>
+<span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='no'>jagged_polygons</span>$<span class='no'>geometry</span><span class='kw'>[[</span><span class='fl'>2</span>]]<span class='kw'>[[</span><span class='fl'>1</span>]]
+<span class='no'>m_smooth</span> <span class='kw'>&lt;-</span> <span class='fu'>smooth_spline</span>(<span class='no'>m</span>)
+<span class='fu'>class</span>(<span class='no'>m</span>)</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'><span class='fu'>class</span>(<span class='no'>m_smooth</span>)</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'><span class='fu'>plot</span>(<span class='no'>m_smooth</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"l"</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</div><div class='input'><span class='fu'>lines</span>(<span class='no'>m</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>)</div><div class='img'><img src='smooth_spline-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='co'># smooth is a wrapper for smooth_spline that works on spatial features</span>
+<span class='fu'>library</span>(<span class='no'>sf</span>)
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='no'>jagged_polygons</span>$<span class='no'>geometry</span><span class='kw'>[[</span><span class='fl'>2</span>]]
+<span class='no'>p_smooth</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='smooth.html'>smooth</a></span>(<span class='no'>p</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"spline"</span>)
+<span class='fu'>class</span>(<span class='no'>p</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'>class</span>(<span class='no'>p_smooth</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>p_smooth</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>p</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='smooth_spline-2.png' alt='' width='700' height='432.632880098887' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

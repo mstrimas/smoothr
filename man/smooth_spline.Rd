@@ -4,7 +4,8 @@
 \alias{smooth_spline}
 \title{Spline interpolation}
 \usage{
-smooth_spline(x, type = c("polygon", "line"), n = 100, smoothness = NULL)
+smooth_spline(x, type = c("polygon", "line"), n = 100,
+  vertex_factor = NULL)
 }
 \arguments{
 \item{x}{numeric matrix; 2-column matrix of coordinates.}
@@ -13,11 +14,11 @@ smooth_spline(x, type = c("polygon", "line"), n = 100, smoothness = NULL)
 polygon.}
 
 \item{n}{integer; number of vertices in the smoothed curve. Ignored if
-\code{smoothness} is specified.}
+\code{vertex_factor} is specified.}
 
-\item{smoothness}{double; the proportional increase in the number of vertices
-in the smooth curve. For example, if the oringal curve has 10 points, a
-value of \code{2.5} will yield a new smoothed curve with 250 points.}
+\item{vertex_factor}{double; the proportional increase in the number of
+vertices in the smooth curve. For example, if the oringal curve has 10
+points, a value of \code{2.5} will yield a new smoothed curve with 250 points.}
 }
 \value{
 A matrix with the coordiantes of the smoothed curve.
@@ -33,26 +34,23 @@ directly. Instead, use \code{\link[=smooth]{smooth()}} with \code{method = "spli
 smoothing algorithm to spatial features.
 }
 \examples{
-library(sf)
-# smooth polygons
-p_smoothed <- smooth(jagged_polygons, method = "spline")
-par(mar = c(0, 0, 0, 0), oma = c(0, 0, 2, 0), mfrow = c(3, 3))
-for (i in 1:nrow(jagged_polygons)) {
-  plot(st_geometry(p_smoothed[i, ]), col = NA, border = NA)
-  plot(st_geometry(jagged_polygons[i, ]), col = "grey20", border = NA, add = TRUE)
-  plot(st_geometry(p_smoothed[i, ]), col = NA, border = "red", lwd = 2, add = TRUE)
-  title("Smoothed Polygons (Spline Interpolation)", cex.main = 2, outer = TRUE)
-}
+# smooth_spline works on matrices of coordinates
+# use the matrix of coordinates defining a polygon as an example
+m <- jagged_polygons$geometry[[2]][[1]]
+m_smooth <- smooth_spline(m)
+class(m)
+class(m_smooth)
+plot(m_smooth, type = "l", col = "red", axes = FALSE, xlab = NA, ylab = NA)
+lines(m, col = "black")
 
-# smooth lines
-l_smoothed <- smooth(jagged_lines, method = "spline")
-par(mar = c(0, 0, 0, 0), oma = c(0, 0, 2, 0), mfrow = c(3, 3))
-for (i in 1:nrow(jagged_lines)) {
-  plot(st_geometry(l_smoothed[i, ]), col = NA)
-  plot(st_geometry(jagged_lines[i, ]), col = "grey20", lwd = 2, add = TRUE)
-  plot(st_geometry(l_smoothed[i, ]), col = "red", lwd = 2, add = TRUE)
-  title("Smoothed Lines (Spline Interpolation)", cex.main = 2, outer = TRUE)
-}
+# smooth is a wrapper for smooth_spline that works on spatial features
+library(sf)
+p <- jagged_polygons$geometry[[2]]
+p_smooth <- smooth(p, method = "spline")
+class(p)
+class(p_smooth)
+plot(p_smooth, border = "red")
+plot(p, add = TRUE)
 }
 \references{
 The spline method was inspired by the following StackExchange
