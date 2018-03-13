@@ -4,13 +4,13 @@
 \alias{smooth_chaikin}
 \title{Chaikin's corner cutting algorithm}
 \usage{
-smooth_chaikin(x, type = c("polygon", "line"), refinements = 4L)
+smooth_chaikin(x, wrap = TRUE, refinements = 4L)
 }
 \arguments{
 \item{x}{numeric matrix; 2-column matrix of coordinates.}
 
-\item{type}{character; whether the coordinates correspond to a line or
-polygon.}
+\item{wrap}{logical; whether the coordinates should be wrapped at the ends,
+as for polygons and closed lines.}
 
 \item{refinements}{integer; number of corner cutting iterations to apply.}
 }

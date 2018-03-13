@@ -10,8 +10,8 @@
 #' smoothing algorithm to spatial features.
 #'
 #' @param x numeric matrix; 2-column matrix of coordinates.
-#' @param type character; whether the coordinates correspond to a line or
-#'   polygon.
+#' @param wrap logical; whether the coordinates should be wrapped at the ends,
+#'   as for polygons and closed lines.
 #' @param refinements integer; number of corner cutting iterations to apply.
 #'
 #' @return A matrix with the coordiantes of the smoothed curve.
@@ -42,12 +42,13 @@
 #' class(p_smooth)
 #' plot(p)
 #' plot(p_smooth, border = "red", add = TRUE)
-smooth_chaikin <- function(x, type = c("polygon", "line"), refinements = 4L) {
+smooth_chaikin <- function(x, wrap = TRUE, refinements = 4L) {
   stopifnot(is.matrix(x), ncol(x) == 2)
+  stopifnot(is_flag(wrap))
   stopifnot(is_count(refinements), refinements <= 10)
-  type <- match.arg(type)
+
   # polygons and closed lines need to be wrapped
-  if (type == "polygon" || all(x[1, ] == x[nrow(x), ])) {
+  if (wrap) {
     for (i in seq.int(refinements)) {
       n_pts <- nrow(x)
       qr <- matrix(NA_real_, nrow = 2 * (n_pts - 1) + 1, ncol = 2)

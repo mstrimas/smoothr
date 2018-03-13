@@ -4,14 +4,13 @@
 \alias{smooth_spline}
 \title{Spline interpolation}
 \usage{
-smooth_spline(x, type = c("polygon", "line"), n = 100,
-  vertex_factor = NULL)
+smooth_spline(x, wrap = TRUE, n = 100, vertex_factor)
 }
 \arguments{
 \item{x}{numeric matrix; 2-column matrix of coordinates.}
 
-\item{type}{character; whether the coordinates correspond to a line or
-polygon.}
+\item{wrap}{logical; whether the coordinates should be wrapped at the ends,
+as for polygons and closed lines.}
 
 \item{n}{integer; number of vertices in the smoothed curve. Ignored if
 \code{vertex_factor} is specified.}
@@ -26,7 +25,7 @@ A matrix with the coordiantes of the smoothed curve.
 \description{
 Spline interpolation uses \code{\link[stats:spline]{stats::spline()}} to interpolate between existing
 vertices using piecewise cubic polynomials. The \code{x} and \code{y} coordinates are
-interpolated independently, and .
+interpolated independently.
 }
 \details{
 This function works on matrices of points and is generally not called

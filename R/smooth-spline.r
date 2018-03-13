@@ -2,15 +2,15 @@
 #'
 #' Spline interpolation uses [stats::spline()] to interpolate between existing
 #' vertices using piecewise cubic polynomials. The `x` and `y` coordinates are
-#' interpolated independently, and .
+#' interpolated independently.
 #'
 #' This function works on matrices of points and is generally not called
 #' directly. Instead, use [smooth()] with `method = "spline"` to apply this
 #' smoothing algorithm to spatial features.
 #'
 #' @param x numeric matrix; 2-column matrix of coordinates.
-#' @param type character; whether the coordinates correspond to a line or
-#'   polygon.
+#' @param wrap logical; whether the coordinates should be wrapped at the ends,
+#'   as for polygons and closed lines.
 #' @param n integer; number of vertices in the smoothed curve. Ignored if
 #'   `vertex_factor` is specified.
 #' @param vertex_factor double; the proportional increase in the number of
@@ -43,17 +43,16 @@
 #' class(p_smooth)
 #' plot(p_smooth, border = "red")
 #' plot(p, add = TRUE)
-smooth_spline <- function(x, type = c("polygon", "line"), n = 100,
-                          vertex_factor = NULL) {
+smooth_spline <- function(x, wrap = TRUE, n = 100, vertex_factor) {
   stopifnot(is.matrix(x), ncol(x) == 2)
+  stopifnot(is_flag(wrap))
   stopifnot(is_count(n), n >= nrow(x))
-  type <- match.arg(type)
-  if (!is.null(vertex_factor)) {
+  if (!missing(vertex_factor)) {
     stopifnot(is.double(vertex_factor), length(vertex_factor) == 1,
               vertex_factor >= 1)
     n <- max(round(vertex_factor * nrow(x)), nrow(x))
   }
-  if (type == "polygon" || all(x[1, ] == x[nrow(x), ])) {
+  if (wrap) {
       method <- "periodic"
   } else {
     method <- "fmm"

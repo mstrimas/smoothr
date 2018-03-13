@@ -77,12 +77,16 @@ smooth.sfg <- function(x, method = c("chaikin", "spline"), ...) {
   method <- match.arg(method)
   # choose smoother
   if (method == "spline") {
-    smoother <- function(x, type) {
-      smooth_spline(x = x, type = type, ...)
+    smoother <- function(x, wrap) {
+      smooth_spline(x = x, wrap = wrap, ...)
     }
   } else if (method == "chaikin") {
-    smoother <- function(x, type) {
-      smooth_chaikin(x = x, type = type, ...)
+    smoother <- function(x, wrap) {
+      smooth_chaikin(x = x, wrap = wrap, ...)
+    }
+  } else if (method == "ksmooth") {
+    smoother <- function(x, wrap) {
+      smooth_smooth(x = x, wrap = wrap, ...)
     }
   } else {
     stop(paste("Invalid smoothing method:", method))
@@ -90,19 +94,21 @@ smooth.sfg <- function(x, method = c("chaikin", "spline"), ...) {
 
   # perform smoothing
   if (sf::st_is(x, "LINESTRING")) {
-    x <- sf::st_linestring(smoother(x[], type = "line"))
+    m <- x[]
+    x <- sf::st_linestring(smoother(m, wrap = all(m[1, ] == m[nrow(m), ])))
   } else if (sf::st_is(x, "POLYGON")) {
     for (i in seq_along(x)) {
-      x[[i]] <- smoother(x[[i]], type = "polygon")
+      x[[i]] <- smoother(x[[i]], wrap = TRUE)
     }
   } else if (sf::st_is(x, "MULTILINESTRING")) {
     for (i in seq_along(x)) {
-      x[[i]] <- smoother(x[[i]], type = "line")
+      m <- x[]
+      x[[i]] <- smoother(x[[i]], wrap = all(m[1, ] == m[nrow(m), ]))
     }
   } else if (sf::st_is(x, "MULTIPOLYGON")) {
     for (i in seq_along(x)) {
       for (j in seq_along(x[[i]])) {
-        x[[i]][[j]] <- smoother(x[[i]][[j]], type = "polygon")
+        x[[i]][[j]] <- smoother(x[[i]][[j]], wrap = TRUE)
       }
     }
   } else {
