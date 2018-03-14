@@ -29,19 +29,19 @@ them appear more aesthetically pleasing and natural.
 Specifying a method calls one of the following underlying smoothing
 functions. Each smoothing method has one or more parameters that specify
 the extent of smoothing. Note that for multiple features, or multipart
-features, these parameters applies to each individual, singlepart feature.
+features, these parameters apply to each individual, singlepart feature.
 \itemize{
 \item \code{\link[=smooth_chaikin]{smooth_chaikin()}}: Chaikin's corner cutting algorithm smooths a curve by
 iteratively replacing every point by two new points: one 1/4 of the way to
 the next point and one 1/4 of the way to the previous point. Smoothing
-arameters:
+parameters:
 \itemize{
 \item \code{refinements}: number of corner cutting iterations to apply.
 }
 \item \code{\link[=smooth_spline]{smooth_spline()}}: spline interpolation via the \code{\link[stats:spline]{stats::spline()}}
 function. This method interpolates between existing vertices and the
 resulting smoothed feature will pass through the vertices of the input
-feature. Smoothing arameters:
+feature. Smoothing parameters:
 \itemize{
 \item \code{n}: number of vertices in each smoothed feature. Ignored if
 \code{vertex_factor} is specified.

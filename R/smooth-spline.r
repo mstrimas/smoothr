@@ -2,7 +2,8 @@
 #'
 #' Spline interpolation uses [stats::spline()] to interpolate between existing
 #' vertices using piecewise cubic polynomials. The `x` and `y` coordinates are
-#' interpolated independently.
+#' interpolated independently. The feature curve will always pass through the
+#' vertices of the oringal feature.
 #'
 #' This function works on matrices of points and is generally not called
 #' directly. Instead, use [smooth()] with `method = "spline"` to apply this
@@ -14,7 +15,7 @@
 #' @param n integer; number of vertices in the smoothed curve. Ignored if
 #'   `vertex_factor` is specified.
 #' @param vertex_factor double; the proportional increase in the number of
-#'   vertices in the smooth curve. For example, if the oringal curve has 10
+#'   vertices in the smooth curve. For example, if the original curve has 10
 #'   points, a value of `2.5` will yield a new smoothed curve with 250 points.
 #'
 #' @return A matrix with the coordiantes of the smoothed curve.

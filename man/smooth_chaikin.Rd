@@ -15,13 +15,12 @@ as for polygons and closed lines.}
 \item{refinements}{integer; number of corner cutting iterations to apply.}
 }
 \value{
-A matrix with the coordiantes of the smoothed curve.
+A matrix with the coordinates of the smoothed curve.
 }
 \description{
 Chaikin's corner cutting algorithm smooths a curve by iteratively replacing
 every point by two new points: one 1/4 of the way to the next point and one
-1/4 of the way to the previous point. This method results in a curve that
-does not pass through the vertices of the original curve.
+1/4 of the way to the previous point.
 }
 \details{
 This function works on matrices of points and is generally not called
@@ -48,7 +47,7 @@ plot(p)
 plot(p_smooth, border = "red", add = TRUE)
 }
 \references{
-The orginal reference for Chaikin's corner curring algorithm is:
+The original reference for Chaikin's corner cutting algorithm is:
 \itemize{
 \item \code{Chaikin, G. An algorithm for high speed curve generation. Computer Graphics and Image Processing 3 (1974), 346–349}
 }

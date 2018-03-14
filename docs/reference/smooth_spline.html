@@ -89,7 +89,8 @@
     
     <p>Spline interpolation uses <code><a href='http://www.rdocumentation.org/packages/stats/topics/splinefun'>stats::spline()</a></code> to interpolate between existing
 vertices using piecewise cubic polynomials. The <code>x</code> and <code>y</code> coordinates are
-interpolated independently.</p>
+interpolated independently. The feature curve will always pass through the
+vertices of the oringal feature.</p>
     
 
     <pre class="usage"><span class='fu'>smooth_spline</span>(<span class='no'>x</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='no'>vertex_factor</span>)</pre>
@@ -114,7 +115,7 @@ as for polygons and closed lines.</p></td>
     <tr>
       <th>vertex_factor</th>
       <td><p>double; the proportional increase in the number of
-vertices in the smooth curve. For example, if the oringal curve has 10
+vertices in the smooth curve. For example, if the original curve has 10
 points, a value of <code>2.5</code> will yield a new smoothed curve with 250 points.</p></td>
     </tr>
     </table>

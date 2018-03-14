@@ -89,8 +89,7 @@
     
     <p>Chaikin's corner cutting algorithm smooths a curve by iteratively replacing
 every point by two new points: one 1/4 of the way to the next point and one
-1/4 of the way to the previous point. This method results in a curve that
-does not pass through the vertices of the original curve.</p>
+1/4 of the way to the previous point.</p>
     
 
     <pre class="usage"><span class='fu'>smooth_chaikin</span>(<span class='no'>x</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>refinements</span> <span class='kw'>=</span> <span class='fl'>3L</span>)</pre>
@@ -115,7 +114,7 @@ as for polygons and closed lines.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A matrix with the coordiantes of the smoothed curve.</p>
+    <p>A matrix with the coordinates of the smoothed curve.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -125,7 +124,7 @@ smoothing algorithm to spatial features.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>The orginal reference for Chaikin's corner curring algorithm is:</p><ul>
+    <p>The original reference for Chaikin's corner cutting algorithm is:</p><ul>
 <li><p><code>Chaikin, G. An algorithm for high speed curve generation. Computer Graphics and Image Processing 3 (1974), 346–349</code></p></li>
 </ul>
     <p>This implementation was inspired by the following StackOverflow answer:</p><ul>

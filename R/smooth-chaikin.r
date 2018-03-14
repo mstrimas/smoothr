@@ -2,8 +2,7 @@
 #'
 #' Chaikin's corner cutting algorithm smooths a curve by iteratively replacing
 #' every point by two new points: one 1/4 of the way to the next point and one
-#' 1/4 of the way to the previous point. This method results in a curve that
-#' does not pass through the vertices of the original curve.
+#' 1/4 of the way to the previous point.
 #'
 #' This function works on matrices of points and is generally not called
 #' directly. Instead, use [smooth()] with `method = "chaikin"` to apply this
@@ -14,8 +13,8 @@
 #'   as for polygons and closed lines.
 #' @param refinements integer; number of corner cutting iterations to apply.
 #'
-#' @return A matrix with the coordiantes of the smoothed curve.
-#' @references The orginal reference for Chaikin's corner curring algorithm is:
+#' @return A matrix with the coordinates of the smoothed curve.
+#' @references The original reference for Chaikin's corner cutting algorithm is:
 #'
 #'   - `Chaikin, G. An algorithm for high speed curve generation. Computer Graphics and Image Processing 3 (1974), 346–349`
 #'
