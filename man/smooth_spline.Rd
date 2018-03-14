@@ -20,13 +20,13 @@ vertices in the smooth curve. For example, if the original curve has 10
 points, a value of \code{2.5} will yield a new smoothed curve with 250 points.}
 }
 \value{
-A matrix with the coordiantes of the smoothed curve.
+A matrix with the coordinates of the smoothed curve.
 }
 \description{
 Spline interpolation uses \code{\link[stats:spline]{stats::spline()}} to interpolate between existing
 vertices using piecewise cubic polynomials. The \code{x} and \code{y} coordinates are
 interpolated independently. The feature curve will always pass through the
-vertices of the oringal feature.
+vertices of the original feature.
 }
 \details{
 This function works on matrices of points and is generally not called

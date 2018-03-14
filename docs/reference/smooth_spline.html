@@ -90,7 +90,7 @@
     <p>Spline interpolation uses <code><a href='http://www.rdocumentation.org/packages/stats/topics/splinefun'>stats::spline()</a></code> to interpolate between existing
 vertices using piecewise cubic polynomials. The <code>x</code> and <code>y</code> coordinates are
 interpolated independently. The feature curve will always pass through the
-vertices of the oringal feature.</p>
+vertices of the original feature.</p>
     
 
     <pre class="usage"><span class='fu'>smooth_spline</span>(<span class='no'>x</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='no'>vertex_factor</span>)</pre>
@@ -122,7 +122,7 @@ points, a value of <code>2.5</code> will yield a new smoothed curve with 250 poi
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A matrix with the coordiantes of the smoothed curve.</p>
+    <p>A matrix with the coordinates of the smoothed curve.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -148,12 +148,12 @@ posts:</p><ul>
 <span class='co'># use the matrix of coordinates defining a polygon as an example</span>
 <span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='no'>jagged_polygons</span>$<span class='no'>geometry</span><span class='kw'>[[</span><span class='fl'>2</span>]]<span class='kw'>[[</span><span class='fl'>1</span>]]
 <span class='no'>m_smooth</span> <span class='kw'>&lt;-</span> <span class='fu'>smooth_spline</span>(<span class='no'>m</span>)
-<span class='fu'>class</span>(<span class='no'>m</span>)</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'><span class='fu'>class</span>(<span class='no'>m_smooth</span>)</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'><span class='fu'>plot</span>(<span class='no'>m_smooth</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"l"</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</div><div class='input'><span class='fu'>lines</span>(<span class='no'>m</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>)</div><div class='img'><img src='smooth_spline-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>class</span>(<span class='no'>m</span>)</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'><span class='fu'>class</span>(<span class='no'>m_smooth</span>)</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'><span class='fu'>plot</span>(<span class='no'>m_smooth</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"l"</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</div><div class='input'><span class='fu'>lines</span>(<span class='no'>m</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>)</div><div class='img'><img src='smooth_spline-7.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># smooth is a wrapper for smooth_spline that works on spatial features</span>
 <span class='fu'>library</span>(<span class='no'>sf</span>)
 <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='no'>jagged_polygons</span>$<span class='no'>geometry</span><span class='kw'>[[</span><span class='fl'>2</span>]]
 <span class='no'>p_smooth</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='smooth.html'>smooth</a></span>(<span class='no'>p</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"spline"</span>)
-<span class='fu'>class</span>(<span class='no'>p</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'>class</span>(<span class='no'>p_smooth</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>p_smooth</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>p</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='smooth_spline-2.png' alt='' width='700' height='432.632880098887' /></div></pre>
+<span class='fu'>class</span>(<span class='no'>p</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'>class</span>(<span class='no'>p_smooth</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>p_smooth</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>p</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='smooth_spline-8.png' alt='' width='700' height='432.632880098887' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

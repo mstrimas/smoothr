@@ -3,7 +3,7 @@
 #' Spline interpolation uses [stats::spline()] to interpolate between existing
 #' vertices using piecewise cubic polynomials. The `x` and `y` coordinates are
 #' interpolated independently. The feature curve will always pass through the
-#' vertices of the oringal feature.
+#' vertices of the original feature.
 #'
 #' This function works on matrices of points and is generally not called
 #' directly. Instead, use [smooth()] with `method = "spline"` to apply this
@@ -18,7 +18,7 @@
 #'   vertices in the smooth curve. For example, if the original curve has 10
 #'   points, a value of `2.5` will yield a new smoothed curve with 250 points.
 #'
-#' @return A matrix with the coordiantes of the smoothed curve.
+#' @return A matrix with the coordinates of the smoothed curve.
 #' @references The spline method was inspired by the following StackExchange
 #'   posts:
 #'
