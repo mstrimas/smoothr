@@ -29,7 +29,7 @@
 #'     - `n`: number of vertices in each smoothed feature. Ignored if
 #'     `vertex_factor` is specified.
 #'     - `vertex_factor`: the proportional increase in the number of vertices in
-#'     the smooth feature. For example, if the oringal feature has 10 vertices,
+#'     the smooth feature. For example, if the original feature has 10 vertices,
 #'     a value of 2.5 will yield a new, smoothed feature with 250 vertices.
 #'
 #' @return A smoothed polygon or line in the same format as the input data.

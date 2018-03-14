@@ -46,7 +46,7 @@ feature. Smoothing parameters:
 \item \code{n}: number of vertices in each smoothed feature. Ignored if
 \code{vertex_factor} is specified.
 \item \code{vertex_factor}: the proportional increase in the number of vertices in
-the smooth feature. For example, if the oringal feature has 10 vertices,
+the smooth feature. For example, if the original feature has 10 vertices,
 a value of 2.5 will yield a new, smoothed feature with 250 vertices.
 }
 }
