@@ -77,17 +77,9 @@ smooth.sfg <- function(x, method = c("chaikin", "spline"), ...) {
   method <- match.arg(method)
   # choose smoother
   if (method == "spline") {
-    smoother <- function(x, wrap) {
-      smooth_spline(x = x, wrap = wrap, ...)
-    }
+    smoother <- smooth_spline
   } else if (method == "chaikin") {
-    smoother <- function(x, wrap) {
-      smooth_chaikin(x = x, wrap = wrap, ...)
-    }
-  } else if (method == "ksmooth") {
-    smoother <- function(x, wrap) {
-      smooth_ksmooth(x = x, wrap = wrap, ...)
-    }
+    smoother <- smooth_chaikin
   } else {
     stop(paste("Invalid smoothing method:", method))
   }
@@ -95,20 +87,20 @@ smooth.sfg <- function(x, method = c("chaikin", "spline"), ...) {
   # perform smoothing
   if (sf::st_is(x, "LINESTRING")) {
     m <- x[]
-    x <- sf::st_linestring(smoother(m, wrap = all(m[1, ] == m[nrow(m), ])))
+    x <- sf::st_linestring(smoother(m, wrap = all(m[1, ] == m[nrow(m), ]), ...))
   } else if (sf::st_is(x, "POLYGON")) {
     for (i in seq_along(x)) {
-      x[[i]] <- smoother(x[[i]], wrap = TRUE)
+      x[[i]] <- smoother(x[[i]], wrap = TRUE, ...)
     }
   } else if (sf::st_is(x, "MULTILINESTRING")) {
     for (i in seq_along(x)) {
       m <- x[[i]]
-      x[[i]] <- smoother(x[[i]], wrap = all(m[1, ] == m[nrow(m), ]))
+      x[[i]] <- smoother(x[[i]], wrap = all(m[1, ] == m[nrow(m), ]), ...)
     }
   } else if (sf::st_is(x, "MULTIPOLYGON")) {
     for (i in seq_along(x)) {
       for (j in seq_along(x[[i]])) {
-        x[[i]][[j]] <- smoother(x[[i]][[j]], wrap = TRUE)
+        x[[i]][[j]] <- smoother(x[[i]][[j]], wrap = TRUE, ...)
       }
     }
   } else {
@@ -121,7 +113,7 @@ smooth.sfg <- function(x, method = c("chaikin", "spline"), ...) {
 smooth.sfc <- function(x, method = c("chaikin", "spline"), ...) {
   method <- match.arg(method)
   for (i in seq_along(x)) {
-    x[[i]] <- smooth(x[[i]], method = method)
+    x[[i]] <- smooth(x[[i]], method = method, ...)
   }
   sf::st_sfc(x)
 }
@@ -129,7 +121,7 @@ smooth.sfc <- function(x, method = c("chaikin", "spline"), ...) {
 #' @export
 smooth.sf <- function(x, method = c("chaikin", "spline"), ...) {
   method <- match.arg(method)
-  sf::st_geometry(x) <- smooth(sf::st_geometry(x), method = method)
+  sf::st_geometry(x) <- smooth(sf::st_geometry(x), method = method, ...)
   x
 }
 
@@ -141,9 +133,9 @@ smooth.Spatial <- function(x, method = c("chaikin", "spline"), ...) {
   method <- match.arg(method)
   # convert to sf object then back
   if (inherits(x, c("SpatialPolygonsDataFrame", "SpatialLinesDataFrame"))) {
-    smoothed <- smooth(sf::st_as_sf(x), method = method)
+    smoothed <- smooth(sf::st_as_sf(x), method = method, ...)
   } else if (inherits(x, c("SpatialPolygons", "SpatialLines"))) {
-    smoothed <- smooth(sf::st_as_sfc(x), method = method)
+    smoothed <- smooth(sf::st_as_sfc(x), method = method, ...)
   } else{
     stop(paste("No smooth method for class", class(x)))
   }

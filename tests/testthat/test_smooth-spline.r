@@ -10,7 +10,7 @@ test_that("smooth_spline() works on polygons", {
 
 test_that("smooth_spline() works on lines", {
   l <- jagged_lines$geometry[[2]][]
-  l_smooth <- smooth_spline(l, type = "line")
+  l_smooth <- smooth_spline(l, wrap = FALSE)
   expect_is(l_smooth, "matrix")
   expect_gt(nrow(l_smooth), nrow(l))
 })

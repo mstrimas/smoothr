@@ -4,7 +4,7 @@
 \alias{smooth_chaikin}
 \title{Chaikin's corner cutting algorithm}
 \usage{
-smooth_chaikin(x, wrap = TRUE, refinements = 4L)
+smooth_chaikin(x, wrap = TRUE, refinements = 3L)
 }
 \arguments{
 \item{x}{numeric matrix; 2-column matrix of coordinates.}

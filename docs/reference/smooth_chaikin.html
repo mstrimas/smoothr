@@ -90,7 +90,7 @@ every point by two new points: one 1/4 of the way to the next point and one
 does not pass through the vertices of the original curve.</p>
     
 
-    <pre class="usage"><span class='fu'>smooth_chaikin</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"polygon"</span>, <span class='st'>"line"</span>), <span class='kw'>refinements</span> <span class='kw'>=</span> <span class='fl'>4L</span>)</pre>
+    <pre class="usage"><span class='fu'>smooth_chaikin</span>(<span class='no'>x</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>refinements</span> <span class='kw'>=</span> <span class='fl'>3L</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -100,9 +100,9 @@ does not pass through the vertices of the original curve.</p>
       <td><p>numeric matrix; 2-column matrix of coordinates.</p></td>
     </tr>
     <tr>
-      <th>type</th>
-      <td><p>character; whether the coordinates correspond to a line or
-polygon.</p></td>
+      <th>wrap</th>
+      <td><p>logical; whether the coordinates should be wrapped at the ends,
+as for polygons and closed lines.</p></td>
     </tr>
     <tr>
       <th>refinements</th>

@@ -86,11 +86,10 @@
     
     <p>Spline interpolation uses <code><a href='http://www.rdocumentation.org/packages/stats/topics/splinefun'>stats::spline()</a></code> to interpolate between existing
 vertices using piecewise cubic polynomials. The <code>x</code> and <code>y</code> coordinates are
-interpolated independently, and .</p>
+interpolated independently.</p>
     
 
-    <pre class="usage"><span class='fu'>smooth_spline</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"polygon"</span>, <span class='st'>"line"</span>), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>,
-  <span class='kw'>vertex_factor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>smooth_spline</span>(<span class='no'>x</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='no'>vertex_factor</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -100,9 +99,9 @@ interpolated independently, and .</p>
       <td><p>numeric matrix; 2-column matrix of coordinates.</p></td>
     </tr>
     <tr>
-      <th>type</th>
-      <td><p>character; whether the coordinates correspond to a line or
-polygon.</p></td>
+      <th>wrap</th>
+      <td><p>logical; whether the coordinates should be wrapped at the ends,
+as for polygons and closed lines.</p></td>
     </tr>
     <tr>
       <th>n</th>

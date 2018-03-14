@@ -2,9 +2,16 @@ context("smooth()")
 library(sf)
 
 test_that("smooth() methods work", {
+  # polygons
   s <- smooth(jagged_polygons, method = "spline")
   expect_true(all(st_is_valid(s)))
   s <- smooth(jagged_polygons, method = "chaikin")
+  expect_true(all(st_is_valid(s)))
+
+  # lines
+  sl <- smooth(jagged_lines, method = "spline")
+  expect_true(all(st_is_valid(s)))
+  sl <- smooth(jagged_lines, method = "chaikin")
   expect_true(all(st_is_valid(s)))
 
   # test parameters
@@ -58,4 +65,11 @@ test_that("smooth() preserves multipart features", {
   expect_true(st_is_valid(smooth(l, method = "chaikin")))
   expect_true(st_is_valid(smooth(l, method = "spline")))
   expect_equal(length(l), length(smooth(l)))
+})
+
+test_that("smooth() fails for points", {
+  point <- st_point(c(0, 0))
+  expect_error(smooth(point))
+  expect_error(smooth(st_sfc(point)))
+  expect_error(smooth(as(st_sfc(point), "Spatial")))
 })

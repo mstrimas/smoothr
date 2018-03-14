@@ -44,20 +44,23 @@
 #' plot(p_smooth, border = "red")
 #' plot(p, add = TRUE)
 smooth_spline <- function(x, wrap = TRUE, n = 100, vertex_factor) {
-  stopifnot(is.matrix(x), ncol(x) == 2)
+  stopifnot(is.matrix(x), ncol(x) == 2, nrow(x) > 1)
+  n_pts <- nrow(x)
   stopifnot(is_flag(wrap))
-  stopifnot(is_count(n), n >= nrow(x))
+  stopifnot(is_count(n))
   if (!missing(vertex_factor)) {
     stopifnot(is.double(vertex_factor), length(vertex_factor) == 1,
               vertex_factor >= 1)
-    n <- max(round(vertex_factor * nrow(x)), nrow(x))
+    n <- max(round(vertex_factor * n_pts), n_pts)
+  } else {
+    stopifnot(n >= n_pts)
   }
   if (wrap) {
       method <- "periodic"
   } else {
     method <- "fmm"
   }
-  x1 <- stats::spline(1:nrow(x), x[, 1], n = n, method = method)$y
-  x2 <- stats::spline(1:nrow(x), x[, 2], n = n, method = method)$y
+  x1 <- stats::spline(seq_len(n_pts), x[, 1], n = n, method = method)$y
+  x2 <- stats::spline(seq_len(n_pts), x[, 2], n = n, method = method)$y
   cbind(x1, x2)
 }
