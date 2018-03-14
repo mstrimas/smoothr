@@ -30,12 +30,11 @@
 #'   - [Nadaraya-Watson Optimal Bandwidth](https://stats.stackexchange.com/a/143608/44268)
 #'
 #' @seealso [smooth()]
-#' @export
 #' @examples
 #' # smooth_ksmooth() works on matrices of coordinates
 #' # use the matrix of coordinates defining a polygon as an example
 #' m <- jagged_polygons$geometry[[1]][[1]]
-#' m_smooth <- smooth_ksmooth(m, n = 100, bandwidth = 0.25)
+#' m_smooth <- smooth_ksmooth(m)
 #' class(m)
 #' class(m_smooth)
 #' plot(m, type = "l", col = "black", axes = FALSE, xlab = NA, ylab = NA)
@@ -80,5 +79,5 @@ smooth_ksmooth <- function(x, wrap = TRUE, bandwidth, n = 100, vertex_factor,
                        bandwidth = bandwidth, n.points = n)
   sy <- stats::ksmooth(1:nrow(x), x[, 2], kernel = "normal",
                        bandwidth = bandwidth, n.points = n)
-  cbind(sx$y, sy$y)[k < sx$x & sx$x <= n + k, ]
-}
+  y=cbind(sx$y, sy$y)[k < sx$x & sx$x <= (n_pts + k), ]
+  }

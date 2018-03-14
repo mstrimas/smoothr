@@ -44,11 +44,12 @@ smoothing algorithm to spatial features.
 # smooth_ksmooth() works on matrices of coordinates
 # use the matrix of coordinates defining a polygon as an example
 m <- jagged_polygons$geometry[[1]][[1]]
-m_smooth <- smooth_ksmooth(m, n = 20)
+m_smooth <- smooth_ksmooth(m)
 class(m)
 class(m_smooth)
 plot(m, type = "l", col = "black", axes = FALSE, xlab = NA, ylab = NA)
 lines(m_smooth, col = "red")
+points(m_smooth)
 
 # smooth() is a wrapper for smooth_ksmooth that works on spatial features
 library(sf)

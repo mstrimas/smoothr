@@ -86,7 +86,7 @@ smooth.sfg <- function(x, method = c("chaikin", "spline"), ...) {
     }
   } else if (method == "ksmooth") {
     smoother <- function(x, wrap) {
-      smooth_smooth(x = x, wrap = wrap, ...)
+      smooth_ksmooth(x = x, wrap = wrap, ...)
     }
   } else {
     stop(paste("Invalid smoothing method:", method))
@@ -102,7 +102,7 @@ smooth.sfg <- function(x, method = c("chaikin", "spline"), ...) {
     }
   } else if (sf::st_is(x, "MULTILINESTRING")) {
     for (i in seq_along(x)) {
-      m <- x[]
+      m <- x[[i]]
       x[[i]] <- smoother(x[[i]], wrap = all(m[1, ] == m[nrow(m), ]))
     }
   } else if (sf::st_is(x, "MULTIPOLYGON")) {
