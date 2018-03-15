@@ -3,8 +3,10 @@ Type: Package
 Title: Spatial Feature Smoothing
 Version: 0.0.1
 Authors@R: person("Matthew", "Strimas-Mackey", email = "mstrimas@gmail.com", role = c("aut", "cre"))
-Description: Smooth out sharp vertices in spatial features to make edges appear 
-    more natural or aesthetically pleasing.
+Description: Smooth spatial features (i.e. lines and polygons) to remove sharp 
+    corners and make curves appear more natural or aesthetically pleasing. Two 
+    smoothing methods are available: Chaikin's corner cutting algorithm (Chaikin
+    1974 <doi:10.1016/0146-664X(74)90028-8>) and spline interpolation.
 Depends: R (>= 3.1.2)
 License: GPL-3
 Encoding: UTF-8

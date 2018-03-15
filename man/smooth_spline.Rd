@@ -4,7 +4,7 @@
 \alias{smooth_spline}
 \title{Spline interpolation}
 \usage{
-smooth_spline(x, wrap = TRUE, n = 100, vertex_factor)
+smooth_spline(x, wrap = TRUE, vertex_factor = 5, n)
 }
 \arguments{
 \item{x}{numeric matrix; 2-column matrix of coordinates.}
@@ -12,12 +12,12 @@ smooth_spline(x, wrap = TRUE, n = 100, vertex_factor)
 \item{wrap}{logical; whether the coordinates should be wrapped at the ends,
 as for polygons and closed lines.}
 
-\item{n}{integer; number of vertices in the smoothed curve. Ignored if
-\code{vertex_factor} is specified.}
-
 \item{vertex_factor}{double; the proportional increase in the number of
-vertices in the smooth curve. For example, if the original curve has 10
-points, a value of \code{2.5} will yield a new smoothed curve with 250 points.}
+vertices in the smooth curve. For example, if the original curve has 100
+points, a value of \code{2.5} will yield a new smoothed curve with 250 points.
+Ignored if \code{n} is specified.}
+
+\item{n}{integer; number of vertices in the smoothed curve.}
 }
 \value{
 A matrix with the coordinates of the smoothed curve.

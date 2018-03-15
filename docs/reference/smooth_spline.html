@@ -93,7 +93,7 @@ interpolated independently. The feature curve will always pass through the
 vertices of the original feature.</p>
     
 
-    <pre class="usage"><span class='fu'>smooth_spline</span>(<span class='no'>x</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='no'>vertex_factor</span>)</pre>
+    <pre class="usage"><span class='fu'>smooth_spline</span>(<span class='no'>x</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>vertex_factor</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='no'>n</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -108,15 +108,15 @@ vertices of the original feature.</p>
 as for polygons and closed lines.</p></td>
     </tr>
     <tr>
-      <th>n</th>
-      <td><p>integer; number of vertices in the smoothed curve. Ignored if
-<code>vertex_factor</code> is specified.</p></td>
-    </tr>
-    <tr>
       <th>vertex_factor</th>
       <td><p>double; the proportional increase in the number of
-vertices in the smooth curve. For example, if the original curve has 10
-points, a value of <code>2.5</code> will yield a new smoothed curve with 250 points.</p></td>
+vertices in the smooth curve. For example, if the original curve has 100
+points, a value of <code>2.5</code> will yield a new smoothed curve with 250 points.
+Ignored if <code>n</code> is specified.</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>integer; number of vertices in the smoothed curve.</p></td>
     </tr>
     </table>
     

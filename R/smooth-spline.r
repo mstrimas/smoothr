@@ -12,11 +12,11 @@
 #' @param x numeric matrix; 2-column matrix of coordinates.
 #' @param wrap logical; whether the coordinates should be wrapped at the ends,
 #'   as for polygons and closed lines.
-#' @param n integer; number of vertices in the smoothed curve. Ignored if
-#'   `vertex_factor` is specified.
 #' @param vertex_factor double; the proportional increase in the number of
-#'   vertices in the smooth curve. For example, if the original curve has 10
+#'   vertices in the smooth curve. For example, if the original curve has 100
 #'   points, a value of `2.5` will yield a new smoothed curve with 250 points.
+#'   Ignored if `n` is specified.
+#' @param n integer; number of vertices in the smoothed curve.
 #'
 #' @return A matrix with the coordinates of the smoothed curve.
 #' @references The spline method was inspired by the following StackExchange
@@ -44,17 +44,16 @@
 #' class(p_smooth)
 #' plot(p_smooth, border = "red")
 #' plot(p, add = TRUE)
-smooth_spline <- function(x, wrap = TRUE, n = 100, vertex_factor) {
+smooth_spline <- function(x, wrap = TRUE, vertex_factor = 5, n) {
   stopifnot(is.matrix(x), ncol(x) == 2, nrow(x) > 1)
   n_pts <- nrow(x)
   stopifnot(is_flag(wrap))
-  stopifnot(is_count(n))
-  if (!missing(vertex_factor)) {
+  if (missing(n)) {
     stopifnot(is.double(vertex_factor), length(vertex_factor) == 1,
               vertex_factor >= 1)
     n <- max(round(vertex_factor * n_pts), n_pts)
   } else {
-    stopifnot(n >= n_pts)
+    stopifnot(is_count(n), n >= n_pts)
   }
   if (wrap) {
       method <- "periodic"

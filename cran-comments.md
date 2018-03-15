@@ -1,3 +1,8 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Added a reference for Chaikin's corner cutting algorithm to the Description file
+
 ## Test environments
 
 - local OS X install, R 3.4.3

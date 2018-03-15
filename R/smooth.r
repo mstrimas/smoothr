@@ -26,11 +26,11 @@
 #'   function. This method interpolates between existing vertices and the
 #'   resulting smoothed feature will pass through the vertices of the input
 #'   feature. Smoothing parameters:
-#'     - `n`: number of vertices in each smoothed feature. Ignored if
-#'     `vertex_factor` is specified.
 #'     - `vertex_factor`: the proportional increase in the number of vertices in
-#'     the smooth feature. For example, if the original feature has 10 vertices,
-#'     a value of 2.5 will yield a new, smoothed feature with 250 vertices.
+#'     the smooth feature. For example, if the original feature has 100
+#'     vertices, a value of 2.5 will yield a new, smoothed feature with 250
+#'     vertices.  Ignored if `n` is specified.
+#'     - `n`: number of vertices in each smoothed feature.
 #'
 #' @return A smoothed polygon or line in the same format as the input data.
 #' @references See specific smoothing function help pages for references.
