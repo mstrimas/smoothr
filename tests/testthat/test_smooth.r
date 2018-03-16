@@ -4,6 +4,7 @@ library(sf)
 test_that("smooth() methods work", {
   # polygons
   s <- smooth(jagged_polygons, method = "spline")
+  message(st_is_valid(s) %>% paste(collapse = " "))
   expect_true(all(st_is_valid(s)))
   s <- smooth(jagged_polygons, method = "chaikin")
   expect_true(all(st_is_valid(s)))

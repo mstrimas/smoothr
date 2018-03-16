@@ -23,9 +23,9 @@
 #'   parameters:
 #'     - `refinements`: number of corner cutting iterations to apply.
 #'   - [smooth_spline()]: spline interpolation via the [stats::spline()]
-#'   function. This method interpolates between existing vertices and the
-#'   resulting smoothed feature will pass through the vertices of the input
-#'   feature. Smoothing parameters:
+#'   function. This method interpolates between existing vertices and can be
+#'   used when the resulting smoothed feature should pass through the vertices
+#'   of the input feature. Smoothing parameters:
 #'     - `vertex_factor`: the proportional increase in the number of vertices in
 #'     the smooth feature. For example, if the original feature has 100
 #'     vertices, a value of 2.5 will yield a new, smoothed feature with 250

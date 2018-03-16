@@ -39,9 +39,9 @@ parameters:
 \item \code{refinements}: number of corner cutting iterations to apply.
 }
 \item \code{\link[=smooth_spline]{smooth_spline()}}: spline interpolation via the \code{\link[stats:spline]{stats::spline()}}
-function. This method interpolates between existing vertices and the
-resulting smoothed feature will pass through the vertices of the input
-feature. Smoothing parameters:
+function. This method interpolates between existing vertices and can be
+used when the resulting smoothed feature should pass through the vertices
+of the input feature. Smoothing parameters:
 \itemize{
 \item \code{vertex_factor}: the proportional increase in the number of vertices in
 the smooth feature. For example, if the original feature has 100
