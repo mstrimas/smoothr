@@ -2,6 +2,8 @@
 This is a resubmission. In this version I have:
 
 * Added a reference for Chaikin's corner cutting algorithm to the Description file
+* Fixed a bug on Windows
+* Fixed typos in documentation
 
 ## Test environments
 
