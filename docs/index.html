@@ -72,9 +72,9 @@
 <p>The goal of <code>smoothr</code> is to offer a variety of methods for smoothing spatial features (i.e. polygons and lines). The application is to to make edges appear more natural or aesthetically pleasing, especially when converting raster data to vector format. This package offers support for both <code>sp</code> and <code>sf</code> spatial objects, and the following smoothing methods:</p>
 <ul>
 <li>
-<strong>Spline interpolation</strong>: smoothing using spline interpolation via the <code>spline()</code> function. This method interpolates between existing vertices and the resulting smoothed feature will pass through the vertices of the input feature.</li>
-<li>
 <strong>Chaikin’s corner cutting algorithm</strong>: smoothing using Chaikin’s corner cutting algorithm, which iteratively replaces every point by two new points: one 1/4 of the way to the next point and one 1/4 of the way to the previous point.</li>
+<li>
+<strong>Spline interpolation</strong>: smoothing using spline interpolation via the <code>spline()</code> function. This method interpolates between existing vertices and can be used when the resulting smoothed feature should pass through the vertices of the input feature.</li>
 </ul>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
