@@ -86,9 +86,9 @@
 <span class="co"># install.packages("devtools")</span>
 devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"mstrimas/smoothr"</span>)</code></pre></div>
 </div>
-<div id="example" class="section level2">
+<div id="usage" class="section level2">
 <h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
+<a href="#usage" class="anchor"></a>Usage</h2>
 <p>Two example feature sets are included in this package. <code>jagged_polygons</code> contains 9 polygons with sharp edges for smoothing, some have holes and some are multipart polygons. We can smooth these using the different methods available and plot a comparison:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)
 <span class="kw">library</span>(smoothr)
@@ -106,7 +106,7 @@ p_smooth_chaikin &lt;-<span class="st"> </span><span class="kw"><a href="referen
 <span class="kw">legend</span>(<span class="st">"bottom"</span>, <span class="dt">legend =</span> <span class="kw">c</span>(<span class="st">"chaikin"</span>, <span class="st">"spline"</span>), <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">"#E41A1C"</span>, <span class="st">"#377EB8"</span>),
        <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">cex =</span> <span class="dv">2</span>, <span class="dt">box.lwd =</span> <span class="dv">0</span>, <span class="dt">inset =</span> <span class="dv">0</span>, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="README-smooth-polygons-1.png" width="1008"></p>
-<p><code>jagged_polygons</code> contains 9 lines with sharp edges for smoothing, some are closed loops requiring special treatment of the endpoints and some are multipart lines. For variety, let’s smooth these using spline interpolation:</p>
+<p><code>jagged_lines</code> contains 9 lines with sharp edges for smoothing, some are closed loops requiring special treatment of the endpoints and some are multipart lines. For variety, let’s smooth these using spline interpolation:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="dt">oma =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">3</span>))
 l_smooth_spline &lt;-<span class="st"> </span><span class="kw"><a href="reference/smooth.html">smooth</a></span>(jagged_lines, <span class="dt">method =</span> <span class="st">"spline"</span>)
 l_smooth_chaikin &lt;-<span class="st"> </span><span class="kw"><a href="reference/smooth.html">smooth</a></span>(jagged_lines, <span class="dt">method =</span> <span class="st">"chaikin"</span>)

@@ -22,8 +22,8 @@ install.packages("smoothr")
 devtools::install_github("mstrimas/smoothr")
 ```
 
-Example
--------
+Usage
+-----
 
 Two example feature sets are included in this package. `jagged_polygons` contains 9 polygons with sharp edges for smoothing, some have holes and some are multipart polygons. We can smooth these using the different methods available and plot a comparison:
 
@@ -47,7 +47,7 @@ legend("bottom", legend = c("chaikin", "spline"), col = c("#E41A1C", "#377EB8"),
 
 ![](README-smooth-polygons-1.png)
 
-`jagged_polygons` contains 9 lines with sharp edges for smoothing, some are closed loops requiring special treatment of the endpoints and some are multipart lines. For variety, let's smooth these using spline interpolation:
+`jagged_lines` contains 9 lines with sharp edges for smoothing, some are closed loops requiring special treatment of the endpoints and some are multipart lines. For variety, let's smooth these using spline interpolation:
 
 ``` r
 par(mar = c(0, 0, 0, 0), oma = c(4, 0, 0, 0), mfrow = c(3, 3))
