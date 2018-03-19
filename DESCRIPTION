@@ -1,7 +1,7 @@
 Package: smoothr
 Type: Package
 Title: Spatial Feature Smoothing
-Version: 0.0.1
+Version: 0.0.1.9000
 Authors@R: person("Matthew", "Strimas-Mackey", email = "mstrimas@gmail.com", role = c("aut", "cre"))
 Description: Smooth spatial features (i.e. lines and polygons) to remove sharp 
     corners and make curves appear more natural or aesthetically pleasing. Two 
