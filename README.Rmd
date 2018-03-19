@@ -24,6 +24,8 @@ knitr::opts_chunk$set(
 [![Travis build status](https://travis-ci.org/mstrimas/smoothr.svg?branch=master)](https://travis-ci.org/mstrimas/smoothr)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/mstrimas/smoothr?branch=master&svg=true)](https://ci.appveyor.com/project/mstrimas/smoothr)
 [![Coverage status](https://codecov.io/gh/mstrimas/smoothr/branch/master/graph/badge.svg)](https://codecov.io/github/mstrimas/smoothr?branch=master)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/smoothr)](https://cran.r-project.org/package=smoothr)
+[![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/smoothr?color=brightgreen)](http://www.r-pkg.org/pkg/smoothr)
 
 The goal of `smoothr` is to offer a variety of methods for smoothing spatial features (i.e. polygons and lines). The application is to to make edges appear more natural or aesthetically pleasing, especially when converting raster data to vector format. This package offers support for both `sp` and `sf` spatial objects, and the following smoothing methods:
 
