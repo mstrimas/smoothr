@@ -34,9 +34,11 @@ The goal of `smoothr` is to offer a variety of methods for smoothing spatial fea
 
 ## Installation
 
-You can install smoothr from github with:
+```{r installation, eval = FALSE}
+# install from cran with
+install.packages("smoothr")
 
-```{r gh-installation, eval = FALSE}
+# or install the development version from github with
 # install.packages("devtools")
 devtools::install_github("mstrimas/smoothr")
 ```
