@@ -97,5 +97,5 @@ to abide by its terms.
 Contributing
 ------------
 
-To contribute to this development of this project please refer to the
+To contribute to the development of this project please refer to the
 [guidelines](CONTRIBUTING.md).

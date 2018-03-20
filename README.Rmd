@@ -89,4 +89,4 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 
 ## Contributing
 
-To contribute to this development of this project please refer to the [guidelines](CONTRIBUTING.md).
+To contribute to the development of this project please refer to the [guidelines](CONTRIBUTING.md).
