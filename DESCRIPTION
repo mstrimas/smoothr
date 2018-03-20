@@ -2,7 +2,7 @@ Package: smoothr
 Type: Package
 Title: Spatial Feature Smoothing
 Version: 0.0.1.9000
-Authors@R: person("Matthew", "Strimas-Mackey", email = "mstrimas@gmail.com", role = c("aut", "cre"))
+Authors@R: person("Matthew", "Strimas-Mackey", email = "mstrimas@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8929-7776"))
 Description: Smooth spatial features (i.e. lines and polygons) to remove sharp 
     corners and make curves appear more natural or aesthetically pleasing. Two 
     smoothing methods are available: Chaikin's corner cutting algorithm (Chaikin
