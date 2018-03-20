@@ -86,3 +86,16 @@ interpolation:
            lwd = 2, cex = 2, box.lwd = 0, inset = 0, horiz = TRUE)
 
 ![](README-smooth-lines-1.png)
+
+Code of Conduct
+---------------
+
+Please note that this project is released with a [Contributor Code of
+Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree
+to abide by its terms.
+
+Contributing
+------------
+
+To contribute to this development of this project please refer to the
+[guidelines](CONTRIBUTING.md).
