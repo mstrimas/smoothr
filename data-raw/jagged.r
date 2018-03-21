@@ -2,6 +2,7 @@ library(sp)
 library(raster)
 library(tidyverse)
 library(sf)
+library(gstat)
 set.seed(2)
 
 # create some rasterized concentric circles to test smoothing on
@@ -120,3 +121,20 @@ jagged_lines %>%
   mutate_if(is.logical, as.character) %>%
   write_sf("data-raw/jagged_lines.gpkg")
 usethis::use_data(jagged_lines, overwrite = TRUE)
+
+# raster occupancy
+set.seed(1)
+gaussian_field <- function(r, range, beta = c(1, 0, 0)) {
+  gsim <- gstat(formula = (z ~ x + y), dummy = TRUE, beta = beta, nmax = 20,
+                model = vgm(psill = 1, range = range, model = "Exp"))
+  vals <- rasterToPoints(r, spatial = TRUE) %>%
+    geometry() %>%
+    predict(gsim, newdata = ., nsim = 1) %>%
+    {scale(.$sim1)}
+  r[] <- vals
+  r
+}
+jagged_raster <- extent(c(0, 1, 0, 1)) %>%
+  raster(nrows = 25, ncols = 25, vals = 1) %>%
+  gaussian_field(range = 0.2)
+usethis::use_data(jagged_raster, overwrite = TRUE)

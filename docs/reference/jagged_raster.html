@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • smoothr</title>
+<title>Simulated raster for polygonizing and smoothing — jagged_raster • smoothr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,7 +25,13 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="Simulated raster for polygonizing and smoothing — jagged_raster" />
+
+<meta property="og:description" content="One of the primary applications of this package is for smoothing polygons
+generated from rasters. This example RasterLayer is meant to be a simulated
+occurrence probability for a species, consisting of a spatially
+autocorrelated Guassian field with values between 0 and 1." />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -38,7 +44,7 @@
   </head>
 
   <body>
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -85,40 +91,35 @@
       </header>
 
       <div class="row">
-
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Change log <small></small></h1>
-      <small>Source: <a href='https:/github.com/mstrimas/smoothr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+    <h1>Simulated raster for polygonizing and smoothing</h1>
+    <small>Source: <a href='https:/github.com/mstrimas/smoothr/blob/master/R/data.r'><code>R/data.r</code></a></small>
     </div>
 
-    <div class="contents">
-    <div id="smoothr-0-0-1-9000" class="section level1">
-<h1 class="page-header">
-<a href="#smoothr-0-0-1-9000" class="anchor"></a>smoothr 0.0.1.9000<small> Unreleased </small>
-</h1>
-</div>
-    <div id="smoothr-0-0-1" class="section level1">
-<h1 class="page-header">
-<a href="#smoothr-0-0-1" class="anchor"></a>smoothr 0.0.1<small> 2018-03-19 </small>
-</h1>
-<ul>
-<li>Initial release of smoothr</li>
-</ul>
-</div>
-    </div>
+    
+    <p>One of the primary applications of this package is for smoothing polygons
+generated from rasters. This example RasterLayer is meant to be a simulated
+occurrence probability for a species, consisting of a spatially
+autocorrelated Guassian field with values between 0 and 1.</p>
+    
+
+    <pre class="usage"><span class='no'>jagged_raster</span></pre>
+        
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>An object of class <code>RasterLayer</code> of dimension 25 x 25 x 1.</p>
+    
+
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#smoothr-0-0-1-9000">0.0.1.9000</a></li>
-        <li><a href="#smoothr-0-0-1">0.0.1</a></li>
-      </ul>
-    </div>
-  </div>
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      
+      <li><a href="#format">Format</a></li>
+          </ul>
 
+  </div>
 </div>
 
       <footer>

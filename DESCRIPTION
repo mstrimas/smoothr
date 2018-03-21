@@ -19,8 +19,12 @@ Imports:
 Suggests: 
     covr,
     sp,
-    testthat
+    testthat,
+    knitr,
+    raster,
+    rmarkdown
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1
+VignetteBuilder: knitr
