@@ -32,6 +32,8 @@ vertices using piecewise cubic polynomials. The x and y coordinates are
 interpolated independently. The feature curve will always pass through the
 vertices of the original feature." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -54,8 +56,12 @@ vertices of the original feature." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">smoothr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">smoothr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.1.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -65,7 +71,7 @@ vertices of the original feature." />
   </a>
 </li>
 <li>
-  <a href="../articles/smoothr.html">Get Started</a>
+  <a href="../articles/smoothr.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -94,7 +100,7 @@ vertices of the original feature." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Spline interpolation</h1>
-    <small>Source: <a href='https:/github.com/mstrimas/smoothr/blob/master/R/smooth-spline.r'><code>R/smooth-spline.r</code></a></small>
+    <small>Source: <a href='https://github.com/mstrimas/smoothr/blob/master/R/smooth-spline.r'><code>R/smooth-spline.r</code></a></small>
     </div>
 
     
@@ -104,9 +110,9 @@ interpolated independently. The feature curve will always pass through the
 vertices of the original feature.</p>
     
 
-    <pre class="usage"><span class='fu'>smooth_spline</span>(<span class='no'>x</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>vertex_factor</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='no'>n</span>)</pre>
+    <pre class="usage"><span class='fu'>smooth_spline</span>(<span class='no'>x</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>vertex_factor</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='no'>n</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -158,13 +164,13 @@ posts:</p><ul>
     <pre class="examples"><div class='input'><span class='co'># smooth_spline works on matrices of coordinates</span>
 <span class='co'># use the matrix of coordinates defining a polygon as an example</span>
 <span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='no'>jagged_polygons</span>$<span class='no'>geometry</span><span class='kw'>[[</span><span class='fl'>2</span>]]<span class='kw'>[[</span><span class='fl'>1</span>]]
-<span class='no'>m_smooth</span> <span class='kw'>&lt;-</span> <span class='fu'>smooth_spline</span>(<span class='no'>m</span>)
-<span class='fu'>class</span>(<span class='no'>m</span>)</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'><span class='fu'>class</span>(<span class='no'>m_smooth</span>)</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'><span class='fu'>plot</span>(<span class='no'>m_smooth</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"l"</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</div><div class='input'><span class='fu'>lines</span>(<span class='no'>m</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>)</div><div class='img'><img src='smooth_spline-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='no'>m_smooth</span> <span class='kw'>&lt;-</span> <span class='fu'>smooth_spline</span>(<span class='no'>m</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>class</span>(<span class='no'>m</span>)</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'><span class='fu'>class</span>(<span class='no'>m_smooth</span>)</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'><span class='fu'>plot</span>(<span class='no'>m_smooth</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"l"</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</div><div class='input'><span class='fu'>lines</span>(<span class='no'>m</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>)</div><div class='img'><img src='smooth_spline-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># smooth is a wrapper for smooth_spline that works on spatial features</span>
 <span class='fu'>library</span>(<span class='no'>sf</span>)
 <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='no'>jagged_polygons</span>$<span class='no'>geometry</span><span class='kw'>[[</span><span class='fl'>2</span>]]
 <span class='no'>p_smooth</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='smooth.html'>smooth</a></span>(<span class='no'>p</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"spline"</span>)
-<span class='fu'>class</span>(<span class='no'>p</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'>class</span>(<span class='no'>p_smooth</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>p_smooth</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>p</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='smooth_spline-2.png' alt='' width='700' height='432.632880098887' /></div></pre>
+<span class='fu'>class</span>(<span class='no'>p</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'>class</span>(<span class='no'>p_smooth</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>p_smooth</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>p</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='smooth_spline-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

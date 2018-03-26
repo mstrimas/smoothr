@@ -11,11 +11,17 @@ test_that("smooth() methods work", {
   # change precision to fix some floating point issues on windows
   s <- st_set_precision(s, 1e6)
   expect_true(all(st_is_valid(s)))
+  s <- smooth(jagged_polygons, method = "densify")
+  # change precision to fix some floating point issues on windows
+  s <- st_set_precision(s, 1e6)
+  expect_true(all(st_is_valid(s)))
 
   # lines
   sl <- smooth(jagged_lines, method = "spline")
   expect_true(all(st_is_valid(s)))
   sl <- smooth(jagged_lines, method = "chaikin")
+  expect_true(all(st_is_valid(s)))
+  sl <- smooth(jagged_lines, method = "densify")
   expect_true(all(st_is_valid(s)))
 
   # test parameters
@@ -34,6 +40,16 @@ test_that("smooth() methods work", {
   s_vf4 <- smooth(p, method = "spline", vertex_factor = 4)
   expect_equal(nrow(s_vf2[[1]]), nrow(p[[1]]) * 2)
   expect_equal(nrow(s_vf4[[1]]), nrow(p[[1]]) * 4)
+  # densify
+  s_n2 <- smooth(p, method = "densify", n = 2)
+  s_n3 <- smooth(p, method = "densify", n = 3)
+  expect_lt(nrow(s_n2[[1]]), nrow(s_n3[[1]]))
+  expect_equal(nrow(s_n2[[1]]), 2 * (nrow(p[[1]]) - 1) + 1)
+  expect_equal(nrow(s_n3[[1]]), 3 * (nrow(p[[1]]) - 1) + 1)
+  s_md1 <- smooth(p, method = "densify", max_distance = 0.1)
+  s_md05 <- smooth(p, method = "densify", max_distance = 0.05)
+  expect_lt(nrow(s_md1[[1]]), nrow(s_md05[[1]]))
+  expect_true(all(smoothr:::point_distance(s_md1[[1]]) <= 0.1))
 })
 
 test_that("smooth() works for different input formats", {

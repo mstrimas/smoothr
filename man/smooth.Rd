@@ -4,16 +4,16 @@
 \alias{smooth}
 \title{Smooth a spatial feature}
 \usage{
-smooth(x, method = c("chaikin", "spline"), ...)
+smooth(x, method = c("chaikin", "spline", "densify"), ...)
 }
 \arguments{
 \item{x}{spatial features; lines or polygons from either the sf or sp
 packages.}
 
 \item{method}{character; specifies the type of smoothing method to use.
-Possible methods are: \code{"chaikin"} and \code{"spline"}. Each method has one or
-more parameters specifying the amount of smoothing to perform. See Details
-for descriptions.}
+Possible methods are: \code{"chaikin"}, \code{"spline"}, and \code{"densify"}. Each method
+has one or more parameters specifying the amount of smoothing to perform.
+See Details for descriptions.}
 
 \item{...}{additional arguments specifying the amount of smoothing, passed on
 to the specific smoothing function, see Details below.}
@@ -48,6 +48,16 @@ the smooth feature. For example, if the original feature has 100
 vertices, a value of 2.5 will yield a new, smoothed feature with 250
 vertices.  Ignored if \code{n} is specified.
 \item \code{n}: number of vertices in each smoothed feature.
+}
+\item \code{\link[=smooth_densify]{smooth_densify()}}: densification of vertices for lines and polygons.
+This is not a true smoothing algorithm, rather new vertices are added to
+each line seqment via linear interpolation. Densification parameters:
+\itemize{
+\item \code{n}: number of times to split each line segment. Ignored if
+\code{max_distance} is specified.
+\item \code{max_distance}: the maximum distance between vertices in the resulting
+feature. This is the Euclidean distance and not the great circle
+distance.
 }
 }
 }
@@ -88,5 +98,5 @@ legend("bottom", legend = c("chaikin", "spline"), col = c("#E41A1C", "#377EB8"),
 See specific smoothing function help pages for references.
 }
 \seealso{
-\code{\link[=smooth_chaikin]{smooth_chaikin()}} \code{\link[=smooth_spline]{smooth_spline()}}
+\code{\link[=smooth_chaikin]{smooth_chaikin()}} \code{\link[=smooth_spline]{smooth_spline()}} \code{\link[=smooth_densify]{smooth_densify()}}
 }

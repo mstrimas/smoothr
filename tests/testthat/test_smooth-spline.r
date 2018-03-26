@@ -2,7 +2,7 @@ context("smooth_spline()")
 
 test_that("smooth_spline() works on polygons", {
   m <- jagged_polygons$geometry[[2]][[1]]
-  m_smooth <- smooth_spline(m)
+  m_smooth <- smooth_spline(m, wrap = TRUE)
   expect_is(m_smooth, "matrix")
   expect_gt(nrow(m_smooth), nrow(m))
   expect_equal(m_smooth[1, ], m_smooth[nrow(m_smooth), ])

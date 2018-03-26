@@ -4,7 +4,7 @@
 \alias{smooth_spline}
 \title{Spline interpolation}
 \usage{
-smooth_spline(x, wrap = TRUE, vertex_factor = 5, n)
+smooth_spline(x, wrap = FALSE, vertex_factor = 5, n)
 }
 \arguments{
 \item{x}{numeric matrix; 2-column matrix of coordinates.}
@@ -37,7 +37,7 @@ smoothing algorithm to spatial features.
 # smooth_spline works on matrices of coordinates
 # use the matrix of coordinates defining a polygon as an example
 m <- jagged_polygons$geometry[[2]][[1]]
-m_smooth <- smooth_spline(m)
+m_smooth <- smooth_spline(m, wrap = TRUE)
 class(m)
 class(m_smooth)
 plot(m_smooth, type = "l", col = "red", axes = FALSE, xlab = NA, ylab = NA)

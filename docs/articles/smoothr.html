@@ -27,8 +27,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">smoothr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">smoothr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.1.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
@@ -38,7 +42,7 @@
   </a>
 </li>
 <li>
-  <a href="../articles/smoothr.html">Get Started</a>
+  <a href="../articles/smoothr.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -67,11 +71,9 @@
   <div class="col-md-9">
     <div class="page-header toc-ignore">
       <h1>smoothr: spatial feature smoothing in R</h1>
-                        <h4 class="author">Matt Strimas-Mackey</h4>
             
-            <h4 class="date">2018-03-21</h4>
       
-      <small>Source: <a href="https:/github.com/mstrimas/smoothr/blob/master/vignettes/smoothr.Rmd"><code>vignettes/smoothr.Rmd</code></a></small>
+      <small>Source: <a href="https://github.com/mstrimas/smoothr/blob/master/vignettes/smoothr.Rmd"><code>vignettes/smoothr.Rmd</code></a></small>
 
     </div>
 
@@ -187,6 +189,27 @@
 <p><img src="smoothr_files/figure-html/spline-lines-1.png" width="672"></p>
 </div>
 </div>
+<div id="densification" class="section level2">
+<h2 class="hasAnchor">
+<a href="#densification" class="anchor"></a>Densification</h2>
+<p>Although not a true smoothing method, this package also allows users to densify spatial lines and polygons by adding additional vertices. Each line segment is split into multiple sub-segments of equal length, and the original vertices are always included in the densified feature. Note that the densification algorithm treats all vertices as Euclidean points, i.e. new points will not fall on a great circle between existing vertices, rather they’ll be along a straight line.</p>
+<p>Use <code><a href="../reference/smooth.html">smooth(method = "densify")</a></code>, or it’s alias <code><a href="../reference/densify.html">densify()</a></code> to perform densification. The degree of densification can either be specified as the number of sub-segments each line segment is split into (<code>n</code>):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span>jagged_lines<span class="op">$</span>geometry[[<span class="dv">2</span>]]
+<span class="co"># split every segment into 2</span>
+l_dense &lt;-<span class="st"> </span><span class="kw"><a href="../reference/densify.html">densify</a></span>(l, <span class="dt">n =</span> <span class="dv">2</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l, <span class="dt">lwd =</span> <span class="dv">5</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l_dense, <span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l_dense <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(<span class="st">"MULTIPOINT"</span>), <span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="smoothr_files/figure-html/densify-n-1.png" width="672"></p>
+<p>Or the maximum Euclidean distance between vertices (<code>max_distance</code>):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span>jagged_lines<span class="op">$</span>geometry[[<span class="dv">2</span>]]
+<span class="co"># split every segment into 2</span>
+l_dense &lt;-<span class="st"> </span><span class="kw"><a href="../reference/densify.html">densify</a></span>(l, <span class="dt">max_distance =</span> <span class="fl">0.1</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l, <span class="dt">lwd =</span> <span class="dv">5</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l_dense, <span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l_dense <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(<span class="st">"MULTIPOINT"</span>), <span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="smoothr_files/figure-html/densify-md-1.png" width="672"></p>
+</div>
 <div id="raster-to-polygon-conversion" class="section level2">
 <h2 class="hasAnchor">
 <a href="#raster-to-polygon-conversion" class="anchor"></a>Raster-to-polygon conversion</h2>
@@ -235,6 +258,7 @@ pa_poly &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocu
 <li><a href="#setup">Setup</a></li>
       <li><a href="#example-data">Example data</a></li>
       <li><a href="#smoothing-methods">Smoothing methods</a></li>
+      <li><a href="#densification">Densification</a></li>
       <li><a href="#raster-to-polygon-conversion">Raster-to-polygon conversion</a></li>
       <li><a href="#references">References</a></li>
       </ul>

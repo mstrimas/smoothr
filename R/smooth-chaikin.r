@@ -27,7 +27,7 @@
 #' # smooth_chaikin works on matrices of coordinates
 #' # use the matrix of coordinates defining a polygon as an example
 #' m <- jagged_polygons$geometry[[2]][[1]]
-#' m_smooth <- smooth_chaikin(m)
+#' m_smooth <- smooth_chaikin(m, wrap = TRUE)
 #' class(m)
 #' class(m_smooth)
 #' plot(m, type = "l", axes = FALSE, xlab = NA, ylab = NA)
@@ -41,7 +41,7 @@
 #' class(p_smooth)
 #' plot(p)
 #' plot(p_smooth, border = "red", add = TRUE)
-smooth_chaikin <- function(x, wrap = TRUE, refinements = 3L) {
+smooth_chaikin <- function(x, wrap = FALSE, refinements = 3L) {
   stopifnot(is.matrix(x), ncol(x) == 2)
   stopifnot(is_flag(wrap))
   stopifnot(is_count(refinements), refinements <= 10)

@@ -1,7 +1,5 @@
 ---
 title: "smoothr: spatial feature smoothing in R"
-author: "Matt Strimas-Mackey"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{smoothr}
@@ -132,6 +130,32 @@ for (i in 1:nrow(jagged_lines)) {
   plot(st_geometry(jagged_lines[i, ]), col = "grey20", lwd = 3, add = TRUE)
   plot(st_geometry(l_smooth_spline[i, ]), col = "#E41A1C", lwd = 2, add = TRUE)
 }
+```
+
+## Densification
+
+Although not a true smoothing method, this package also allows users to densify spatial lines and polygons by adding additional vertices. Each line segment is split into multiple sub-segments of equal length, and the original vertices are always included in the densified feature. Note that the densification algorithm treats all vertices as Euclidean points, i.e. new points will not fall on a great circle between existing vertices, rather they'll be along a straight line.
+
+Use `smooth(method = "densify")`, or it's alias `densify()` to perform densification. The degree of densification can either be specified as the number of sub-segments each line segment is split into (`n`):
+
+```{r densify-n}
+l <- jagged_lines$geometry[[2]]
+# split every segment into 2
+l_dense <- densify(l, n = 2)
+plot(l, lwd = 5)
+plot(l_dense, col = "red", lwd = 2, lty = 2, add = TRUE)
+plot(l_dense %>% st_cast("MULTIPOINT"), col = "red", pch = 19, add = TRUE)
+```
+
+Or the maximum Euclidean distance between vertices (`max_distance`):
+
+```{r densify-md}
+l <- jagged_lines$geometry[[2]]
+# split every segment into 2
+l_dense <- densify(l, max_distance = 0.1)
+plot(l, lwd = 5)
+plot(l_dense, col = "red", lwd = 2, lty = 2, add = TRUE)
+plot(l_dense %>% st_cast("MULTIPOINT"), col = "red", pch = 19, add = TRUE)
 ```
 
 ## Raster-to-polygon conversion

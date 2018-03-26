@@ -30,6 +30,8 @@
 <meta property="og:description" content="Smooth out the jagged or sharp corners of spatial lines or polygons to make
 them appear more aesthetically pleasing and natural." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -52,8 +54,12 @@ them appear more aesthetically pleasing and natural." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">smoothr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">smoothr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.1.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -63,7 +69,7 @@ them appear more aesthetically pleasing and natural." />
   </a>
 </li>
 <li>
-  <a href="../articles/smoothr.html">Get Started</a>
+  <a href="../articles/smoothr.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -92,7 +98,7 @@ them appear more aesthetically pleasing and natural." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Smooth a spatial feature</h1>
-    <small>Source: <a href='https:/github.com/mstrimas/smoothr/blob/master/R/smooth.r'><code>R/smooth.r</code></a></small>
+    <small>Source: <a href='https://github.com/mstrimas/smoothr/blob/master/R/smooth.r'><code>R/smooth.r</code></a></small>
     </div>
 
     
@@ -100,9 +106,9 @@ them appear more aesthetically pleasing and natural." />
 them appear more aesthetically pleasing and natural.</p>
     
 
-    <pre class="usage"><span class='fu'>smooth</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"chaikin"</span>, <span class='st'>"spline"</span>), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>smooth</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"chaikin"</span>, <span class='st'>"spline"</span>, <span class='st'>"densify"</span>), <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -113,9 +119,9 @@ packages.</p></td>
     <tr>
       <th>method</th>
       <td><p>character; specifies the type of smoothing method to use.
-Possible methods are: <code>"chaikin"</code> and <code>"spline"</code>. Each method has one or
-more parameters specifying the amount of smoothing to perform. See Details
-for descriptions.</p></td>
+Possible methods are: <code>"chaikin"</code>, <code>"spline"</code>, and <code>"densify"</code>. Each method
+has one or more parameters specifying the amount of smoothing to perform.
+See Details for descriptions.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -150,6 +156,15 @@ vertices, a value of 2.5 will yield a new, smoothed feature with 250
 vertices.  Ignored if <code>n</code> is specified.</p></li>
 <li><p><code>n</code>: number of vertices in each smoothed feature.</p></li>
 </ul></li>
+<li><p><code><a href='smooth_densify.html'>smooth_densify()</a></code>: densification of vertices for lines and polygons.
+This is not a true smoothing algorithm, rather new vertices are added to
+each line seqment via linear interpolation. Densification parameters:</p><ul>
+<li><p><code>n</code>: number of times to split each line segment. Ignored if
+<code>max_distance</code> is specified.</p></li>
+<li><p><code>max_distance</code>: the maximum distance between vertices in the resulting
+feature. This is the Euclidean distance and not the great circle
+distance.</p></li>
+</ul></li>
 </ul>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -158,7 +173,7 @@ vertices.  Ignored if <code>n</code> is specified.</p></li>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='smooth_chaikin.html'>smooth_chaikin()</a></code> <code><a href='smooth_spline.html'>smooth_spline()</a></code></p>
+    <p><code><a href='smooth_chaikin.html'>smooth_chaikin()</a></code> <code><a href='smooth_spline.html'>smooth_spline()</a></code> <code><a href='smooth_densify.html'>smooth_densify()</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -175,7 +190,7 @@ vertices.  Ignored if <code>n</code> is specified.</p></li>
   <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>p_smooth_spline</span>[<span class='no'>i</span>, ]), <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"#377EB8"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 }</div><div class='input'><span class='fu'>par</span>(<span class='kw'>fig</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>oma</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>), <span class='kw'>new</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>bty</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>xaxt</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>yaxt</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='input'><span class='fu'>legend</span>(<span class='st'>"bottom"</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"chaikin"</span>, <span class='st'>"spline"</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"#E41A1C"</span>, <span class='st'>"#377EB8"</span>),
-       <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>box.lwd</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>inset</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>horiz</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='smooth-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+       <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>box.lwd</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>inset</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>horiz</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='smooth-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># lines</span>
 <span class='fu'>par</span>(<span class='kw'>mar</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>), <span class='kw'>oma</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>4</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>), <span class='kw'>mfrow</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>3</span>))
 <span class='no'>l_smooth_spline</span> <span class='kw'>&lt;-</span> <span class='fu'>smooth</span>(<span class='no'>jagged_lines</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"spline"</span>)
@@ -187,7 +202,7 @@ vertices.  Ignored if <code>n</code> is specified.</p></li>
   <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>l_smooth_chaikin</span>[<span class='no'>i</span>, ]), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"#377EB8"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 }</div><div class='input'><span class='fu'>par</span>(<span class='kw'>fig</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>oma</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>), <span class='kw'>new</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>bty</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>xaxt</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>yaxt</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='input'><span class='fu'>legend</span>(<span class='st'>"bottom"</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"chaikin"</span>, <span class='st'>"spline"</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"#E41A1C"</span>, <span class='st'>"#377EB8"</span>),
-       <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>box.lwd</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>inset</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>horiz</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='smooth-2.png' alt='' width='700' height='432.632880098887' /></div></pre>
+       <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>box.lwd</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>inset</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>horiz</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='smooth-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
