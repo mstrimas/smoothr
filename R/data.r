@@ -27,5 +27,5 @@
 #' One of the primary applications of this package is for smoothing polygons
 #' generated from rasters. This example RasterLayer is meant to be a simulated
 #' occurrence probability for a species, consisting of a spatially
-#' autocorrelated Guassian field with values between 0 and 1.
+#' auto-correlated Gaussian field with values between 0 and 1.
 "jagged_raster"

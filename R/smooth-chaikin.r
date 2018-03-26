@@ -10,7 +10,7 @@
 #'
 #' @param x numeric matrix; 2-column matrix of coordinates.
 #' @param wrap logical; whether the coordinates should be wrapped at the ends,
-#'   as for polygons and closed lines.
+#'   as for polygons and closed lines, to ensure a smooth edge.
 #' @param refinements integer; number of corner cutting iterations to apply.
 #'
 #' @return A matrix with the coordinates of the smoothed curve.

@@ -10,8 +10,7 @@ smooth_densify(x, wrap = FALSE, n = 10L, max_distance)
 \item{x}{numeric matrix; 2-column matrix of coordinates.}
 
 \item{wrap}{logical; whether the coordinates should be wrapped at the ends,
-as for polygons and closed lines. For this smoothing method, wrapping
-forces the start and end points to be equal.}
+as for polygons and closed lines, to ensure a smooth edge.}
 
 \item{n}{integer; number of times to split each line segment. Ignored if
 \code{max_distance} is specified.}

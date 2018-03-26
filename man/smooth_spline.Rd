@@ -10,7 +10,7 @@ smooth_spline(x, wrap = FALSE, vertex_factor = 5, n)
 \item{x}{numeric matrix; 2-column matrix of coordinates.}
 
 \item{wrap}{logical; whether the coordinates should be wrapped at the ends,
-as for polygons and closed lines.}
+as for polygons and closed lines, to ensure a smooth edge.}
 
 \item{vertex_factor}{double; the proportional increase in the number of
 vertices in the smooth curve. For example, if the original curve has 100
@@ -25,8 +25,8 @@ A matrix with the coordinates of the smoothed curve.
 \description{
 Spline interpolation uses \code{\link[stats:spline]{stats::spline()}} to interpolate between existing
 vertices using piecewise cubic polynomials. The \code{x} and \code{y} coordinates are
-interpolated independently. The feature curve will always pass through the
-vertices of the original feature.
+interpolated independently. The curve will always pass through the vertices
+of the original feature.
 }
 \details{
 This function works on matrices of points and is generally not called
@@ -54,10 +54,10 @@ plot(p, add = TRUE)
 }
 \references{
 The spline method was inspired by the following StackExchange
-posts:
+answers:
 \itemize{
-\item \href{https://stackoverflow.com/questions/26087772/26089377}{Create polygon from set of points distributed}
-\item \href{https://gis.stackexchange.com/questions/24827/24929}{Smoothing polygons in contour map?}
+\item \href{https://stackoverflow.com/a/26089377/3591386}{Create polygon from set of points distributed}
+\item \href{https://gis.stackexchange.com/a/24929/26661}{Smoothing polygons in contour map?}
 }
 }
 \seealso{

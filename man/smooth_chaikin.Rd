@@ -10,7 +10,7 @@ smooth_chaikin(x, wrap = FALSE, refinements = 3L)
 \item{x}{numeric matrix; 2-column matrix of coordinates.}
 
 \item{wrap}{logical; whether the coordinates should be wrapped at the ends,
-as for polygons and closed lines.}
+as for polygons and closed lines, to ensure a smooth edge.}
 
 \item{refinements}{integer; number of corner cutting iterations to apply.}
 }

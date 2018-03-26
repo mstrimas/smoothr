@@ -13,8 +13,7 @@
 #'
 #' @param x numeric matrix; 2-column matrix of coordinates.
 #' @param wrap logical; whether the coordinates should be wrapped at the ends,
-#'   as for polygons and closed lines. For this smoothing method, wrapping
-#'   forces the start and end points to be equal.
+#'   as for polygons and closed lines, to ensure a smooth edge.
 #' @param n integer; number of times to split each line segment. Ignored if
 #'   `max_distance` is specified.
 #' @param max_distance numeric; the maximum distance between vertices in the
@@ -51,10 +50,11 @@
 smooth_densify <- function(x, wrap = FALSE, n = 10L, max_distance) {
   stopifnot(is.matrix(x), ncol(x) == 2, nrow(x) > 1)
   n_pts <- nrow(x)
+  # set densification parameters
   if (missing(max_distance)) {
     stopifnot(is_count(n), n >= 1)
     # n segments = n + 1 points
-    # make
+    # repeat for each segment
     n <- rep(n + 1, n_pts - 1)
   } else {
     stopifnot(is.numeric(max_distance), length(max_distance) == 1,

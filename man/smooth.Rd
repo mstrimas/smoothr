@@ -4,16 +4,16 @@
 \alias{smooth}
 \title{Smooth a spatial feature}
 \usage{
-smooth(x, method = c("chaikin", "spline", "densify"), ...)
+smooth(x, method = c("chaikin", "ksmooth", "spline", "densify"), ...)
 }
 \arguments{
 \item{x}{spatial features; lines or polygons from either the sf or sp
 packages.}
 
 \item{method}{character; specifies the type of smoothing method to use.
-Possible methods are: \code{"chaikin"}, \code{"spline"}, and \code{"densify"}. Each method
-has one or more parameters specifying the amount of smoothing to perform.
-See Details for descriptions.}
+Possible methods are: \code{"chaikin"}, \code{"ksmooth"}, \code{"spline"}, and
+\code{"densify"}. Each method has one or more parameters specifying the amount
+of smoothing to perform. See Details for descriptions.}
 
 \item{...}{additional arguments specifying the amount of smoothing, passed on
 to the specific smoothing function, see Details below.}
@@ -38,6 +38,20 @@ parameters:
 \itemize{
 \item \code{refinements}: number of corner cutting iterations to apply.
 }
+\item \code{\link[=smooth_ksmooth]{smooth_ksmooth()}}: kernel smoothing via the \code{\link[stats:ksmooth]{stats::ksmooth()}} function.
+This method first calls \code{\link[=smooth_densify]{smooth_densify()}} to densify the feature, then
+applies Gaussian kernel regression to smooth the resulting points.
+Smoothing parameters:
+\itemize{
+\item \code{n}: number of times to split each line segment in the densification
+step. Ignored if \code{max_distance} is specified.
+\item \code{max_distance}: the maximum distance between vertices in the resulting
+features for the densification step. This is the Euclidean distance and
+not the great circle distance.
+\item \code{bandwidth}: the bandwidth of the Gaussian kernel. Larger bandwidths
+will result in more smoothing. If no value is supplied, the bandwidth is
+estimated from the data.
+}
 \item \code{\link[=smooth_spline]{smooth_spline()}}: spline interpolation via the \code{\link[stats:spline]{stats::spline()}}
 function. This method interpolates between existing vertices and can be
 used when the resulting smoothed feature should pass through the vertices
@@ -51,7 +65,7 @@ vertices.  Ignored if \code{n} is specified.
 }
 \item \code{\link[=smooth_densify]{smooth_densify()}}: densification of vertices for lines and polygons.
 This is not a true smoothing algorithm, rather new vertices are added to
-each line seqment via linear interpolation. Densification parameters:
+each line segment via linear interpolation. Densification parameters:
 \itemize{
 \item \code{n}: number of times to split each line segment. Ignored if
 \code{max_distance} is specified.
@@ -66,37 +80,44 @@ library(sf)
 # compare different smoothing methods
 # polygons
 par(mar = c(0, 0, 0, 0), oma = c(4, 0, 0, 0), mfrow = c(3, 3))
-p_smooth_spline <- smooth(jagged_polygons, method = "spline")
 p_smooth_chaikin <- smooth(jagged_polygons, method = "chaikin")
+p_smooth_ksmooth <- smooth(jagged_polygons, method = "ksmooth")
+p_smooth_spline <- smooth(jagged_polygons, method = "spline")
 for (i in 1:nrow(jagged_polygons)) {
   plot(st_geometry(p_smooth_spline[i, ]), col = NA, border = NA)
   plot(st_geometry(jagged_polygons[i, ]), col = "grey40", border = NA, add = TRUE)
   plot(st_geometry(p_smooth_chaikin[i, ]), col = NA, border = "#E41A1C", lwd = 2, add = TRUE)
+  plot(st_geometry(p_smooth_ksmooth[i, ]), col = NA, border = "#4DAF4A", lwd = 2, add = TRUE)
   plot(st_geometry(p_smooth_spline[i, ]), col = NA, border = "#377EB8", lwd = 2, add = TRUE)
 }
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), new = TRUE)
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n", axes = FALSE)
-legend("bottom", legend = c("chaikin", "spline"), col = c("#E41A1C", "#377EB8"),
+legend("bottom", legend = c("chaikin", "ksmooth", "spline"),
+       col = c("#E41A1C", "#4DAF4A", "#377EB8"),
        lwd = 2, cex = 2, box.lwd = 0, inset = 0, horiz = TRUE)
 
 # lines
 par(mar = c(0, 0, 0, 0), oma = c(4, 0, 0, 0), mfrow = c(3, 3))
-l_smooth_spline <- smooth(jagged_lines, method = "spline")
 l_smooth_chaikin <- smooth(jagged_lines, method = "chaikin")
+l_smooth_ksmooth <- smooth(jagged_lines, method = "ksmooth")
+l_smooth_spline <- smooth(jagged_lines, method = "spline")
 for (i in 1:nrow(jagged_lines)) {
   plot(st_geometry(l_smooth_spline[i, ]), col = NA)
   plot(st_geometry(jagged_lines[i, ]), col = "grey20", lwd = 3, add = TRUE)
-  plot(st_geometry(l_smooth_spline[i, ]), col = "#E41A1C", lwd = 2, lty = 2, add = TRUE)
-  plot(st_geometry(l_smooth_chaikin[i, ]), col = "#377EB8", lwd = 2, lty = 2, add = TRUE)
+  plot(st_geometry(l_smooth_chaikin[i, ]), col = "#E41A1C", lwd = 2, lty = 2, add = TRUE)
+  plot(st_geometry(l_smooth_ksmooth[i, ]), col = "#4DAF4A", lwd = 2, lty = 2, add = TRUE)
+  plot(st_geometry(l_smooth_spline[i, ]), col = "#377EB8", lwd = 2, lty = 2, add = TRUE)
 }
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), new = TRUE)
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n", axes = FALSE)
-legend("bottom", legend = c("chaikin", "spline"), col = c("#E41A1C", "#377EB8"),
+legend("bottom", legend = c("chaikin", "smooth", "spline"),
+       col = c("#E41A1C", "#4DAF4A", "#377EB8"),
        lwd = 2, cex = 2, box.lwd = 0, inset = 0, horiz = TRUE)
 }
 \references{
 See specific smoothing function help pages for references.
 }
 \seealso{
-\code{\link[=smooth_chaikin]{smooth_chaikin()}} \code{\link[=smooth_spline]{smooth_spline()}} \code{\link[=smooth_densify]{smooth_densify()}}
+\code{\link[=smooth_chaikin]{smooth_chaikin()}} \code{\link[=smooth_ksmooth]{smooth_ksmooth()}} \code{\link[=smooth_spline]{smooth_spline()}}
+\code{\link[=smooth_densify]{smooth_densify()}}
 }
