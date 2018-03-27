@@ -56,7 +56,7 @@ chole_poly <- map(1:nlayers(chole),
 
 # multipart polygons
 r_mp1 <- r
-r_mp1[sample.int(ncell(r), 9)] <- 1
+r_mp1[sample.int(ncell(r), 27)] <- 1
 mp1 <- rasterToPolygons(r_mp1, dissolve = TRUE) %>%
   st_as_sf() %>%
   select(geometry) %>%
@@ -103,7 +103,9 @@ mls1 <- open_lines[1:2, ] %>%
   st_sf(geometry = .) %>%
   mutate(type = "line", closed = FALSE, multipart = TRUE)
 x <- seq(0, 1, by = 0.25)
-mls2 <- list(cbind(x, -2 * x * (x - 1)), cbind(x, -x^2 + 1)) %>%
+mls2 <- list(cbind(x, -2 * x * (x - 1)),
+             cbind(x, -x^2 + 1),
+             cbind(c(0, 0.25), c(0.5, 0.75))) %>%
   st_multilinestring() %>%
   st_sfc(crs = 4326) %>%
   st_sf(geometry = .) %>%
@@ -123,7 +125,7 @@ jagged_lines %>%
 usethis::use_data(jagged_lines, overwrite = TRUE)
 
 # raster occupancy
-set.seed(1)
+set.seed(42)
 gaussian_field <- function(r, range, beta = c(1, 0, 0)) {
   gsim <- gstat(formula = (z ~ x + y), dummy = TRUE, beta = beta, nmax = 20,
                 model = vgm(psill = 1, range = range, model = "Exp"))
@@ -134,7 +136,11 @@ gaussian_field <- function(r, range, beta = c(1, 0, 0)) {
   r[] <- vals
   r
 }
-jagged_raster <- extent(c(0, 1, 0, 1)) %>%
+jagged_raster <- extent(c(0, 25e4, 0, 25e4)) %>%
   raster(nrows = 25, ncols = 25, vals = 1) %>%
-  gaussian_field(range = 0.2)
+  gaussian_field(range = 1e5)
+projection(jagged_raster) <- paste("+proj=aea +lat_1=20 +lat_2=60 +lat_0=40",
+                                   "+lon_0=-96 +x_0=0 +y_0=0",
+                                   "+ellps=GRS80 +datum=NAD83",
+                                   "+units=m +no_defs")
 usethis::use_data(jagged_raster, overwrite = TRUE)

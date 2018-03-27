@@ -96,6 +96,16 @@ interpolation:
 
 ![](README-smooth-lines-1.png)
 
+### Other Goodies
+
+`smoothr` contains a handful of other tools to help clean up spatial
+features and make them look cleaner and more aesthetically pleasing.
+`densify()` (and it's alias `smooth(x, method = "densify")`) densifies
+lines and polygons, adding additional vertices along line segments.
+`drop_crumbs()` removes small lines or polygons based on a length or
+area threshold. See the documentation for these functions for full
+details.
+
 Code of Conduct
 ---------------
 

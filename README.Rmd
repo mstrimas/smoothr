@@ -90,6 +90,10 @@ legend("bottom", legend = c("chaikin", "smooth", "spline"),
        lwd = 2, cex = 2, box.lwd = 0, inset = 0, horiz = TRUE)
 ```
 
+### Other Goodies
+
+`smoothr` contains a handful of other tools to help clean up spatial features and make them look cleaner and more aesthetically pleasing. `densify()` (and it's alias `smooth(x, method = "densify")`) densifies lines and polygons, adding additional vertices along line segments. `drop_crumbs()` removes small lines or polygons based on a length or area threshold. See the documentation for these functions for full details. 
+
 ## Code of Conduct
 
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.

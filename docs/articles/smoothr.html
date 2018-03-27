@@ -86,6 +86,7 @@
 <a href="#setup" class="anchor"></a>Setup</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(raster)
 <span class="kw">library</span>(sf)
+<span class="kw">library</span>(units)
 <span class="kw">library</span>(smoothr)</code></pre></div>
 </div>
 <div id="example-data" class="section level2">
@@ -107,7 +108,7 @@
 #&gt; 4  4 polygon FALSE     FALSE POLYGON ((0.7854351 0.47743...
 #&gt; 5  5 polygon  TRUE     FALSE POLYGON ((0.5555556 0.22222...
 #&gt; 6  6 polygon  TRUE     FALSE POLYGON ((0.5555556 0.11111...
-#&gt; 7  7 polygon FALSE      TRUE MULTIPOLYGON (((0.2222222 0...
+#&gt; 7  7 polygon FALSE      TRUE MULTIPOLYGON (((0.6666667 0...
 #&gt; 8  8 polygon FALSE      TRUE MULTIPOLYGON (((0 0.1111111...
 #&gt; 9  9 polygon  TRUE      TRUE MULTIPOLYGON (((0.5555556 0...</code></pre>
 <p><code>jagged_lines</code> contains 9 polylines with disgustingly crooked edges.</p>
@@ -129,11 +130,11 @@
 #&gt; 7  7 line  FALSE      TRUE MULTILINESTRING ((0 0, 0.25...
 #&gt; 8  8 line  FALSE      TRUE MULTILINESTRING ((0 0, 0.25...
 #&gt; 9  9 line   TRUE      TRUE MULTILINESTRING ((0.5555556...</code></pre>
-<p>The final dataset that comes with this package, <code>jagged_raster</code>, is a simulated occurrence probability for a species, consisting of a spatially auto-correlated raster layer with values between 0 and 1. This raster can be used to experiment with smoothing polygons generated from rasters.</p>
+<p>The final dataset that comes with this package, <code>jagged_raster</code>, is a simulated occurrence probability for a species, consisting of a spatially auto-correlated raster layer with values between 0 and 1. It is a 25x25 grid of 100 square kilometer cells in a North American centered Albers Equal Area projection. This raster can be used to experiment with smoothing polygons generated from rasters.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r &lt;-<span class="st"> </span>jagged_raster
 <span class="co"># plot</span>
 <span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))
-<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/extent">extent</a></span>(r), <span class="dt">col =</span> <span class="ot">NA</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterToPolygons">rasterToPolygons</a></span>(r), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="ot">NA</span>) <span class="co"># set up plot extent</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(r, <span class="dt">col =</span> <span class="kw">heat.colors</span>(<span class="dv">100</span>), <span class="dt">legend =</span> <span class="ot">FALSE</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">box =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <p><img src="smoothr_files/figure-html/guass-field-1.png" width="672"></p>
 </div>
@@ -166,7 +167,7 @@
 <div id="kernel-smoothing" class="section level3">
 <h3 class="hasAnchor">
 <a href="#kernel-smoothing" class="anchor"></a>Kernel smoothing</h3>
-<p>This method applies Gaussian kernel regression to the x and y coordinates independently using the built-in <code>ksmooth()</code> function. Prior to smoothing additional vertices are added via densification with <code><a href="../reference/smooth_densify.html">smooth_densify()</a></code>. Like the corner cutting algorithm, this method results in a curve that does not passes through the vertices of the original curve. Kernel smoothing produces natural looking curves with a greater degree of generalization than the corner cutting algorithm. Kernel smoothing parameters specifying the number of points in the resulting feature (either the number of sub-segments to split each line segment into or the maximum distance between points) and a parameter controlling the bandwidth of the Gaussian kernel.</p>
+<p>This method applies Gaussian kernel regression to the x and y coordinates independently using the built-in <code>ksmooth()</code> function. Prior to smoothing additional vertices are added via densification with <code><a href="../reference/smooth_densify.html">smooth_densify()</a></code>. Like the corner cutting algorithm, this method results in a curve that does not pass through the vertices of the original curve. Kernel smoothing produces natural looking curves with a greater degree of generalization than the corner cutting algorithm. Kernel smoothing parameters specifying the number of points in the resulting feature (either the number of sub-segments to split each line segment into or the maximum distance between points) and a parameter controlling the bandwidth of the Gaussian kernel.</p>
 <p>This method can be applied with <code><a href="../reference/smooth.html">smooth(x, method = "ksmooth")</a></code>. Here’s what this looks like for the polygons:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_smooth_ksmooth &lt;-<span class="st"> </span><span class="kw"><a href="../reference/smooth.html">smooth</a></span>(jagged_polygons, <span class="dt">method =</span> <span class="st">"ksmooth"</span>)
 <span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="dt">oma =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">3</span>))
@@ -211,10 +212,14 @@
 <p><img src="smoothr_files/figure-html/spline-lines-1.png" width="672"></p>
 </div>
 </div>
-<div id="densification" class="section level2">
+<div id="other-goodies" class="section level2">
 <h2 class="hasAnchor">
-<a href="#densification" class="anchor"></a>Densification</h2>
-<p>Although not a true smoothing method, this package also allows users to densify spatial lines and polygons by adding additional vertices. Each line segment is split into multiple sub-segments of equal length, and the original vertices are always included in the densified feature. Note that the densification algorithm treats all vertices as Euclidean points, i.e. new points will not fall on a great circle between existing vertices, rather they’ll be along a straight line.</p>
+<a href="#other-goodies" class="anchor"></a>Other goodies</h2>
+<p><code>smoothr</code> contains some additional tools that aren’t strictly for smoothing, but can help clean up polygons and lines and make them appear more aesthetically pleasing. I’ll outline these miscellaneous tools below.</p>
+<div id="densification" class="section level3">
+<h3 class="hasAnchor">
+<a href="#densification" class="anchor"></a>Densification</h3>
+<p>Densification is the process of adding additional points to the line segments defining points or polygons. Each line segment is split into multiple sub-segments of equal length, and the original vertices are always included in the densified feature. Note that the densification algorithm treats all vertices as Euclidean points, i.e. new points will not fall on a great circle between existing vertices, rather they’ll be along a straight line.</p>
 <p>Use <code><a href="../reference/smooth.html">smooth(method = "densify")</a></code>, or it’s alias <code><a href="../reference/densify.html">densify()</a></code> to perform densification. The degree of densification can either be specified as the number of sub-segments each line segment is split into (<code>n</code>):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span>jagged_lines<span class="op">$</span>geometry[[<span class="dv">2</span>]]
 <span class="co"># split every segment into 2</span>
@@ -232,27 +237,59 @@ l_dense &lt;-<span class="st"> </span><span class="kw"><a href="../reference/den
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l_dense <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(<span class="st">"MULTIPOINT"</span>), <span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="smoothr_files/figure-html/densify-md-1.png" width="672"></p>
 </div>
+<div id="drop-crumbs" class="section level3">
+<h3 class="hasAnchor">
+<a href="#drop-crumbs" class="anchor"></a>Drop crumbs</h3>
+<p><code><a href="../reference/drop_crumbs.html">drop_crumbs()</a></code> removes small lines or polygons based on a length or area threshold. For multipart features, this function dives into the individual component features and applies the threshold. The threshold can either be provided as a number, assumed to be in the units of the coordinates reference system (meters for unprojected coordinates), or as a <code>units</code> object. This latter approach provides more flexibility because a threshold can be given in any type of units and it will be converted to the correct units automatically.</p>
+<p>For example, to remove polygons less than 200 square kilometers:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span>jagged_polygons<span class="op">$</span>geometry[<span class="dv">7</span>]
+area_thresh &lt;-<span class="st"> </span>units<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/units/topics/set_units">set_units</a></span>(<span class="dv">200</span>, km<span class="op">^</span><span class="dv">2</span>)
+p_dropped &lt;-<span class="st"> </span><span class="kw"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span>(p, <span class="dt">threshold =</span> area_thresh)
+<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(p, <span class="dt">col =</span> <span class="st">"black"</span>, <span class="dt">main =</span> <span class="st">"Original"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(p_dropped, <span class="dt">col =</span> <span class="st">"black"</span>, <span class="dt">main =</span> <span class="st">"After drop_crumbs()"</span>)</code></pre></div>
+<p><img src="smoothr_files/figure-html/drop-crumbs-polygons-1.png" width="672"></p>
+<p>And, to remove lines shorter than 25 miles:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span>jagged_lines<span class="op">$</span>geometry[<span class="dv">8</span>]
+<span class="co"># note that any units can be used</span>
+<span class="co"># conversion to units of projection happens automatically</span>
+length_thresh &lt;-<span class="st"> </span>units<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/units/topics/set_units">set_units</a></span>(<span class="dv">25</span>, miles)
+l_dropped &lt;-<span class="st"> </span><span class="kw"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span>(l, <span class="dt">threshold =</span> length_thresh)
+<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l, <span class="dt">lwd =</span> <span class="dv">5</span>, <span class="dt">main =</span> <span class="st">"Original"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l_dropped, <span class="dt">lwd =</span> <span class="dv">5</span>, <span class="dt">main =</span> <span class="st">"After drop_crumbs()"</span>)</code></pre></div>
+<p><img src="smoothr_files/figure-html/drop-crumbs-lines-1.png" width="672"></p>
+</div>
+</div>
 <div id="raster-to-polygon-conversion" class="section level2">
 <h2 class="hasAnchor">
 <a href="#raster-to-polygon-conversion" class="anchor"></a>Raster-to-polygon conversion</h2>
 <p>The whole point of this <code>smoothr</code> business was to smooth out polygons generated from rasters, so let’s work through a quick example of that. Treating <code>jagged_raster</code> as the occurrence probability for a species, imagine we want to produce a range map for this species, showing where it occurs with at least 50% probability. We can convert the raster to a binary presence/absence map, then polygonize.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># pres/abs map</span>
-r_pa &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/cut">cut</a></span>(r, <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="op">-</span><span class="ot">Inf</span>, <span class="fl">0.5</span>, <span class="ot">Inf</span>)) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>
+r &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/cut">cut</a></span>(jagged_raster, <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="op">-</span><span class="ot">Inf</span>, <span class="fl">0.5</span>, <span class="ot">Inf</span>)) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>
 <span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))
-<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/extent">extent</a></span>(r), <span class="dt">col =</span> <span class="ot">NA</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(r_pa, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"#4DAF4A"</span>), <span class="dt">legend =</span> <span class="ot">FALSE</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">box =</span> <span class="ot">FALSE</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterToPolygons">rasterToPolygons</a></span>(r), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="ot">NA</span>) <span class="co"># set up plot extent</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(r, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"#4DAF4A"</span>), <span class="dt">legend =</span> <span class="ot">FALSE</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">box =</span> <span class="ot">FALSE</span>)
 <span class="co"># polygonize</span>
-pa_poly &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterToPolygons">rasterToPolygons</a></span>(r_pa, <span class="cf">function</span>(x){x <span class="op">==</span><span class="st"> </span><span class="dv">1</span>}, <span class="dt">dissolve =</span> <span class="ot">TRUE</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(pa_poly, <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="st">"grey20"</span>, <span class="dt">lwd =</span> <span class="fl">1.5</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
+r_poly &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterToPolygons">rasterToPolygons</a></span>(r, <span class="cf">function</span>(x){x <span class="op">==</span><span class="st"> </span><span class="dv">1</span>}, <span class="dt">dissolve =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>()
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(r_poly, <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="st">"grey20"</span>, <span class="dt">lwd =</span> <span class="fl">1.5</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="smoothr_files/figure-html/polygonize-1.png" width="672"></p>
-<p>Finally, to make this more aesthetically pleasing, I’ll smooth out those sharp edges.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pa_poly_smooth &lt;-<span class="st"> </span><span class="kw"><a href="../reference/smooth.html">smooth</a></span>(pa_poly, <span class="dt">method =</span> <span class="st">"chaikin"</span>)
+<p>To start cleaning this up, let’s remove all the small polygons resulting from a single raster cell. Recall that the cells is this raster are 100 square kilometers each.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r_poly_dropped &lt;-<span class="st"> </span><span class="kw"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span>(r_poly, <span class="kw"><a href="http://www.rdocumentation.org/packages/units/topics/set_units">set_units</a></span>(<span class="dv">101</span>, km<span class="op">^</span><span class="dv">2</span>))
 <span class="co"># plot</span>
 <span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))
-<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/extent">extent</a></span>(r), <span class="dt">col =</span> <span class="ot">NA</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(pa_poly_smooth, <span class="dt">col =</span> <span class="st">"#4DAF4A"</span>, <span class="dt">border =</span> <span class="st">"grey20"</span>, <span class="dt">lwd =</span> <span class="fl">1.5</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterToPolygons">rasterToPolygons</a></span>(r), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="ot">NA</span>) <span class="co"># set up plot extent</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(r_poly_dropped, <span class="dt">col =</span> <span class="st">"#4DAF4A"</span>, <span class="dt">border =</span> <span class="st">"grey20"</span>, <span class="dt">lwd =</span> <span class="fl">1.5</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="smoothr_files/figure-html/raster-drop-1.png" width="672"></p>
+<p>Finally, to make this more aesthetically pleasing, I’ll smooth out those sharp edges.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r_poly_smooth &lt;-<span class="st"> </span><span class="kw"><a href="../reference/smooth.html">smooth</a></span>(r_poly_dropped, <span class="dt">method =</span> <span class="st">"ksmooth"</span>, <span class="dt">smoothness =</span> <span class="fl">0.5</span>)
+<span class="co"># plot</span>
+<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterToPolygons">rasterToPolygons</a></span>(r), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="ot">NA</span>) <span class="co"># set up plot extent</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(r_poly_smooth, <span class="dt">col =</span> <span class="st">"#4DAF4A"</span>, <span class="dt">border =</span> <span class="st">"grey20"</span>, <span class="dt">lwd =</span> <span class="fl">1.5</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="smoothr_files/figure-html/smooth-raster-1.png" width="672"></p>
-<p>Not perfect, it still clearly looks like this range map came from a raster, but those slightly smoother corners are certainly easier on the eyes!</p>
+<p>Nice, so much easier on the eyes!</p>
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
@@ -262,6 +299,10 @@ pa_poly &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocu
 <li>Chaikin, G. An algorithm for high speed curve generation. Computer Graphics and Image Processing 3 (1974), 346–349</li>
 <li><a href="http://graphics.cs.ucdavis.edu/education/CAGDNotes/Chaikins-Algorithm.pdf" class="uri">http://graphics.cs.ucdavis.edu/education/CAGDNotes/Chaikins-Algorithm.pdf</a></li>
 <li><a href="https://stackoverflow.com/a/47255374/3591386">Where to find Python implementation of Chaikin’s corner cutting algorithm?</a></li>
+</ul>
+<p>Kernel smoothing:</p>
+<ul>
+<li><a href="https://stats.stackexchange.com/a/143608/44268">Nadaraya-Watson Optimal Bandwidth</a></li>
 </ul>
 <p>Spline interpolation:</p>
 <ul>
@@ -280,7 +321,7 @@ pa_poly &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocu
 <li><a href="#setup">Setup</a></li>
       <li><a href="#example-data">Example data</a></li>
       <li><a href="#smoothing-methods">Smoothing methods</a></li>
-      <li><a href="#densification">Densification</a></li>
+      <li><a href="#other-goodies">Other goodies</a></li>
       <li><a href="#raster-to-polygon-conversion">Raster-to-polygon conversion</a></li>
       <li><a href="#references">References</a></li>
       </ul>

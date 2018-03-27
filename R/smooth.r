@@ -3,7 +3,7 @@
 #' Smooth out the jagged or sharp corners of spatial lines or polygons to make
 #' them appear more aesthetically pleasing and natural.
 #'
-#' @param x spatial features; lines or polygons from either the sf or sp
+#' @param x spatial features; lines or polygons from either the `sf` or `sp`
 #'   packages.
 #' @param method character; specifies the type of smoothing method to use.
 #'   Possible methods are: `"chaikin"`, `"ksmooth"`, `"spline"`, and

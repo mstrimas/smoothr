@@ -26,6 +26,7 @@ This package arose out of an desire for an R tool for smoothing polygons, especi
 ```{r packages}
 library(raster)
 library(sf)
+library(units)
 library(smoothr)
 ```
 
@@ -61,13 +62,13 @@ Again, there's a range of complexities, some lines form closed loops, and some a
 print(jagged_lines)
 ```
 
-The final dataset that comes with this package, `jagged_raster`, is a simulated occurrence probability for a species, consisting of a spatially auto-correlated raster layer with values between 0 and 1. This raster can be used to experiment with smoothing polygons generated from rasters.
+The final dataset that comes with this package, `jagged_raster`, is a simulated occurrence probability for a species, consisting of a spatially auto-correlated raster layer with values between 0 and 1. It is a 25x25 grid of 100 square kilometer cells in a North American centered Albers Equal Area projection. This raster can be used to experiment with smoothing polygons generated from rasters.
 
 ```{r guass-field, results='hide', dev="png"}
 r <- jagged_raster
 # plot
 par(mar = c(0, 0, 0, 0))
-plot(extent(r), col = NA)
+plot(rasterToPolygons(r), col = NA, border = NA) # set up plot extent
 plot(r, col = heat.colors(100), legend = FALSE, add = TRUE, box = FALSE)
 ```
 
@@ -104,7 +105,7 @@ for (i in 1:nrow(jagged_lines)) {
 
 ### Kernel smoothing
 
-This method applies Gaussian kernel regression to the x and y coordinates independently using the built-in `ksmooth()` function. Prior to smoothing additional vertices are added via densification with `smooth_densify()`. Like the corner cutting algorithm, this method results in a curve that does not passes through the vertices of the original curve. Kernel smoothing produces natural looking curves with a greater degree of generalization than the corner cutting algorithm. Kernel smoothing parameters specifying the number of points in the resulting feature (either the number of sub-segments to split each line segment into or the maximum distance between points) and a parameter controlling the bandwidth of the Gaussian kernel.
+This method applies Gaussian kernel regression to the x and y coordinates independently using the built-in `ksmooth()` function. Prior to smoothing additional vertices are added via densification with `smooth_densify()`. Like the corner cutting algorithm, this method results in a curve that does not pass through the vertices of the original curve. Kernel smoothing produces natural looking curves with a greater degree of generalization than the corner cutting algorithm. Kernel smoothing parameters specifying the number of points in the resulting feature (either the number of sub-segments to split each line segment into or the maximum distance between points) and a parameter controlling the bandwidth of the Gaussian kernel.
 
 This method can be applied with `smooth(x, method = "ksmooth")`. Here's what this looks like for the polygons:
 
@@ -159,9 +160,13 @@ for (i in 1:nrow(jagged_lines)) {
 }
 ```
 
-## Densification
+## Other goodies
 
-Although not a true smoothing method, this package also allows users to densify spatial lines and polygons by adding additional vertices. Each line segment is split into multiple sub-segments of equal length, and the original vertices are always included in the densified feature. Note that the densification algorithm treats all vertices as Euclidean points, i.e. new points will not fall on a great circle between existing vertices, rather they'll be along a straight line.
+`smoothr` contains some additional tools that aren't strictly for smoothing, but can help clean up polygons and lines and make them appear more aesthetically pleasing. I'll outline these miscellaneous tools below.
+
+### Densification
+
+Densification is the process of adding additional points to the line segments defining points or polygons. Each line segment is split into multiple sub-segments of equal length, and the original vertices are always included in the densified feature. Note that the densification algorithm treats all vertices as Euclidean points, i.e. new points will not fall on a great circle between existing vertices, rather they'll be along a straight line.
 
 Use `smooth(method = "densify")`, or it's alias `densify()` to perform densification. The degree of densification can either be specified as the number of sub-segments each line segment is split into (`n`):
 
@@ -185,32 +190,71 @@ plot(l_dense, col = "red", lwd = 2, lty = 2, add = TRUE)
 plot(l_dense %>% st_cast("MULTIPOINT"), col = "red", pch = 19, add = TRUE)
 ```
 
+### Drop crumbs
+
+`drop_crumbs()` removes small lines or polygons based on a length or area threshold. For multipart features, this function dives into the individual component features and applies the threshold. The threshold can either be provided as a number, assumed to be in the units of the coordinates reference system (meters for unprojected coordinates), or as a `units` object. This latter approach provides more flexibility because a threshold can be given in any type of units and it will be converted to the correct units automatically. 
+
+For example, to remove polygons less than 200 square kilometers:
+
+```{r drop-crumbs-polygons}
+p <- jagged_polygons$geometry[7]
+area_thresh <- units::set_units(200, km^2)
+p_dropped <- drop_crumbs(p, threshold = area_thresh)
+par(mar = c(0, 0, 1, 0), mfrow = c(1, 2))
+plot(p, col = "black", main = "Original")
+plot(p_dropped, col = "black", main = "After drop_crumbs()")
+```
+
+And, to remove lines shorter than 25 miles:
+
+```{r drop-crumbs-lines}
+l <- jagged_lines$geometry[8]
+# note that any units can be used
+# conversion to units of projection happens automatically
+length_thresh <- units::set_units(25, miles)
+l_dropped <- drop_crumbs(l, threshold = length_thresh)
+par(mar = c(0, 0, 1, 0), mfrow = c(1, 2))
+plot(l, lwd = 5, main = "Original")
+plot(l_dropped, lwd = 5, main = "After drop_crumbs()")
+```
+
 ## Raster-to-polygon conversion
 
 The whole point of this `smoothr` business was to smooth out polygons generated from rasters, so let's work through a quick example of that. Treating `jagged_raster` as the occurrence probability for a species, imagine we want to produce a range map for this species, showing where it occurs with at least 50% probability. We can convert the raster to a binary presence/absence map, then polygonize.
 
 ```{r polygonize, dev="png"}
 # pres/abs map
-r_pa <- cut(r, breaks = c(-Inf, 0.5, Inf)) - 1
+r <- cut(jagged_raster, breaks = c(-Inf, 0.5, Inf)) - 1
 par(mar = c(0, 0, 0, 0))
-plot(extent(r), col = NA)
-plot(r_pa, col = c("white", "#4DAF4A"), legend = FALSE, add = TRUE, box = FALSE)
+plot(rasterToPolygons(r), col = NA, border = NA) # set up plot extent
+plot(r, col = c("white", "#4DAF4A"), legend = FALSE, add = TRUE, box = FALSE)
 # polygonize
-pa_poly <- rasterToPolygons(r_pa, function(x){x == 1}, dissolve = TRUE)
-plot(pa_poly, col = NA, border = "grey20", lwd = 1.5, add = TRUE)
+r_poly <- rasterToPolygons(r, function(x){x == 1}, dissolve = TRUE) %>% 
+  st_as_sf()
+plot(r_poly, col = NA, border = "grey20", lwd = 1.5, add = TRUE)
+```
+
+To start cleaning this up, let's remove all the small polygons resulting from a single raster cell. Recall that the cells is this raster are 100 square kilometers each.
+
+```{r raster-drop}
+r_poly_dropped <- drop_crumbs(r_poly, set_units(101, km^2))
+# plot
+par(mar = c(0, 0, 0, 0))
+plot(rasterToPolygons(r), col = NA, border = NA) # set up plot extent
+plot(r_poly_dropped, col = "#4DAF4A", border = "grey20", lwd = 1.5, add = TRUE)
 ```
 
 Finally, to make this more aesthetically pleasing, I'll smooth out those sharp edges.
 
 ```{r smooth-raster, dev="png"}
-pa_poly_smooth <- smooth(pa_poly, method = "chaikin")
+r_poly_smooth <- smooth(r_poly_dropped, method = "ksmooth", smoothness = 0.5)
 # plot
 par(mar = c(0, 0, 0, 0))
-plot(extent(r), col = NA)
-plot(pa_poly_smooth, col = "#4DAF4A", border = "grey20", lwd = 1.5, add = TRUE)
+plot(rasterToPolygons(r), col = NA, border = NA) # set up plot extent
+plot(r_poly_smooth, col = "#4DAF4A", border = "grey20", lwd = 1.5, add = TRUE)
 ```
 
-Not perfect, it still clearly looks like this range map came from a raster, but those slightly smoother corners are certainly easier on the eyes!
+Nice, so much easier on the eyes! 
 
 ## References
 
@@ -219,6 +263,10 @@ Chaikin's corner cutting algorithm:
 - Chaikin, G. An algorithm for high speed curve generation. Computer Graphics and Image Processing 3 (1974), 346–349
 - http://graphics.cs.ucdavis.edu/education/CAGDNotes/Chaikins-Algorithm.pdf
 - [Where to find Python implementation of Chaikin's corner cutting algorithm?](https://stackoverflow.com/a/47255374/3591386)
+
+Kernel smoothing:
+
+- [Nadaraya-Watson Optimal Bandwidth](https://stats.stackexchange.com/a/143608/44268)
 
 Spline interpolation:
 

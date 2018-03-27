@@ -15,16 +15,17 @@ Depends:
 Imports: 
     methods,
     sf,
-    stats
+    stats,
+    units
 Suggests: 
     covr,
-    sp,
-    testthat,
     knitr,
     raster,
-    rmarkdown
+    rmarkdown,
+    sp,
+    testthat
+VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1
-VignetteBuilder: knitr
