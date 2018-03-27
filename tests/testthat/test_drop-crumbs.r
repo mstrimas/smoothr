@@ -16,6 +16,16 @@ test_that("drop_crumbs() works", {
   expect_true(all(st_length(st_cast(l_dropped, "LINESTRING")) >= length_thresh))
 })
 
+test_that("drop_crumbs() doesn't alter features with nothing dropped", {
+  p <- jagged_polygons
+  p_dropped <- drop_crumbs(p, threshold = units::set_units(0.1, m^2))
+  expect_equivalent(p, p_dropped)
+
+  l <- jagged_lines
+  l_dropped <- drop_crumbs(l, threshold = units::set_units(0.1, m))
+  expect_equivalent(l, l_dropped)
+})
+
 test_that("drop_crumbs() drop_empty works", {
   p <- jagged_polygons$geometry
   area_thresh <- units::set_units(200, km^2)

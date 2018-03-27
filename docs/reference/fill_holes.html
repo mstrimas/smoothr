@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Simulated raster for polygonizing and smoothing — jagged_raster • smoothr</title>
+<title>Fill small holes in polygons — fill_holes • smoothr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,14 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Simulated raster for polygonizing and smoothing — jagged_raster" />
+<meta property="og:title" content="Fill small holes in polygons — fill_holes" />
 
-<meta property="og:description" content="One of the primary applications of this package is for smoothing polygons
-generated from rasters. This example RasterLayer is meant to be a simulated
-occurrence probability for a species, consisting of a spatially
-auto-correlated Gaussian field with values between 0 and 1. This raster is a
-25x25 grid of 100 square kilometer cells in a North American centered Alber's
-Equal Area projection." />
+<meta property="og:description" content="Fill polygon holes that fall below a given area threshold." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -101,33 +96,58 @@ Equal Area projection." />
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Simulated raster for polygonizing and smoothing</h1>
-    <small>Source: <a href='https://github.com/mstrimas/smoothr/blob/master/R/data.r'><code>R/data.r</code></a></small>
+    <h1>Fill small holes in polygons</h1>
+    <small>Source: <a href='https://github.com/mstrimas/smoothr/blob/master/R/fill-holes.r'><code>R/fill-holes.r</code></a></small>
     </div>
 
     
-    <p>One of the primary applications of this package is for smoothing polygons
-generated from rasters. This example RasterLayer is meant to be a simulated
-occurrence probability for a species, consisting of a spatially
-auto-correlated Gaussian field with values between 0 and 1. This raster is a
-25x25 grid of 100 square kilometer cells in a North American centered Alber's
-Equal Area projection.</p>
+    <p>Fill polygon holes that fall below a given area threshold.</p>
     
 
-    <pre class="usage"><span class='no'>jagged_raster</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <pre class="usage"><span class='fu'>fill_holes</span>(<span class='no'>x</span>, <span class='no'>threshold</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>spatial polygons from either the <code>sf</code> or <code>sp</code> packages.</p></td>
+    </tr>
+    <tr>
+      <th>threshold</th>
+      <td><p>an area threshold, below which holes will be removed.
+Provided either as a <code>units</code> object (see <code><a href='http://www.rdocumentation.org/packages/units/topics/set_units'>units::set_units()</a></code>), or a
+numeric threshold in the units of the coordinate reference system. If <code>x</code>
+is in unprojected coordinates, a numeric threshold is assumed to be in
+square meters.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>RasterLayer</code> of dimension 25 x 25 x 1.</p>
+    <p>A spatial feature, with holes filled, in the same format as the input
+data.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># fill holes smaller than 1000km2</span>
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='no'>jagged_polygons</span>$<span class='no'>geometry</span>[<span class='fl'>5</span>]
+<span class='no'>area_thresh</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>units</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/units/topics/set_units'>set_units</a></span>(<span class='fl'>1000</span>, <span class='no'>km</span>^<span class='fl'>2</span>)
+<span class='no'>p_dropped</span> <span class='kw'>&lt;-</span> <span class='fu'>fill_holes</span>(<span class='no'>p</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='no'>area_thresh</span>)
+<span class='co'># plot</span>
+<span class='fu'>par</span>(<span class='kw'>mar</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>), <span class='kw'>mfrow</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>))
+<span class='fu'>plot</span>(<span class='no'>p</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Original"</span>)
+<span class='fu'>plot</span>(<span class='no'>p_dropped</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"After fill_holes()"</span>)</div><div class='img'><img src='fill_holes-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#format">Format</a></li>
-          </ul>
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

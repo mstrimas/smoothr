@@ -28,6 +28,7 @@
 #' p <- jagged_polygons$geometry[7]
 #' area_thresh <- units::set_units(200, km^2)
 #' p_dropped <- drop_crumbs(p, threshold = area_thresh)
+#' # plot
 #' par(mar = c(0, 0, 1, 0), mfrow = c(1, 2))
 #' plot(p, col = "black", main = "Original")
 #' plot(p_dropped, col = "black", main = "After drop_crumbs()")
@@ -38,6 +39,7 @@
 #' # conversion to units of projection happens automatically
 #' length_thresh <- units::set_units(25, miles)
 #' l_dropped <- drop_crumbs(l, threshold = length_thresh)
+#' # plot
 #' par(mar = c(0, 0, 1, 0), mfrow = c(1, 2))
 #' plot(l, lwd = 5, main = "Original")
 #' plot(l_dropped, lwd = 5, main = "After drop_crumbs()")
@@ -71,8 +73,10 @@ drop_crumbs.sfc <- function(x, threshold, drop_empty = TRUE) {
     singles <- sf::st_cast(x[i], geo_type)
     # test threshold
     passed <- singles[size_fxn(singles) >= threshold]
-    # recombined
-    passed <- sf::st_combine(passed)
+    # recombine
+    if (length(passed) != 1) {
+      passed <- sf::st_combine(passed)
+    }
     x[[i]] <- passed[[1]]
   }
   # remove empty geometries

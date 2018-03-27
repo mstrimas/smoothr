@@ -218,6 +218,22 @@ plot(l, lwd = 5, main = "Original")
 plot(l_dropped, lwd = 5, main = "After drop_crumbs()")
 ```
 
+### Fill holes
+
+`fill_holes()` fills (i.e. removes) holes in polygons when they are below a given area threshold. As with `drop_crumbs()`, the threshold can either be provided as a number or a `units` object.
+
+For example, to remove holes less than 800 square kilometers in size:
+
+```{r fill-polygons}
+p <- jagged_polygons$geometry[5]
+area_thresh <- units::set_units(800, km^2)
+p_dropped <- fill_holes(p, threshold = area_thresh)
+# plot
+par(mar = c(0, 0, 1, 0), mfrow = c(1, 2))
+plot(p, col = "black", main = "Original")
+plot(p_dropped, col = "black", main = "After fill_holes()")
+```
+
 ## Raster-to-polygon conversion
 
 The whole point of this `smoothr` business was to smooth out polygons generated from rasters, so let's work through a quick example of that. Treating `jagged_raster` as the occurrence probability for a species, imagine we want to produce a range map for this species, showing where it occurs with at least 50% probability. We can convert the raster to a binary presence/absence map, then polygonize.
@@ -244,10 +260,20 @@ plot(rasterToPolygons(r), col = NA, border = NA) # set up plot extent
 plot(r_poly_dropped, col = "#4DAF4A", border = "grey20", lwd = 1.5, add = TRUE)
 ```
 
+There are two holes in the large central polygon. Next, let's fill in the smaller of the two holes, which is two raster cells (200 square kilometers) in size, but keep the larger one.
+
+```{r raster-fill}
+r_poly_filled <- fill_holes(r_poly_dropped, set_units(201, km^2))
+# plot
+par(mar = c(0, 0, 0, 0))
+plot(rasterToPolygons(r), col = NA, border = NA) # set up plot extent
+plot(r_poly_filled, col = "#4DAF4A", border = "grey20", lwd = 1.5, add = TRUE)
+```
+
 Finally, to make this more aesthetically pleasing, I'll smooth out those sharp edges.
 
-```{r smooth-raster, dev="png"}
-r_poly_smooth <- smooth(r_poly_dropped, method = "ksmooth", smoothness = 0.5)
+```{r smooth-raster}
+r_poly_smooth <- smooth(r_poly_filled, method = "ksmooth", smoothness = 0.5)
 # plot
 par(mar = c(0, 0, 0, 0))
 plot(rasterToPolygons(r), col = NA, border = NA) # set up plot extent

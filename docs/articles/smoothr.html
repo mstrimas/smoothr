@@ -260,6 +260,20 @@ l_dropped &lt;-<span class="st"> </span><span class="kw"><a href="../reference/d
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l_dropped, <span class="dt">lwd =</span> <span class="dv">5</span>, <span class="dt">main =</span> <span class="st">"After drop_crumbs()"</span>)</code></pre></div>
 <p><img src="smoothr_files/figure-html/drop-crumbs-lines-1.png" width="672"></p>
 </div>
+<div id="fill-holes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#fill-holes" class="anchor"></a>Fill holes</h3>
+<p><code><a href="../reference/fill_holes.html">fill_holes()</a></code> fills (i.e. removes) holes in polygons when they are below a given area threshold. As with <code><a href="../reference/drop_crumbs.html">drop_crumbs()</a></code>, the threshold can either be provided as a number or a <code>units</code> object.</p>
+<p>For example, to remove holes less than 800 square kilometers in size:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span>jagged_polygons<span class="op">$</span>geometry[<span class="dv">5</span>]
+area_thresh &lt;-<span class="st"> </span>units<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/units/topics/set_units">set_units</a></span>(<span class="dv">800</span>, km<span class="op">^</span><span class="dv">2</span>)
+p_dropped &lt;-<span class="st"> </span><span class="kw"><a href="../reference/fill_holes.html">fill_holes</a></span>(p, <span class="dt">threshold =</span> area_thresh)
+<span class="co"># plot</span>
+<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(p, <span class="dt">col =</span> <span class="st">"black"</span>, <span class="dt">main =</span> <span class="st">"Original"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(p_dropped, <span class="dt">col =</span> <span class="st">"black"</span>, <span class="dt">main =</span> <span class="st">"After fill_holes()"</span>)</code></pre></div>
+<p><img src="smoothr_files/figure-html/fill-polygons-1.png" width="672"></p>
+</div>
 </div>
 <div id="raster-to-polygon-conversion" class="section level2">
 <h2 class="hasAnchor">
@@ -282,8 +296,15 @@ r_poly &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocum
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterToPolygons">rasterToPolygons</a></span>(r), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="ot">NA</span>) <span class="co"># set up plot extent</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(r_poly_dropped, <span class="dt">col =</span> <span class="st">"#4DAF4A"</span>, <span class="dt">border =</span> <span class="st">"grey20"</span>, <span class="dt">lwd =</span> <span class="fl">1.5</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="smoothr_files/figure-html/raster-drop-1.png" width="672"></p>
+<p>There are two holes in the large central polygon. Next, let’s fill in the smaller of the two holes, which is two raster cells (200 square kilometers) in size, but keep the larger one.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r_poly_filled &lt;-<span class="st"> </span><span class="kw"><a href="../reference/fill_holes.html">fill_holes</a></span>(r_poly_dropped, <span class="kw"><a href="http://www.rdocumentation.org/packages/units/topics/set_units">set_units</a></span>(<span class="dv">201</span>, km<span class="op">^</span><span class="dv">2</span>))
+<span class="co"># plot</span>
+<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterToPolygons">rasterToPolygons</a></span>(r), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="ot">NA</span>) <span class="co"># set up plot extent</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(r_poly_filled, <span class="dt">col =</span> <span class="st">"#4DAF4A"</span>, <span class="dt">border =</span> <span class="st">"grey20"</span>, <span class="dt">lwd =</span> <span class="fl">1.5</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="smoothr_files/figure-html/raster-fill-1.png" width="672"></p>
 <p>Finally, to make this more aesthetically pleasing, I’ll smooth out those sharp edges.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r_poly_smooth &lt;-<span class="st"> </span><span class="kw"><a href="../reference/smooth.html">smooth</a></span>(r_poly_dropped, <span class="dt">method =</span> <span class="st">"ksmooth"</span>, <span class="dt">smoothness =</span> <span class="fl">0.5</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r_poly_smooth &lt;-<span class="st"> </span><span class="kw"><a href="../reference/smooth.html">smooth</a></span>(r_poly_filled, <span class="dt">method =</span> <span class="st">"ksmooth"</span>, <span class="dt">smoothness =</span> <span class="fl">0.5</span>)
 <span class="co"># plot</span>
 <span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterToPolygons">rasterToPolygons</a></span>(r), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="ot">NA</span>) <span class="co"># set up plot extent</span>

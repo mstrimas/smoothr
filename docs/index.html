@@ -144,8 +144,17 @@ l_smooth_spline &lt;-<span class="st"> </span><span class="kw"><a href="referenc
 <p><img src="README-smooth-lines-1.png" width="1008"></p>
 <div id="other-goodies" class="section level3">
 <h3 class="hasAnchor">
-<a href="#other-goodies" class="anchor"></a>Other Goodies</h3>
-<p><code>smoothr</code> contains a handful of other tools to help clean up spatial features and make them look cleaner and more aesthetically pleasing. <code><a href="reference/densify.html">densify()</a></code> (and it’s alias <code><a href="reference/smooth.html">smooth(x, method = "densify")</a></code>) densifies lines and polygons, adding additional vertices along line segments. <code><a href="reference/drop_crumbs.html">drop_crumbs()</a></code> removes small lines or polygons based on a length or area threshold. See the documentation for these functions for full details.</p>
+<a href="#other-goodies" class="anchor"></a>Other goodies</h3>
+<p><code>smoothr</code> contains a handful of other tools to help clean up spatial features and make them look cleaner and more aesthetically pleasing.</p>
+<ul>
+<li>
+<code><a href="reference/densify.html">densify()</a></code> (and it’s alias <code><a href="reference/smooth.html">smooth(x, method = "densify")</a></code>) densifies lines and polygons, adding additional vertices along line segments.</li>
+<li>
+<code><a href="reference/drop_crumbs.html">drop_crumbs()</a></code> removes small lines or polygons based on a length or area threshold.</li>
+<li>
+<code><a href="reference/fill_holes.html">fill_holes()</a></code> fills (i.e. removes) holes from polygons when they are below a given area threshold.</li>
+</ul>
+<p>See the documentation for these functions for full details.</p>
 </div>
 </div>
 <div id="code-of-conduct" class="section level2">
