@@ -150,14 +150,17 @@ parameters:</p><ul>
 This method first calls <code><a href='smooth_densify.html'>smooth_densify()</a></code> to densify the feature, then
 applies Gaussian kernel regression to smooth the resulting points.
 Smoothing parameters:</p><ul>
+<li><p><code>smoothness</code>: a positive number controlling the smoothness and level of
+generalization. At the default value of 1, an optimal bandwidth for the
+Guassian kernel based on the data is used. Values greater than 1 increase
+the bandwidth, yielding more highly smoothed and generalized features,
+and values less than 1 decrease the bandwidth, yielding less smoothed and
+generalized features.</p></li>
 <li><p><code>n</code>: number of times to split each line segment in the densification
 step. Ignored if <code>max_distance</code> is specified.</p></li>
 <li><p><code>max_distance</code>: the maximum distance between vertices in the resulting
 features for the densification step. This is the Euclidean distance and
 not the great circle distance.</p></li>
-<li><p><code>bandwidth</code>: the bandwidth of the Gaussian kernel. Larger bandwidths
-will result in more smoothing. If no value is supplied, the bandwidth is
-estimated from the data.</p></li>
 </ul></li>
 <li><p><code><a href='smooth_spline.html'>smooth_spline()</a></code>: spline interpolation via the <code><a href='http://www.rdocumentation.org/packages/stats/topics/splinefun'>stats::spline()</a></code>
 function. This method interpolates between existing vertices and can be

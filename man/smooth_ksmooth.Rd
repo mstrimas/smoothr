@@ -4,7 +4,7 @@
 \alias{smooth_ksmooth}
 \title{Kernel smooth}
 \usage{
-smooth_ksmooth(x, wrap = FALSE, n = 10L, max_distance, bandwidth)
+smooth_ksmooth(x, wrap = FALSE, smoothness = 1, n = 10L, max_distance)
 }
 \arguments{
 \item{x}{numeric matrix; 2-column matrix of coordinates.}
@@ -12,16 +12,21 @@ smooth_ksmooth(x, wrap = FALSE, n = 10L, max_distance, bandwidth)
 \item{wrap}{logical; whether the coordinates should be wrapped at the ends,
 as for polygons and closed lines, to ensure a smooth edge.}
 
+\item{smoothness}{numeric; a parameter controlling the bandwidth of the
+Gaussian kernel, and therefore the smoothness and level of generalization.
+For each singlepart feature, a bandwidth is calculated from the data as
+\code{n^(-1/5)*sqrt((n^2-1)/12)}, where \code{n} is the number of vertices. The
+\code{smoothness} parameter is a multiplier of this estimated bandwidth, with
+values greater than 1 yielding more highly smoothed and generalized
+features and values less than 1 yielding less smoothed and generalized
+features.}
+
 \item{n}{integer; number of times to split each line segment for
 \code{\link[=smooth_densify]{smooth_densify()}}. Ignored if \code{max_distance} is specified.}
 
 \item{max_distance}{numeric; the maximum distance between vertices for
 \code{\link[=smooth_densify]{smooth_densify()}}. This is the Euclidean distance and not the great circle
 distance.}
-
-\item{bandwidth}{numeric; the bandwidth of the Gaussian kernel. Larger
-bandwidths will result in more smoothing. If no value is supplied, the
-bandwidth is estimated from the data.}
 }
 \value{
 A matrix with the coordinates of the smoothed curve.
@@ -51,12 +56,30 @@ lines(m_smooth, lwd = 3, col = "red")
 
 # lines can also be smoothed
 l <- jagged_lines$geometry[[2]][]
-l_smooth <- smooth_ksmooth(l, wrap = FALSE, max_distance = 0.05, bandwidth = 10)
+l_smooth <- smooth_ksmooth(l, wrap = FALSE, max_distance = 0.05,
+                           smoothness = 2)
 plot(l, type = "l", col = "black", lwd = 3, axes = FALSE, xlab = NA,
      ylab = NA)
 lines(l_smooth, lwd = 3, col = "red")
 
-# smooth is a wrapper for smooth_ksmooth that works on spatial features
+# explore different levels of smoothness
+p <- jagged_polygons$geometry[[2]][[1]]
+ps1 <- smooth_ksmooth(p, wrap = TRUE, max_distance = 0.01, smoothness = 0.5)
+ps2 <- smooth_ksmooth(p, wrap = TRUE, max_distance = 0.01, smoothness = 1)
+ps3 <- smooth_ksmooth(p, wrap = TRUE, max_distance = 0.01, smoothness = 2)
+# plot
+par(mar = c(0, 0, 0, 0), oma = c(10, 0, 0, 0))
+plot(p, type = "l", col = "black", lwd = 3, axes = FALSE, xlab = NA,
+     ylab = NA)
+lines(ps1, lwd = 3, col = "#E41A1C")
+lines(ps2, lwd = 3, col = "#4DAF4A")
+lines(ps3, lwd = 3, col = "#377EB8")
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), new = TRUE)
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n", axes = FALSE)
+legend("bottom", legend = c("0.5", "1", "2"),
+       col = c("#E41A1C", "#4DAF4A", "#377EB8"),
+       lwd = 3, cex = 2, box.lwd = 0, inset = 0, horiz = TRUE)
+
 library(sf)
 p <- jagged_polygons$geometry[[2]]
 p_smooth <- smooth(p, method = "ksmooth")

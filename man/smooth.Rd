@@ -43,14 +43,17 @@ This method first calls \code{\link[=smooth_densify]{smooth_densify()}} to densi
 applies Gaussian kernel regression to smooth the resulting points.
 Smoothing parameters:
 \itemize{
+\item \code{smoothness}: a positive number controlling the smoothness and level of
+generalization. At the default value of 1, an optimal bandwidth for the
+Guassian kernel based on the data is used. Values greater than 1 increase
+the bandwidth, yielding more highly smoothed and generalized features,
+and values less than 1 decrease the bandwidth, yielding less smoothed and
+generalized features.
 \item \code{n}: number of times to split each line segment in the densification
 step. Ignored if \code{max_distance} is specified.
 \item \code{max_distance}: the maximum distance between vertices in the resulting
 features for the densification step. This is the Euclidean distance and
 not the great circle distance.
-\item \code{bandwidth}: the bandwidth of the Gaussian kernel. Larger bandwidths
-will result in more smoothing. If no value is supplied, the bandwidth is
-estimated from the data.
 }
 \item \code{\link[=smooth_spline]{smooth_spline()}}: spline interpolation via the \code{\link[stats:spline]{stats::spline()}}
 function. This method interpolates between existing vertices and can be

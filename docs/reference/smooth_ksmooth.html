@@ -112,7 +112,7 @@ called to generate additional vertices, and the smoothing is applied to this
 densified set of vertices.</p>
     
 
-    <pre class="usage"><span class='fu'>smooth_ksmooth</span>(<span class='no'>x</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10L</span>, <span class='no'>max_distance</span>, <span class='no'>bandwidth</span>)</pre>
+    <pre class="usage"><span class='fu'>smooth_ksmooth</span>(<span class='no'>x</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>smoothness</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10L</span>, <span class='no'>max_distance</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -127,6 +127,17 @@ densified set of vertices.</p>
 as for polygons and closed lines, to ensure a smooth edge.</p></td>
     </tr>
     <tr>
+      <th>smoothness</th>
+      <td><p>numeric; a parameter controlling the bandwidth of the
+Gaussian kernel, and therefore the smoothness and level of generalization.
+For each singlepart feature, a bandwidth is calculated from the data as
+<code>n^(-1/5)*sqrt((n^2-1)/12)</code>, where <code>n</code> is the number of vertices. The
+<code>smoothness</code> parameter is a multiplier of this estimated bandwidth, with
+values greater than 1 yielding more highly smoothed and generalized
+features and values less than 1 yielding less smoothed and generalized
+features.</p></td>
+    </tr>
+    <tr>
       <th>n</th>
       <td><p>integer; number of times to split each line segment for
 <code><a href='smooth_densify.html'>smooth_densify()</a></code>. Ignored if <code>max_distance</code> is specified.</p></td>
@@ -136,12 +147,6 @@ as for polygons and closed lines, to ensure a smooth edge.</p></td>
       <td><p>numeric; the maximum distance between vertices for
 <code><a href='smooth_densify.html'>smooth_densify()</a></code>. This is the Euclidean distance and not the great circle
 distance.</p></td>
-    </tr>
-    <tr>
-      <th>bandwidth</th>
-      <td><p>numeric; the bandwidth of the Gaussian kernel. Larger
-bandwidths will result in more smoothing. If no value is supplied, the
-bandwidth is estimated from the data.</p></td>
     </tr>
     </table>
     
@@ -177,14 +182,26 @@ StackExchange answers:</p><ul>
      <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</div><div class='input'><span class='fu'>lines</span>(<span class='no'>m_smooth</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='img'><img src='smooth_ksmooth-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># lines can also be smoothed</span>
 <span class='no'>l</span> <span class='kw'>&lt;-</span> <span class='no'>jagged_lines</span>$<span class='no'>geometry</span><span class='kw'>[[</span><span class='fl'>2</span>]][]
-<span class='no'>l_smooth</span> <span class='kw'>&lt;-</span> <span class='fu'>smooth_ksmooth</span>(<span class='no'>l</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>max_distance</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>bandwidth</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='no'>l_smooth</span> <span class='kw'>&lt;-</span> <span class='fu'>smooth_ksmooth</span>(<span class='no'>l</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>max_distance</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
+                           <span class='kw'>smoothness</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 <span class='fu'>plot</span>(<span class='no'>l</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"l"</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
      <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</div><div class='input'><span class='fu'>lines</span>(<span class='no'>l_smooth</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='img'><img src='smooth_ksmooth-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># smooth is a wrapper for smooth_ksmooth that works on spatial features</span>
+<span class='co'># explore different levels of smoothness</span>
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='no'>jagged_polygons</span>$<span class='no'>geometry</span><span class='kw'>[[</span><span class='fl'>2</span>]]<span class='kw'>[[</span><span class='fl'>1</span>]]
+<span class='no'>ps1</span> <span class='kw'>&lt;-</span> <span class='fu'>smooth_ksmooth</span>(<span class='no'>p</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>max_distance</span> <span class='kw'>=</span> <span class='fl'>0.01</span>, <span class='kw'>smoothness</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
+<span class='no'>ps2</span> <span class='kw'>&lt;-</span> <span class='fu'>smooth_ksmooth</span>(<span class='no'>p</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>max_distance</span> <span class='kw'>=</span> <span class='fl'>0.01</span>, <span class='kw'>smoothness</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='no'>ps3</span> <span class='kw'>&lt;-</span> <span class='fu'>smooth_ksmooth</span>(<span class='no'>p</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>max_distance</span> <span class='kw'>=</span> <span class='fl'>0.01</span>, <span class='kw'>smoothness</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='co'># plot</span>
+<span class='fu'>par</span>(<span class='kw'>mar</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>), <span class='kw'>oma</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>))
+<span class='fu'>plot</span>(<span class='no'>p</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"l"</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+     <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</div><div class='input'><span class='fu'>lines</span>(<span class='no'>ps1</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"#E41A1C"</span>)</div><div class='input'><span class='fu'>lines</span>(<span class='no'>ps2</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"#4DAF4A"</span>)</div><div class='input'><span class='fu'>lines</span>(<span class='no'>ps3</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"#377EB8"</span>)</div><div class='input'><span class='fu'>par</span>(<span class='kw'>fig</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>oma</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>), <span class='kw'>new</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>plot</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>bty</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>xaxt</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>yaxt</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='input'><span class='fu'>legend</span>(<span class='st'>"bottom"</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"0.5"</span>, <span class='st'>"1"</span>, <span class='st'>"2"</span>),
+       <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"#E41A1C"</span>, <span class='st'>"#4DAF4A"</span>, <span class='st'>"#377EB8"</span>),
+       <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>box.lwd</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>inset</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>horiz</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='smooth_ksmooth-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>library</span>(<span class='no'>sf</span>)
 <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='no'>jagged_polygons</span>$<span class='no'>geometry</span><span class='kw'>[[</span><span class='fl'>2</span>]]
 <span class='no'>p_smooth</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='smooth.html'>smooth</a></span>(<span class='no'>p</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"ksmooth"</span>)
-<span class='fu'>class</span>(<span class='no'>p</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'>class</span>(<span class='no'>p_smooth</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>p_smooth</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>p</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='smooth_ksmooth-3.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'>class</span>(<span class='no'>p</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'>class</span>(<span class='no'>p_smooth</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>p_smooth</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>p</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='smooth_ksmooth-4.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -23,6 +23,6 @@ test_that("smooth_ksmooth() raises error on invalid input", {
   expect_error(smooth_ksmooth(m, n = 1.5))
   expect_error(smooth_ksmooth(m, max_distance = -1.0))
   expect_error(smooth_ksmooth(m, max_distance = 0))
-  expect_error(smooth_ksmooth(m, bandwidth = c(1.0, 5)))
-  expect_error(smooth_ksmooth(m, bandwidth = 0))
+  expect_error(smooth_ksmooth(m, smoothness = c(1.0, 5)))
+  expect_error(smooth_ksmooth(m, smoothness = 0))
 })

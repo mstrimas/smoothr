@@ -104,7 +104,7 @@ for (i in 1:nrow(jagged_lines)) {
 
 ### Kernel smoothing
 
-This method applies Gaussian kernel regression to the x and y coordinates independently using the built-in `ksmooth()` function. Prior to smoothing additional vertices are added via densification with `smooth_densify()`. Like the corner cutting algorithm, this method results in a curve that does not passes through the vertices of the original curve. Kernel smoothing produces natural looking curves with a greater degree of generalization than the corner cutting algorithm. Kernel smoothing parameters specifying the number of points in the resulting feature (either the number of sub-segments to split each line segment into or the maximum distance between points) and the bandwidth of the Gaussian kernel. If the bandwidth is not provided, a sensible value will be estimate from the data.
+This method applies Gaussian kernel regression to the x and y coordinates independently using the built-in `ksmooth()` function. Prior to smoothing additional vertices are added via densification with `smooth_densify()`. Like the corner cutting algorithm, this method results in a curve that does not passes through the vertices of the original curve. Kernel smoothing produces natural looking curves with a greater degree of generalization than the corner cutting algorithm. Kernel smoothing parameters specifying the number of points in the resulting feature (either the number of sub-segments to split each line segment into or the maximum distance between points) and a parameter controlling the bandwidth of the Gaussian kernel.
 
 This method can be applied with `smooth(x, method = "ksmooth")`. Here's what this looks like for the polygons:
 
