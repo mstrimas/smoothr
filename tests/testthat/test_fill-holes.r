@@ -19,11 +19,11 @@ test_that("fill_holes() doesn't alter polygons with no holes", {
 })
 
 test_that("fill_holes() works for different input formats", {
-  s_sf <- fill_holes(jagged_polygons, threshold = 2e8)
-  s_sfc <- fill_holes(st_geometry(jagged_polygons), threshold = 2e8)
-  s_spdf <- fill_holes(as(jagged_polygons, "Spatial"), threshold = 2e8)
-  s_sp <- fill_holes(as(as(jagged_polygons, "Spatial"), "SpatialPolygons"),
-                      threshold = 2e8)
+  jp <- jagged_polygons[5:6, ]
+  s_sf <- fill_holes(jp, threshold = 2e8)
+  s_sfc <- fill_holes(st_geometry(jp), threshold = 2e8)
+  s_spdf <- fill_holes(as(jp, "Spatial"), threshold = 2e8)
+  s_sp <- fill_holes(as(as(jp, "Spatial"), "SpatialPolygons"), threshold = 2e8)
   expect_s3_class(s_sf, "sf")
   expect_s3_class(s_sfc, "sfc")
   expect_s4_class(s_spdf, "SpatialPolygonsDataFrame")
@@ -31,7 +31,6 @@ test_that("fill_holes() works for different input formats", {
   a_diff <- st_area(s_sf) - st_area(s_sfc)
   expect_true(sum(abs(a_diff)) < units::set_units(1, "m^2"))
   a_diff <- st_area(s_sf) - st_area(st_as_sf(s_spdf))
-  stop(s_spdf[4,]@polygons[[1]]@Polygons[[1]]@coords)
   expect_true(sum(abs(a_diff)) < units::set_units(1, "m^2"))
   expect_equivalent(st_set_geometry(s_sf, NULL), s_spdf@data)
 })
