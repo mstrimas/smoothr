@@ -11,9 +11,9 @@
 #' choosing a sensible bandwidth is critical when using this method. The choice
 #' of bandwidth will be dependent on the projection, scale, and desired amount
 #' of smoothing and generalization. The are two methods of adjusting the
-#' bandwith. By default, the bandwidth will set to the average distances between
-#' adjacent vertices. The `smoothness` factor can then be used to adjust this
-#' calculated bandwidth, values greater than 1 will lead to more smoothing,
+#' bandwith. By default, the bandwidth will be set to the average distances
+#' between adjacent vertices. The `smoothness` factor can then be used to adjust
+#' this calculated bandwidth, values greater than 1 will lead to more smoothing,
 #' values less than 1 will lead to less smoothing. Alternatively, the bandwidth
 #' can be chosen manually with the `bandwidth` argument. Typically, users will
 #' need to explore a range of bandwidths to determine which yields the best
@@ -101,7 +101,7 @@ smooth_ksmooth <- function(x, wrap = FALSE, smoothness = 1, bandwidth,
 
   # estimate bandwith
   if (missing(bandwidth)) {
-    d_orig <- smoothr:::point_distance(x)
+    d_orig <- point_distance(x)
     bandwidth <- smoothness * mean(d_orig)
   }
   stopifnot(is.numeric(bandwidth), length(bandwidth) == 1, bandwidth > 0)

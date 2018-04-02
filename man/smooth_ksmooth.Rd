@@ -48,9 +48,9 @@ effects is dependent on the bandwidth of the smoothing kernel. Therefore,
 choosing a sensible bandwidth is critical when using this method. The choice
 of bandwidth will be dependent on the projection, scale, and desired amount
 of smoothing and generalization. The are two methods of adjusting the
-bandwith. By default, the bandwidth will set to the average distances between
-adjacent vertices. The \code{smoothness} factor can then be used to adjust this
-calculated bandwidth, values greater than 1 will lead to more smoothing,
+bandwith. By default, the bandwidth will be set to the average distances
+between adjacent vertices. The \code{smoothness} factor can then be used to adjust
+this calculated bandwidth, values greater than 1 will lead to more smoothing,
 values less than 1 will lead to less smoothing. Alternatively, the bandwidth
 can be chosen manually with the \code{bandwidth} argument. Typically, users will
 need to explore a range of bandwidths to determine which yields the best
