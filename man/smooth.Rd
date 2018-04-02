@@ -44,11 +44,14 @@ applies Gaussian kernel regression to smooth the resulting points.
 Smoothing parameters:
 \itemize{
 \item \code{smoothness}: a positive number controlling the smoothness and level of
-generalization. At the default value of 1, an optimal bandwidth for the
-Guassian kernel based on the data is used. Values greater than 1 increase
-the bandwidth, yielding more highly smoothed and generalized features,
-and values less than 1 decrease the bandwidth, yielding less smoothed and
-generalized features.
+generalization. At the default value of 1, the  bandwidth is chosen as
+the mean distance between adjacent vertices. Values greater than 1
+increase the bandwidth, yielding more highly smoothed and generalized
+features, and values less than 1 decrease the bandwidth, yielding less
+smoothed and generalized features.
+\item \code{bandwidth}: the bandwidth of the Guassian kernel. If this argument is
+supplied, then \code{smoothness} is ignored and an optimal bandwith is not
+estimated.
 \item \code{n}: number of times to split each line segment in the densification
 step. Ignored if \code{max_distance} is specified.
 \item \code{max_distance}: the maximum distance between vertices in the resulting

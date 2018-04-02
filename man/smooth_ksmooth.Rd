@@ -4,7 +4,8 @@
 \alias{smooth_ksmooth}
 \title{Kernel smooth}
 \usage{
-smooth_ksmooth(x, wrap = FALSE, smoothness = 1, n = 10L, max_distance)
+smooth_ksmooth(x, wrap = FALSE, smoothness = 1, bandwidth, n = 10L,
+  max_distance)
 }
 \arguments{
 \item{x}{numeric matrix; 2-column matrix of coordinates.}
@@ -14,12 +15,15 @@ as for polygons and closed lines, to ensure a smooth edge.}
 
 \item{smoothness}{numeric; a parameter controlling the bandwidth of the
 Gaussian kernel, and therefore the smoothness and level of generalization.
-For each singlepart feature, a bandwidth is calculated from the data as
-\code{n^(-1/5)*sqrt((n^2-1)/12)}, where \code{n} is the number of vertices. The
-\code{smoothness} parameter is a multiplier of this estimated bandwidth, with
-values greater than 1 yielding more highly smoothed and generalized
-features and values less than 1 yielding less smoothed and generalized
-features.}
+By default, the bandwidth is chosen as the mean distance between adjacent
+points. The \code{smoothness} parameter is a multiplier of this chosen
+bandwidth, with values greater than 1 yielding more highly smoothed and
+generalized features and values less than 1 yielding less smoothed and
+generalized features.}
+
+\item{bandwidth}{numeric; the bandwidth of the Guassian kernel. If this
+argument is supplied, then \code{smoothness} is ignored and an optimal bandwith
+is not estimated.}
 
 \item{n}{integer; number of times to split each line segment for
 \code{\link[=smooth_densify]{smooth_densify()}}. Ignored if \code{max_distance} is specified.}
@@ -39,6 +43,19 @@ called to generate additional vertices, and the smoothing is applied to this
 densified set of vertices.
 }
 \details{
+Kernel smoothing both smooths and generalizes curves, and the extent of these
+effects is dependent on the bandwidth of the smoothing kernel. Therefore,
+choosing a sensible bandwidth is critical when using this method. The choice
+of bandwidth will be dependent on the projection, scale, and desired amount
+of smoothing and generalization. The are two methods of adjusting the
+bandwith. By default, the bandwidth will set to the average distances between
+adjacent vertices. The \code{smoothness} factor can then be used to adjust this
+calculated bandwidth, values greater than 1 will lead to more smoothing,
+values less than 1 will lead to less smoothing. Alternatively, the bandwidth
+can be chosen manually with the \code{bandwidth} argument. Typically, users will
+need to explore a range of bandwidths to determine which yields the best
+results for their situation.
+
 This function works on matrices of points and is generally not called
 directly. Instead, use \code{\link[=smooth]{smooth()}} with \code{method = "ksmooth"} to apply this
 smoothing algorithm to spatial features.
@@ -56,8 +73,7 @@ lines(m_smooth, lwd = 3, col = "red")
 
 # lines can also be smoothed
 l <- jagged_lines$geometry[[2]][]
-l_smooth <- smooth_ksmooth(l, wrap = FALSE, max_distance = 0.05,
-                           smoothness = 2)
+l_smooth <- smooth_ksmooth(l, wrap = FALSE, max_distance = 0.05)
 plot(l, type = "l", col = "black", lwd = 3, axes = FALSE, xlab = NA,
      ylab = NA)
 lines(l_smooth, lwd = 3, col = "red")

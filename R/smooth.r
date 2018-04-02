@@ -27,11 +27,14 @@
 #'   applies Gaussian kernel regression to smooth the resulting points.
 #'   Smoothing parameters:
 #'     - `smoothness`: a positive number controlling the smoothness and level of
-#'     generalization. At the default value of 1, an optimal bandwidth for the
-#'     Guassian kernel based on the data is used. Values greater than 1 increase
-#'     the bandwidth, yielding more highly smoothed and generalized features,
-#'     and values less than 1 decrease the bandwidth, yielding less smoothed and
-#'     generalized features.
+#'     generalization. At the default value of 1, the  bandwidth is chosen as
+#'     the mean distance between adjacent vertices. Values greater than 1
+#'     increase the bandwidth, yielding more highly smoothed and generalized
+#'     features, and values less than 1 decrease the bandwidth, yielding less
+#'     smoothed and generalized features.
+#'     - `bandwidth`: the bandwidth of the Guassian kernel. If this argument is
+#'     supplied, then `smoothness` is ignored and an optimal bandwith is not
+#'     estimated.
 #'     - `n`: number of times to split each line segment in the densification
 #'     step. Ignored if `max_distance` is specified.
 #'     - `max_distance`: the maximum distance between vertices in the resulting
