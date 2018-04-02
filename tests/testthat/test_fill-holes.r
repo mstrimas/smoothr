@@ -28,8 +28,8 @@ test_that("fill_holes() works for different input formats", {
   expect_s3_class(s_sfc, "sfc")
   expect_s4_class(s_spdf, "SpatialPolygonsDataFrame")
   expect_s4_class(s_sp, "SpatialPolygons")
-  expect_equal(st_area(s_sf), st_area(s_sfc))
-  expect_equal(st_area(s_sf), st_area(st_as_sf(s_spdf)))
+  expect_equal(round(st_area(s_sf)), round(st_area(s_sfc)))
+  expect_equal(round(st_area(s_sf)), round(st_area(st_as_sf(s_spdf))))
   expect_equivalent(st_set_geometry(s_sf, NULL), s_spdf@data)
 })
 
