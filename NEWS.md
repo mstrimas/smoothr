@@ -1,4 +1,4 @@
-# smoothr 0.0.1.9000
+# smoothr 0.1.0
 
 - Remove holes in polygons with `fill_holes()`
 - Drop small lines and polygons with `drop_crumbs()`

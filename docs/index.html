@@ -5,15 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spatial Feature Smoothing • smoothr</title>
+<title>Smooth and Tidy Spatial Features • smoothr</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><meta property="og:title" content="Spatial Feature Smoothing">
-<meta property="og:description" content="Smooth spatial features (i.e. lines and polygons) to remove sharp 
-    corners and make curves appear more natural or aesthetically pleasing. Two 
-    smoothing methods are available: Chaikin's corner cutting algorithm (Chaikin
-    1974 &lt;doi:10.1016/0146-664X(74)90028-8&gt;) and spline interpolation.">
+<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><meta property="og:title" content="Smooth and Tidy Spatial Features">
+<meta property="og:description" content="Tools for smoothing and tidying spatial features (i.e. lines and 
+    polygons) to make them more aesthetically pleasing. Smooth curves, fill 
+    holes, and remove small fragments from lines and polygons.">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -32,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">smoothr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0</span>
       </span>
     </div>
 
@@ -82,15 +81,16 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#smoothr" class="anchor"></a>smoothr</h1></div>
 
-<p>The goal of <code>smoothr</code> is to offer a variety of methods for smoothing spatial features (i.e. polygons and lines). The application is to to make edges appear more natural or aesthetically pleasing, especially when converting raster data to vector format. This package offers support for both <code>sp</code> and <code>sf</code> spatial objects, and the following smoothing methods:</p>
+<p><code>smoothr</code> offers a variety of tools for smoothing and tidying spatial features (i.e. polygons and lines) to make them more aesthetically pleasing, especially when converting raster data to vector format. This package offers support for both <code>sp</code> and <code>sf</code> spatial objects. The following smoothing methods are available:</p>
 <ul>
 <li>
-<strong>Chaikin’s corner cutting algorithm</strong>: smoothing using Chaikin’s corner cutting algorithm, which iteratively replaces every point by two new points: one 1/4 of the way to the next point and one 1/4 of the way to the previous point.</li>
+<strong>Chaikin’s corner cutting algorithm</strong>: smoothing using Chaikin’s corner cutting algorithm, which iteratively replaces every point by two new points: one 1/4 of the way to the next point and one 1/4 of the way to the previous point. This method applies a moderate amount of smoothing of sharp corners without extensive generalization.</li>
 <li>
-<strong>Kernel smoothing:</strong> smoothing using Gaussian kernel regression via the <code>ksmooth()</code> function. This approach first densifies the feature (i.e. adds more vertices) then applies the kernel smoothing.</li>
+<strong>Kernel smoothing:</strong> smoothing using Gaussian kernel regression via the <code>ksmooth()</code> function. This approach first densifies the feature (i.e. adds more vertices) then applies the kernel smoothing. Kernel smoothing simultaneously smooths and generalizes curves, and can be tuned to produce extensively smoothed curves.</li>
 <li>
-<strong>Spline interpolation</strong>: smoothing using spline interpolation via the <code>spline()</code> function. This method interpolates between existing vertices and can be used when the resulting smoothed feature should pass through the vertices of the input feature.</li>
+<strong>Spline interpolation</strong>: smoothing using spline interpolation via the <code>spline()</code> function. This method interpolates between existing vertices and should be used when the resulting smoothed feature must pass through the vertices of the input feature.</li>
 </ul>
+<p>In addition to these smoothing functions, <code>smoothr</code> offers functions for filling polygon holes and dropping line and polygon fragments based on a size threshold, as well as densification (i.e. adding additional vertices along curves).</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>

@@ -1,12 +1,11 @@
 Type: Package
 Package: smoothr
-Title: Spatial Feature Smoothing
-Version: 0.0.1.9000
+Title: Smooth and Tidy Spatial Features
+Version: 0.1.0
 Authors@R: person("Matthew", "Strimas-Mackey", email = "mstrimas@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8929-7776"))
-Description: Smooth spatial features (i.e. lines and polygons) to remove sharp 
-    corners and make curves appear more natural or aesthetically pleasing. Two 
-    smoothing methods are available: Chaikin's corner cutting algorithm (Chaikin
-    1974 <doi:10.1016/0146-664X(74)90028-8>) and spline interpolation.
+Description: Tools for smoothing and tidying spatial features (i.e. lines and 
+    polygons) to make them more aesthetically pleasing. Smooth curves, fill 
+    holes, and remove small fragments from lines and polygons.
 License: GPL-3
 URL: http://strimas.com/smoothr, https://github.com/mstrimas/smoothr
 BugReports: https://github.com/mstrimas/smoothr/issues
