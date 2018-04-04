@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>smoothr: spatial feature smoothing in R • smoothr</title>
+<title>smoothr: Smooth and Tidy Spatial Features in R • smoothr</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><meta property="og:title" content="smoothr: spatial feature smoothing in R">
+<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><meta property="og:title" content="smoothr: Smooth and Tidy Spatial Features in R">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -18,7 +18,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -68,18 +68,18 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>smoothr: spatial feature smoothing in R</h1>
+      <h1>smoothr: Smooth and Tidy Spatial Features in R</h1>
             
       
       <small>Source: <a href="https://github.com/mstrimas/smoothr/blob/master/vignettes/smoothr.Rmd"><code>vignettes/smoothr.Rmd</code></a></small>
+      <p class="hidden name"><code>smoothr.Rmd</code></p>
 
     </div>
 
     
     
-<div class="contents">
 <p><code>smoothr</code> offers a variety of tools for smoothing and tidying spatial features (i.e. polygons and lines) to make them more aesthetically pleasing, especially when converting raster data to vector format. This package offers support for both <code>sp</code> and <code>sf</code> spatial objects. The following smoothing methods are available:</p>
 <ul>
 <li>
@@ -102,7 +102,7 @@
 <h2 class="hasAnchor">
 <a href="#example-data" class="anchor"></a>Example data</h2>
 <p>This package comes with two simple spatial datasets in <code>sf</code> format to test the smoothing algorithms on. <code>jagged_polygons</code> contains 9 polygons with sharp corners begging to be smoothed out:</p>
-<p><img src="smoothr_files/figure-html/jagged-polygons-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/jagged-polygons-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>Notice that these polygons have a range of complexities, some have holes, and some are mutlipart polygons. I’ve added a few flags to distinguish between the different types.</p>
 <pre><code>#&gt; Simple feature collection with 9 features and 4 fields
 #&gt; geometry type:  GEOMETRY
@@ -121,7 +121,7 @@
 #&gt; 8  8 polygon FALSE      TRUE MULTIPOLYGON (((0 0.1111111...
 #&gt; 9  9 polygon  TRUE      TRUE MULTIPOLYGON (((0.5555556 0...</code></pre>
 <p><code>jagged_lines</code> contains 9 polylines with disgustingly crooked edges.</p>
-<p><img src="smoothr_files/figure-html/jagged-lines-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/jagged-lines-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>Again, there’s a range of complexities, some lines form closed loops, and some are multipart.</p>
 <pre><code>#&gt; Simple feature collection with 9 features and 4 fields
 #&gt; geometry type:  GEOMETRY
@@ -142,7 +142,7 @@
 <p>The final dataset that comes with this package, <code>jagged_raster</code>, is a simulated occurrence probability for a species, consisting of a spatially auto-correlated raster layer with values between 0 and 1. It is a 25x25 grid of 100 square kilometer cells in a North American centered Albers Equal Area projection. This raster can be used to experiment with smoothing polygons generated from rasters.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterToPolygons">rasterToPolygons</a></span>(jagged_raster), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="ot">NA</span>) <span class="co"># set up plot extent</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(jagged_raster, <span class="dt">col =</span> <span class="kw">heat.colors</span>(<span class="dv">100</span>), <span class="dt">legend =</span> <span class="ot">FALSE</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="smoothr_files/figure-html/guass-field-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/guass-field-1.png" width="700" style="display: block; margin: auto;"></p>
 </div>
 <div id="smoothing-methods" class="section level2">
 <h2 class="hasAnchor">
@@ -159,14 +159,14 @@
   <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(p_smooth_chaikin[i, ]), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="st">"#E41A1C"</span>, 
        <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)
 }</code></pre></div>
-<p><img src="smoothr_files/figure-html/chaikin-polygons-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/chaikin-polygons-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>And for the lines:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l_smooth_chaikin &lt;-<span class="st"> </span><span class="kw"><a href="../reference/smooth.html">smooth</a></span>(jagged_lines, <span class="dt">method =</span> <span class="st">"chaikin"</span>)
 <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(jagged_lines)) {
   <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(jagged_lines[i, ]), <span class="dt">col =</span> <span class="st">"grey20"</span>, <span class="dt">lwd =</span> <span class="dv">3</span>)
   <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(l_smooth_chaikin[i, ]), <span class="dt">col =</span> <span class="st">"#E41A1C"</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)
 }</code></pre></div>
-<p><img src="smoothr_files/figure-html/chaikin-lines-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/chaikin-lines-1.png" width="700" style="display: block; margin: auto;"></p>
 </div>
 <div id="kernel-smoothing" class="section level3">
 <h3 class="hasAnchor">
@@ -180,14 +180,14 @@
   <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(p_smooth_ksmooth[i, ]), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="st">"#E41A1C"</span>, 
        <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)
 }</code></pre></div>
-<p><img src="smoothr_files/figure-html/smooth-polygons-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/smooth-polygons-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>And for the lines:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l_smooth_ksmooth &lt;-<span class="st"> </span><span class="kw"><a href="../reference/smooth.html">smooth</a></span>(jagged_lines, <span class="dt">method =</span> <span class="st">"ksmooth"</span>)
 <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(jagged_lines)) {
   <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(jagged_lines[i, ]), <span class="dt">col =</span> <span class="st">"grey20"</span>, <span class="dt">lwd =</span> <span class="dv">3</span>)
   <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(l_smooth_ksmooth[i, ]), <span class="dt">col =</span> <span class="st">"#E41A1C"</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)
 }</code></pre></div>
-<p><img src="smoothr_files/figure-html/ksmooth-lines-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/ksmooth-lines-1.png" width="700" style="display: block; margin: auto;"></p>
 </div>
 <div id="spline-interpolation" class="section level3">
 <h3 class="hasAnchor">
@@ -202,7 +202,7 @@
   <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(p_smooth_spline[i, ]), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="st">"#E41A1C"</span>, 
        <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)
 }</code></pre></div>
-<p><img src="smoothr_files/figure-html/spline-polygons-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/spline-polygons-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>And for the lines:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l_smooth_spline &lt;-<span class="st"> </span><span class="kw"><a href="../reference/smooth.html">smooth</a></span>(jagged_lines, <span class="dt">method =</span> <span class="st">"spline"</span>)
 <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(jagged_lines)) {
@@ -210,7 +210,7 @@
   <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(jagged_lines[i, ]), <span class="dt">col =</span> <span class="st">"grey20"</span>, <span class="dt">lwd =</span> <span class="dv">3</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)
   <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(l_smooth_spline[i, ]), <span class="dt">col =</span> <span class="st">"#E41A1C"</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)
 }</code></pre></div>
-<p><img src="smoothr_files/figure-html/spline-lines-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/spline-lines-1.png" width="700" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div id="other-goodies" class="section level2">
@@ -228,7 +228,7 @@ l_dense &lt;-<span class="st"> </span><span class="kw"><a href="../reference/den
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l, <span class="dt">lwd =</span> <span class="dv">5</span>)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l_dense, <span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l_dense <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(<span class="st">"MULTIPOINT"</span>), <span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="smoothr_files/figure-html/densify-n-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/densify-n-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>Or the maximum Euclidean distance between vertices (<code>max_distance</code>):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span>jagged_lines<span class="op">$</span>geometry[[<span class="dv">2</span>]]
 <span class="co"># split every segment into 2</span>
@@ -236,7 +236,7 @@ l_dense &lt;-<span class="st"> </span><span class="kw"><a href="../reference/den
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l, <span class="dt">lwd =</span> <span class="dv">5</span>)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l_dense, <span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l_dense <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(<span class="st">"MULTIPOINT"</span>), <span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="smoothr_files/figure-html/densify-md-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/densify-md-1.png" width="700" style="display: block; margin: auto;"></p>
 </div>
 <div id="drop-crumbs" class="section level3">
 <h3 class="hasAnchor">
@@ -248,7 +248,7 @@ area_thresh &lt;-<span class="st"> </span>units<span class="op">::</span><span c
 p_dropped &lt;-<span class="st"> </span><span class="kw"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span>(p, <span class="dt">threshold =</span> area_thresh)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(p, <span class="dt">col =</span> <span class="st">"black"</span>, <span class="dt">main =</span> <span class="st">"Original"</span>)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(p_dropped, <span class="dt">col =</span> <span class="st">"black"</span>, <span class="dt">main =</span> <span class="st">"After drop_crumbs()"</span>)</code></pre></div>
-<p><img src="smoothr_files/figure-html/drop-crumbs-polygons-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/drop-crumbs-polygons-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>And, to remove lines shorter than 25 miles:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span>jagged_lines<span class="op">$</span>geometry[<span class="dv">8</span>]
 <span class="co"># note that any units can be used</span>
@@ -257,7 +257,7 @@ length_thresh &lt;-<span class="st"> </span>units<span class="op">::</span><span
 l_dropped &lt;-<span class="st"> </span><span class="kw"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span>(l, <span class="dt">threshold =</span> length_thresh)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l, <span class="dt">lwd =</span> <span class="dv">5</span>, <span class="dt">main =</span> <span class="st">"Original"</span>)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(l_dropped, <span class="dt">lwd =</span> <span class="dv">5</span>, <span class="dt">main =</span> <span class="st">"After drop_crumbs()"</span>)</code></pre></div>
-<p><img src="smoothr_files/figure-html/drop-crumbs-lines-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/drop-crumbs-lines-1.png" width="700" style="display: block; margin: auto;"></p>
 </div>
 <div id="fill-holes" class="section level3">
 <h3 class="hasAnchor">
@@ -270,7 +270,7 @@ p_dropped &lt;-<span class="st"> </span><span class="kw"><a href="../reference/f
 <span class="co"># plot</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(p, <span class="dt">col =</span> <span class="st">"black"</span>, <span class="dt">main =</span> <span class="st">"Original"</span>)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(p_dropped, <span class="dt">col =</span> <span class="st">"black"</span>, <span class="dt">main =</span> <span class="st">"After fill_holes()"</span>)</code></pre></div>
-<p><img src="smoothr_files/figure-html/fill-polygons-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/fill-polygons-1.png" width="700" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div id="raster-to-polygon-conversion" class="section level2">
@@ -285,31 +285,31 @@ r &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentat
 r_poly &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterToPolygons">rasterToPolygons</a></span>(r, <span class="cf">function</span>(x){x <span class="op">==</span><span class="st"> </span><span class="dv">1</span>}, <span class="dt">dissolve =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>()
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(r_poly, <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="st">"grey20"</span>, <span class="dt">lwd =</span> <span class="fl">1.5</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="smoothr_files/figure-html/polygonize-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/polygonize-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>To start cleaning this up, let’s remove all the small polygons resulting from a single raster cell. Recall that the cells is this raster are 100 square kilometers each.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r_poly_dropped &lt;-<span class="st"> </span><span class="kw"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span>(r_poly, <span class="kw"><a href="http://www.rdocumentation.org/packages/units/topics/set_units">set_units</a></span>(<span class="dv">101</span>, km<span class="op">^</span><span class="dv">2</span>))
 <span class="co"># plot</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterToPolygons">rasterToPolygons</a></span>(r), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="ot">NA</span>) <span class="co"># set up plot extent</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(r_poly_dropped, <span class="dt">col =</span> <span class="st">"#4DAF4A"</span>, <span class="dt">border =</span> <span class="st">"grey20"</span>, <span class="dt">lwd =</span> <span class="fl">1.5</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="smoothr_files/figure-html/raster-drop-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/raster-drop-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>There are two holes in the large central polygon. Next, let’s fill in the smaller of the two holes, which is two raster cells (200 square kilometers) in size, but keep the larger one.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r_poly_filled &lt;-<span class="st"> </span><span class="kw"><a href="../reference/fill_holes.html">fill_holes</a></span>(r_poly_dropped, <span class="kw"><a href="http://www.rdocumentation.org/packages/units/topics/set_units">set_units</a></span>(<span class="dv">201</span>, km<span class="op">^</span><span class="dv">2</span>))
 <span class="co"># plot</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterToPolygons">rasterToPolygons</a></span>(r), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="ot">NA</span>) <span class="co"># set up plot extent</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(r_poly_filled, <span class="dt">col =</span> <span class="st">"#4DAF4A"</span>, <span class="dt">border =</span> <span class="st">"grey20"</span>, <span class="dt">lwd =</span> <span class="fl">1.5</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="smoothr_files/figure-html/raster-fill-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/raster-fill-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>Finally, to make this more aesthetically pleasing, I’ll smooth out those sharp edges.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r_poly_smooth &lt;-<span class="st"> </span><span class="kw"><a href="../reference/smooth.html">smooth</a></span>(r_poly_filled, <span class="dt">method =</span> <span class="st">"ksmooth"</span>)
 <span class="co"># plot</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterToPolygons">rasterToPolygons</a></span>(r), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="ot">NA</span>) <span class="co"># set up plot extent</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(r_poly_smooth, <span class="dt">col =</span> <span class="st">"#4DAF4A"</span>, <span class="dt">border =</span> <span class="st">"grey20"</span>, <span class="dt">lwd =</span> <span class="fl">1.5</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="smoothr_files/figure-html/smooth-raster-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/smooth-raster-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>For a greater degree of smoothing and generalization, increase the <code>smoothness</code> parameter:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r_poly_smooth &lt;-<span class="st"> </span><span class="kw"><a href="../reference/smooth.html">smooth</a></span>(r_poly_filled, <span class="dt">method =</span> <span class="st">"ksmooth"</span>, <span class="dt">smoothness =</span> <span class="dv">2</span>)
 <span class="co"># plot</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterToPolygons">rasterToPolygons</a></span>(r), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="ot">NA</span>) <span class="co"># set up plot extent</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(r_poly_smooth, <span class="dt">col =</span> <span class="st">"#4DAF4A"</span>, <span class="dt">border =</span> <span class="st">"grey20"</span>, <span class="dt">lwd =</span> <span class="fl">1.5</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="smoothr_files/figure-html/smooth-raster-more-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smoothr_files/figure-html/smooth-raster-more-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>Nice, so much easier on the eyes!</p>
 </div>
 <div id="references" class="section level2">
@@ -330,7 +330,6 @@ r_poly &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocum
 <li><a href="https://stackoverflow.com/questions/26087772/26089377">Create polygon from set of points distributed</a></li>
 <li><a href="https://gis.stackexchange.com/questions/24827/24929">Smoothing polygons in contour map?</a></li>
 </ul>
-</div>
 </div>
   </div>
 
@@ -362,6 +361,8 @@ r_poly &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocum
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>

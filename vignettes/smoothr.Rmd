@@ -1,5 +1,5 @@
 ---
-title: "smoothr: spatial feature smoothing in R"
+title: "smoothr: Smooth and Tidy Spatial Features in R"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{smoothr}

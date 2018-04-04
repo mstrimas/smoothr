@@ -33,7 +33,7 @@
 #'     features, and values less than 1 decrease the bandwidth, yielding less
 #'     smoothed and generalized features.
 #'     - `bandwidth`: the bandwidth of the Guassian kernel. If this argument is
-#'     supplied, then `smoothness` is ignored and an optimal bandwith is not
+#'     supplied, then `smoothness` is ignored and an optimal bandwidth is not
 #'     estimated.
 #'     - `n`: number of times to split each line segment in the densification
 #'     step. Ignored if `max_distance` is specified.

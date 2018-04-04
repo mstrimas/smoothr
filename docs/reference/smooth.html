@@ -41,6 +41,8 @@ them appear more aesthetically pleasing and natural." />
 <![endif]-->
 
 
+
+
   </head>
 
   <body>
@@ -87,6 +89,7 @@ them appear more aesthetically pleasing and natural." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -94,11 +97,12 @@ them appear more aesthetically pleasing and natural." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Smooth a spatial feature</h1>
     <small>Source: <a href='https://github.com/mstrimas/smoothr/blob/master/R/smooth.r'><code>R/smooth.r</code></a></small>
+    <p class="hidden name"><code>smooth.Rd</code></p>
     </div>
 
     
@@ -157,7 +161,7 @@ increase the bandwidth, yielding more highly smoothed and generalized
 features, and values less than 1 decrease the bandwidth, yielding less
 smoothed and generalized features.</p></li>
 <li><p><code>bandwidth</code>: the bandwidth of the Guassian kernel. If this argument is
-supplied, then <code>smoothness</code> is ignored and an optimal bandwith is not
+supplied, then <code>smoothness</code> is ignored and an optimal bandwidth is not
 estimated.</p></li>
 <li><p><code>n</code>: number of times to split each line segment in the densification
 step. Ignored if <code>max_distance</code> is specified.</p></li>
@@ -192,8 +196,8 @@ distance.</p></li>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='smooth_chaikin.html'>smooth_chaikin()</a></code> <code><a href='smooth_ksmooth.html'>smooth_ksmooth()</a></code> <code><a href='smooth_spline.html'>smooth_spline()</a></code>
-<code><a href='smooth_densify.html'>smooth_densify()</a></code></p>
+    <div class='dont-index'><p><code><a href='smooth_chaikin.html'>smooth_chaikin()</a></code> <code><a href='smooth_ksmooth.html'>smooth_ksmooth()</a></code> <code><a href='smooth_spline.html'>smooth_spline()</a></code>
+<code><a href='smooth_densify.html'>smooth_densify()</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -260,6 +264,8 @@ distance.</p></li>
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

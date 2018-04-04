@@ -50,7 +50,7 @@ increase the bandwidth, yielding more highly smoothed and generalized
 features, and values less than 1 decrease the bandwidth, yielding less
 smoothed and generalized features.
 \item \code{bandwidth}: the bandwidth of the Guassian kernel. If this argument is
-supplied, then \code{smoothness} is ignored and an optimal bandwith is not
+supplied, then \code{smoothness} is ignored and an optimal bandwidth is not
 estimated.
 \item \code{n}: number of times to split each line segment in the densification
 step. Ignored if \code{max_distance} is specified.

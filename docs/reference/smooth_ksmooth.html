@@ -44,6 +44,8 @@ densified set of vertices." />
 <![endif]-->
 
 
+
+
   </head>
 
   <body>
@@ -90,6 +92,7 @@ densified set of vertices." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -97,11 +100,12 @@ densified set of vertices." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Kernel smooth</h1>
     <small>Source: <a href='https://github.com/mstrimas/smoothr/blob/master/R/smooth-ksmooth.r'><code>R/smooth-ksmooth.r</code></a></small>
+    <p class="hidden name"><code>smooth_ksmooth.Rd</code></p>
     </div>
 
     
@@ -140,7 +144,7 @@ generalized features.</p></td>
     <tr>
       <th>bandwidth</th>
       <td><p>numeric; the bandwidth of the Guassian kernel. If this
-argument is supplied, then <code>smoothness</code> is ignored and an optimal bandwith
+argument is supplied, then <code>smoothness</code> is ignored and an optimal bandwidth
 is not estimated.</p></td>
     </tr>
     <tr>
@@ -167,7 +171,7 @@ effects is dependent on the bandwidth of the smoothing kernel. Therefore,
 choosing a sensible bandwidth is critical when using this method. The choice
 of bandwidth will be dependent on the projection, scale, and desired amount
 of smoothing and generalization. The are two methods of adjusting the
-bandwith. By default, the bandwidth will be set to the average distances
+bandwidth. By default, the bandwidth will be set to the average distances
 between adjacent vertices. The <code>smoothness</code> factor can then be used to adjust
 this calculated bandwidth, values greater than 1 will lead to more smoothing,
 values less than 1 will lead to less smoothing. Alternatively, the bandwidth
@@ -188,7 +192,7 @@ StackExchange answers:</p><ul>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='smooth.html'>smooth()</a></code></p>
+    <div class='dont-index'><p><code><a href='smooth.html'>smooth()</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -250,6 +254,8 @@ StackExchange answers:</p><ul>
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

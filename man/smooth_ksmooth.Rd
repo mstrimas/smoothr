@@ -22,7 +22,7 @@ generalized features and values less than 1 yielding less smoothed and
 generalized features.}
 
 \item{bandwidth}{numeric; the bandwidth of the Guassian kernel. If this
-argument is supplied, then \code{smoothness} is ignored and an optimal bandwith
+argument is supplied, then \code{smoothness} is ignored and an optimal bandwidth
 is not estimated.}
 
 \item{n}{integer; number of times to split each line segment for
@@ -48,7 +48,7 @@ effects is dependent on the bandwidth of the smoothing kernel. Therefore,
 choosing a sensible bandwidth is critical when using this method. The choice
 of bandwidth will be dependent on the projection, scale, and desired amount
 of smoothing and generalization. The are two methods of adjusting the
-bandwith. By default, the bandwidth will be set to the average distances
+bandwidth. By default, the bandwidth will be set to the average distances
 between adjacent vertices. The \code{smoothness} factor can then be used to adjust
 this calculated bandwidth, values greater than 1 will lead to more smoothing,
 values less than 1 will lead to less smoothing. Alternatively, the bandwidth
