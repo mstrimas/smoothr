@@ -1,10 +1,9 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-smoothr
-=======
+smoothr <img src="hex-logo/smoothr.png" align="right" width=140/>
+=================================================================
 
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
-[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Travis build
 status](https://travis-ci.org/mstrimas/smoothr.svg?branch=master)](https://travis-ci.org/mstrimas/smoothr)
 [![AppVeyor build
