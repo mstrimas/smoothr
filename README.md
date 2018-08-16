@@ -14,19 +14,19 @@ status](https://codecov.io/gh/mstrimas/smoothr/branch/master/graph/badge.svg)](h
 [![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/smoothr?color=brightgreen)](http://www.r-pkg.org/pkg/smoothr)
 
 `smoothr` offers a variety of tools for smoothing and tidying spatial
-features (i.e. polygons and lines) to make them more aesthetically
+features (i.e. polygons and lines) to make them more aesthetically
 pleasing, especially when converting raster data to vector format. This
 package offers support for both `sp` and `sf` spatial objects. The
 following smoothing methods are available:
 
--   **Chaikin's corner cutting algorithm**: smoothing using Chaikin's
+-   **Chaikin’s corner cutting algorithm**: smoothing using Chaikin’s
     corner cutting algorithm, which iteratively replaces every point by
     two new points: one 1/4 of the way to the next point and one 1/4 of
     the way to the previous point. This method applies a moderate amount
     of smoothing of sharp corners without extensive generalization.
 -   **Kernel smoothing:** smoothing using Gaussian kernel regression via
     the `ksmooth()` function. This approach first densifies the feature
-    (i.e. adds more vertices) then applies the kernel smoothing. Kernel
+    (i.e. adds more vertices) then applies the kernel smoothing. Kernel
     smoothing simultaneously smooths and generalizes curves, and can be
     tuned to produce extensively smoothed curves.
 -   **Spline interpolation**: smoothing using spline interpolation via
@@ -36,8 +36,10 @@ following smoothing methods are available:
 
 In addition to these smoothing functions, `smoothr` offers functions for
 filling polygon holes and dropping line and polygon fragments based on a
-size threshold, as well as densification (i.e. adding additional
-vertices along curves).
+size threshold, as well as densification (i.e. adding additional
+vertices along curves). **Note that smoothing can give the false
+perception of higher precision than actually exists in the data, so
+users should be catious when applying these algorithms.**
 
 Installation
 ------------
@@ -80,7 +82,7 @@ methods available and plot a comparison:
 
 `jagged_lines` contains 9 lines with sharp edges for smoothing, some are
 closed loops requiring special treatment of the endpoints and some are
-multipart lines. For variety, let's smooth these using spline
+multipart lines. For variety, let’s smooth these using spline
 interpolation:
 
     par(mar = c(0, 0, 0, 0), oma = c(4, 0, 0, 0), mfrow = c(3, 3))
@@ -107,12 +109,12 @@ interpolation:
 `smoothr` contains a handful of other tools to help clean up spatial
 features and make them look cleaner and more aesthetically pleasing.
 
--   `densify()` (and it's alias `smooth(x, method = "densify")`)
+-   `densify()` (and it’s alias `smooth(x, method = "densify")`)
     densifies lines and polygons, adding additional vertices along line
     segments.
 -   `drop_crumbs()` removes small lines or polygons based on a length or
     area threshold.
--   `fill_holes()` fills (i.e. removes) holes from polygons when they
+-   `fill_holes()` fills (i.e. removes) holes from polygons when they
     are below a given area threshold.
 
 See the documentation for these functions for full details.
