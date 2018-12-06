@@ -34,7 +34,7 @@ fill_holes.sfc <- function(x, threshold) {
     stop("fill_holes() only works for polygon features.")
   }
   # convert threshold to crs units
-  area_units <- units::set_units(1, sf::st_area(x[1]), mode = "standard")
+  area_units <- units::set_units(1, units(sf::st_area(x[1])), mode = "standard")
   threshold <- units::set_units(threshold, area_units, mode = "standard")
   stopifnot(threshold > units::set_units(0, area_units, mode = "standard"))
 

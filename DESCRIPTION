@@ -1,7 +1,7 @@
 Type: Package
 Package: smoothr
 Title: Smooth and Tidy Spatial Features
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: person("Matthew", "Strimas-Mackey", email = "mstrimas@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8929-7776"))
 Description: Tools for smoothing and tidying spatial features (i.e. lines and 
     polygons) to make them more aesthetically pleasing. Smooth curves, fill 
@@ -28,4 +28,4 @@ VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 6.1.1

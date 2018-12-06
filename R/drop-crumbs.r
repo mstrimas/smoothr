@@ -63,7 +63,7 @@ drop_crumbs.sfc <- function(x, threshold, drop_empty = TRUE) {
                "and geometry types cannot be mixed."))
   }
   # convert threshold to crs units
-  size_units <- units::set_units(1, size_fxn(x[1]), mode = "standard")
+  size_units <- units::set_units(1, units(size_fxn(x[1])), mode = "standard")
   threshold <- units::set_units(threshold, size_units, mode = "standard")
   stopifnot(threshold > units::set_units(0, size_units, mode = "standard"))
 
