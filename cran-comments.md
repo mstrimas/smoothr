@@ -1,6 +1,6 @@
 # smoothr 0.1.1
 
-Fixed bug in `fill_holes()` and `drop_crumbs()` that was raising a warning when `units::set_units()` was being used.
+Fixed bug in `fill_holes()` and `drop_crumbs()` caused by changes to `units::set_units()` in new version of `units` package.
 
 ## Test environments
 

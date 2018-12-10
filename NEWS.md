@@ -1,8 +1,7 @@
 # smoothr 0.1.1
 
 - Fixed bug in `fill_holes()` and `drop_crumbs()` that was raising a warning 
-when `units::set_units()` was being used. Issue only raised a warning, didn't 
-result in erroneous results.
+when `units::set_units()` was being used. 
 
 # smoothr 0.1.0
 
