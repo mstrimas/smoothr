@@ -8,21 +8,25 @@
 
 <title>Chaikin's corner cutting algorithm — smooth_chaikin • smoothr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,12 +34,13 @@
 
 
 
-<meta property="og:title" content="Chaikin's corner cutting algorithm — smooth_chaikin" />
 
+<meta property="og:title" content="Chaikin's corner cutting algorithm — smooth_chaikin" />
 <meta property="og:description" content="Chaikin's corner cutting algorithm smooths a curve by iteratively replacing
 every point by two new points: one 1/4 of the way to the next point and one
 1/4 of the way to the previous point." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -47,6 +52,7 @@ every point by two new points: one 1/4 of the way to the next point and one
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -65,7 +71,7 @@ every point by two new points: one 1/4 of the way to the next point and one
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">smoothr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -73,7 +79,7 @@ every point by two new points: one 1/4 of the way to the next point and one
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -87,11 +93,10 @@ every point by two new points: one 1/4 of the way to the next point and one
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/mstrimas/smoothr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -102,6 +107,7 @@ every point by two new points: one 1/4 of the way to the next point and one
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -113,15 +119,13 @@ every point by two new points: one 1/4 of the way to the next point and one
     </div>
 
     <div class="ref-description">
-    
     <p>Chaikin's corner cutting algorithm smooths a curve by iteratively replacing
 every point by two new points: one 1/4 of the way to the next point and one
 1/4 of the way to the previous point.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>smooth_chaikin</span>(<span class='no'>x</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>refinements</span> <span class='kw'>=</span> <span class='fl'>3L</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -139,61 +143,55 @@ as for polygons and closed lines, to ensure a smooth edge.</p></td>
       <td><p>integer; number of corner cutting iterations to apply.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A matrix with the coordinates of the smoothed curve.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function works on matrices of points and is generally not called
 directly. Instead, use <code><a href='smooth.html'>smooth()</a></code> with <code>method = "chaikin"</code> to apply this
 smoothing algorithm to spatial features.</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>The original reference for Chaikin's corner cutting algorithm is:</p><ul>
 <li><p><code>Chaikin, G. An algorithm for high speed curve generation. Computer Graphics and Image Processing 3 (1974), 346–349</code></p></li>
 </ul>
-    <p>This implementation was inspired by the following StackOverflow answer:</p><ul>
+
+<p>This implementation was inspired by the following StackOverflow answer:</p><ul>
 <li><p><a href='https://stackoverflow.com/a/47255374/3591386'>Where to find Python implementation of Chaikin's corner cutting algorithm?</a></p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='smooth.html'>smooth()</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># smooth_chaikin works on matrices of coordinates</span>
 <span class='co'># use the matrix of coordinates defining a polygon as an example</span>
 <span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='no'>jagged_polygons</span>$<span class='no'>geometry</span><span class='kw'>[[</span><span class='fl'>2</span>]]<span class='kw'>[[</span><span class='fl'>1</span>]]
 <span class='no'>m_smooth</span> <span class='kw'>&lt;-</span> <span class='fu'>smooth_chaikin</span>(<span class='no'>m</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/class'>class</a></span>(<span class='no'>m</span>)</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/class'>class</a></span>(<span class='no'>m_smooth</span>)</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>m</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"l"</span>, <span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/lines'>lines</a></span>(<span class='no'>m_smooth</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='img'><img src='smooth_chaikin-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>m</span>)</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>m_smooth</span>)</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>m</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"l"</span>, <span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='no'>m_smooth</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='img'><img src='smooth_chaikin-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># smooth is a wrapper for smooth_chaikin that works on spatial features</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>sf</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
 <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='no'>jagged_polygons</span>$<span class='no'>geometry</span><span class='kw'>[[</span><span class='fl'>2</span>]]
 <span class='no'>p_smooth</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='smooth.html'>smooth</a></span>(<span class='no'>p</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"chaikin"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/class'>class</a></span>(<span class='no'>p</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/class'>class</a></span>(<span class='no'>p_smooth</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>p</span>)</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>p_smooth</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='smooth_chaikin-2.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>p</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>p_smooth</span>)</div><div class='output co'>#&gt; [1] "XY"      "POLYGON" "sfg"    </div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(<span class='no'>p</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(<span class='no'>p_smooth</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='smooth_chaikin-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#references">References</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -201,13 +199,16 @@ smoothing algorithm to spatial features.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

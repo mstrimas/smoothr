@@ -4,8 +4,14 @@
 \alias{smooth_ksmooth}
 \title{Kernel smooth}
 \usage{
-smooth_ksmooth(x, wrap = FALSE, smoothness = 1, bandwidth, n = 10L,
-  max_distance)
+smooth_ksmooth(
+  x,
+  wrap = FALSE,
+  smoothness = 1,
+  bandwidth,
+  n = 10L,
+  max_distance
+)
 }
 \arguments{
 \item{x}{numeric matrix; 2-column matrix of coordinates.}

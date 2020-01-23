@@ -1,3 +1,7 @@
+# smoothr 0.1.2
+
+- Importing classes from `raster` package that are required for loading the `jagged_raster` object. This is to address an email sent by Brian Ripley highlighting this issue.
+
 # smoothr 0.1.1
 
 - Fixed bug in `fill_holes()` and `drop_crumbs()` that was raising a warning 

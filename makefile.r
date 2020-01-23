@@ -6,7 +6,7 @@ devtools::document()
 
 devtools::build()
 f <- list.files("..", "smoothr.*gz$", full.names = TRUE)
-devtools::install_local("../smoothr")
+devtools::install_local("../smoothr", force = TRUE)
 unlink(f)
 
 devtools::test()
@@ -18,3 +18,8 @@ pkgdown::build_site()
 file.copy(list.files(".", "README.*png", full.names = TRUE), "docs/")
 dir.create("docs/hex-logo/")
 file.copy("hex-logo/smoothr.png", "docs/hex-logo/")
+
+# checks
+devtools::check_win_devel()
+devtools::check_win_release()
+rhub::check_for_cran()

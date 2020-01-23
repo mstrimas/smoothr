@@ -1,20 +1,18 @@
-# smoothr 0.1.1
+# smoothr 0.1.2
 
-## Resubmission
-
-- Fixed [additional issues for noLD](https://www.stats.ox.ac.uk/pub/bdr/noLD/smoothr.out)
-
-## Submission
-
-Fixed bug in `fill_holes()` and `drop_crumbs()` caused by changes to `units::set_units()` in new version of `units` package.
+Importing classes from `raster` package that are required for loading the `jagged_raster` object. This is to address an email sent by Brian Ripley highlighting this issue.
 
 ## Test environments
 
-- local OS X install, R 3.5.1
-- OS X (travis-ci), R 3.5.1
-- ubuntu 14.04 (travis-ci), R 3.5.0
-- Windows (appveyor), R 3.5.1
+- local OS X install, R 3.6.2
+- OS X (travis-ci), R 3.6.2
+- ubuntu 14.04 (travis-ci), 3.6.2
+- Windows (appveyor), R 3.6.2
 - win-builder
+- Rhub
+  - Windows Server 2008 R2 SP1, R-devel, 32/64 bit
+  - Ubuntu Linux 16.04 LTS, R-release, GCC
+  - Fedora Linux, R-devel, clang, gfortran
 
 ## R CMD check results
 

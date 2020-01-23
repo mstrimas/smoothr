@@ -306,7 +306,7 @@ Nice, so much easier on the eyes!
 Chaikin's corner cutting algorithm:
 
 - Chaikin, G. An algorithm for high speed curve generation. Computer Graphics and Image Processing 3 (1974), 346–349
-- http://graphics.cs.ucdavis.edu/education/CAGDNotes/Chaikins-Algorithm.pdf
+-http://www.cs.unc.edu/~dm/UNC/COMP258/LECTURES/Chaikins-Algorithm.pdf
 - [Where to find Python implementation of Chaikin's corner cutting algorithm?](https://stackoverflow.com/a/47255374/3591386)
 
 Kernel smoothing:

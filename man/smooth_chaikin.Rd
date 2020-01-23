@@ -49,7 +49,7 @@ plot(p_smooth, border = "red", add = TRUE)
 \references{
 The original reference for Chaikin's corner cutting algorithm is:
 \itemize{
-\item \code{Chaikin, G. An algorithm for high speed curve generation. Computer Graphics and Image Processing 3 (1974), 346–349}
+\item \verb{Chaikin, G. An algorithm for high speed curve generation. Computer Graphics and Image Processing 3 (1974), 346–349}
 }
 
 This implementation was inspired by the following StackOverflow answer:
