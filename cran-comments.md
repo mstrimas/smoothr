@@ -6,7 +6,7 @@ Importing classes from `raster` package that are required for loading the `jagge
 
 - local OS X install, R 3.6.2
 - OS X (travis-ci), R 3.6.2
-- ubuntu 14.04 (travis-ci), 3.6.2
+- ubuntu 14.04 (travis-ci), R-release, R-oldrel
 - Windows (appveyor), R 3.6.2
 - win-builder
 - Rhub
