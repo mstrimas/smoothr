@@ -20,4 +20,4 @@ Importing classes from `raster` package that are required for loading the `jagge
 
 ## Reverse dependencies
 
-No reverse dependencies.
+Reverse dependencies checked with `revdepcheck`, I reverse dependecy found with no issues.
