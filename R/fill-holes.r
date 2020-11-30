@@ -33,6 +33,7 @@ fill_holes.sfc <- function(x, threshold) {
   if (!all(sf::st_is(x, c("POLYGON", "MULTIPOLYGON")))) {
     stop("fill_holes() only works for polygon features.")
   }
+
   # zero threshold returns the input features unchanged
   thresh_nounits <- as.numeric(threshold)
   if (thresh_nounits == 0) {
@@ -41,15 +42,12 @@ fill_holes.sfc <- function(x, threshold) {
     stop("threshold cannont be negative")
   }
 
-
   # convert threshold to crs units
-  area_units <-
-  {
-    if (is.na(st_crs(x)))
-      set_units(1, m^2)
-    else
-      units::set_units(1, units(sf::st_area(x[1])), mode = "standard")
-
+  if (is.na(sf::st_crs(x))) {
+    area_units <- units::set_units(1, "m2")
+  } else {
+    area_units <- units::set_units(1, units(sf::st_area(x[1])),
+                                   mode = "standard")
   }
   threshold <- units::set_units(threshold, area_units, mode = "standard")
 
