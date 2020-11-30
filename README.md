@@ -38,9 +38,15 @@ following smoothing methods are available:
 In addition to these smoothing functions, `smoothr` offers functions for
 filling polygon holes and dropping line and polygon fragments based on a
 size threshold, as well as densification (i.e. adding additional
-vertices along curves). **Note that smoothing can give the false
-perception of higher precision than actually exists in the data, so
-users should be cautious when applying these algorithms.**
+vertices along curves).
+
+**When using `smoothr`, a couple important warnings should be
+considered:** 1. Smoothing can give the false perception of higher
+precision than actually exists in the data, so users should be cautious
+when applying these algorithms. 2. The smoothing algorithms used do not
+preserve topological boundaries between features, therefore this package
+is not suitable for smoothing isolines (e.g. elevation contours) or
+administrative boundaries (e.g. country borders)
 
 Installation
 ------------
@@ -79,7 +85,7 @@ methods available and plot a comparison:
            col = c("#E41A1C", "#4DAF4A", "#377EB8"),
            lwd = 2, cex = 2, box.lwd = 0, inset = 0, horiz = TRUE)
 
-<img src="README-smooth-polygons-1.png" style="display: block; margin: auto;" />
+![](README-smooth-polygons-1.png)
 
 `jagged_lines` contains 9 lines with sharp edges for smoothing, some are
 closed loops requiring special treatment of the endpoints and some are
@@ -103,7 +109,7 @@ interpolation:
            col = c("#E41A1C", "#4DAF4A", "#377EB8"),
            lwd = 2, cex = 2, box.lwd = 0, inset = 0, horiz = TRUE)
 
-<img src="README-smooth-lines-1.png" style="display: block; margin: auto;" />
+![](README-smooth-lines-1.png)
 
 ### Other goodies
 
