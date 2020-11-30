@@ -47,7 +47,11 @@ test_that("fill_holes() fails for points and lines", {
 
 test_that("fill_holes() fails for invalid thresholds", {
   expect_error(fill_holes(jagged_polygons, threshold = -1))
-  expect_error(fill_holes(jagged_polygons, threshold = 0))
   expect_error(fill_holes(jagged_polygons,
-                           threshold = set_units(1, km)))
+                          threshold = set_units(1, "km")))
+})
+
+test_that("fill_holes() does nothing when threshold = 0", {
+  p_filled <- fill_holes(jagged_polygons, threshold = 0)
+  expect_identical(jagged_polygons, p_filled)
 })

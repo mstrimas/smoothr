@@ -1,23 +1,15 @@
-# smoothr 0.1.2
+# smoothr 0.1.3
 
-Importing classes from `raster` package that are required for loading the `jagged_raster` object. This is to address an email sent by Brian Ripley highlighting this issue.
+- Allow threshold = 0 in fill_holes() [issue #4]
 
 ## Test environments
 
-- local OS X install, R 3.6.2
-- OS X (travis-ci), R 3.6.2
-- ubuntu 14.04 (travis-ci), R-release, R-oldrel
-- Windows (appveyor), R 3.6.2
-- win-builder
-- Rhub
-  - Windows Server 2008 R2 SP1, R-devel, 32/64 bit
-  - Ubuntu Linux 16.04 LTS, R-release, GCC
-  - Fedora Linux, R-devel, clang, gfortran
+- local OS X install, R 4.0.3
+- OS X (travis-ci), R 4.0.3
+- ubuntu 14.04 (travis-ci), R 4.0.3
+- Windows (appveyor), R 4.0.3
+- win-builder (devel and release)
 
 ## R CMD check results
 
 0 errors | 0 warnings | 0 notes
-
-## Reverse dependencies
-
-Reverse dependencies checked with `revdepcheck`, I reverse dependecy found with no issues.

@@ -1,3 +1,7 @@
+# smoothr 0.1.3
+
+- Allow threshold = 0 in fill_holes() [issue #4]
+
 # smoothr 0.1.2
 
 - Importing classes from `raster` package that are required for loading the `jagged_raster` object. This is to address an email sent by Brian Ripley highlighting this issue.

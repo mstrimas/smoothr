@@ -2,7 +2,7 @@
 title: "smoothr: Smooth and Tidy Spatial Features in R"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{smoothr}
+  %\VignetteIndexEntry{smoothr: Smooth and Tidy Spatial Features in R}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -73,7 +73,7 @@ The final dataset that comes with this package, `jagged_raster`, is a simulated 
 
 ```{r guass-field, results="hide", dev="png", echo=-1}
 par(mar = c(0, 0, 0, 0))
-plot(rasterToPolygons(jagged_raster), col = NA, border = NA) # set up plot extent
+plot(rasterToPolygons(jagged_raster), col = NA, border = NA)
 plot(jagged_raster, col = heat.colors(100), legend = FALSE, add = TRUE)
 ```
 

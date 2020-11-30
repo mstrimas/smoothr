@@ -2,20 +2,18 @@ unlink(list.files("man", full.names = TRUE))
 devtools::clean_vignettes()
 pkgdown::clean_site()
 
+# rebuild docs and install
 devtools::document()
-
 devtools::build()
-f <- list.files("..", "smoothr.*gz$", full.names = TRUE)
-devtools::install_local("../smoothr", force = TRUE)
-unlink(f)
 
+# local tests and checks
 devtools::test()
 devtools::check()
 
+# vignettes, readme, site
 rmarkdown::render("README.Rmd")
 devtools::build_vignettes()
 pkgdown::build_site()
-file.copy(list.files(".", "README.*png", full.names = TRUE), "docs/")
 dir.create("docs/hex-logo/")
 file.copy("hex-logo/smoothr.png", "docs/hex-logo/")
 

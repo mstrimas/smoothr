@@ -7,7 +7,7 @@
 #'   Provided either as a `units` object (see [units::set_units()]), or a
 #'   numeric threshold in the units of the coordinate reference system. If `x`
 #'   is in unprojected coordinates, a numeric threshold is assumed to be in
-#'   square meters.
+#'   square meters. A threshold of 0 will return the input polygons unchanged.
 #'
 #' @return A spatial feature, with holes filled, in the same format as the input
 #'   data.
@@ -33,10 +33,16 @@ fill_holes.sfc <- function(x, threshold) {
   if (!all(sf::st_is(x, c("POLYGON", "MULTIPOLYGON")))) {
     stop("fill_holes() only works for polygon features.")
   }
+  # zero threshold returns the input features unchanged
+  thresh_nounits <- as.numeric(threshold)
+  if (thresh_nounits == 0) {
+    return(x)
+  } else if (thresh_nounits < 0) {
+    stop("threshold cannont be negative")
+  }
   # convert threshold to crs units
   area_units <- units::set_units(1, units(sf::st_area(x[1])), mode = "standard")
   threshold <- units::set_units(threshold, area_units, mode = "standard")
-  stopifnot(threshold > units::set_units(0, area_units, mode = "standard"))
 
   x_crs <- sf::st_crs(x)
 
