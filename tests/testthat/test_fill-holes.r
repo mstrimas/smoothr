@@ -35,6 +35,20 @@ test_that("fill_holes() works for different input formats", {
   expect_equivalent(st_set_geometry(s_sf, NULL), s_spdf@data)
 })
 
+test_that("fill_holes() works for SpatVector objects", {
+  skip_if_not_installed("terra")
+  jp <- jagged_polygons[5:6, ]
+  jp_terra <- terra::vect(as(jp, "Spatial"))
+  s_terra <- expect_warning(
+    fill_holes(jp_terra, threshold = units::set_units(1000, km^2))
+  )
+  expect_s4_class(s_terra, "SpatVector")
+
+  a_diff <- terra::area(jp_terra) - terra::area(s_terra)
+  expect_lt(a_diff[1], 0)
+  expect_equal(a_diff[2], 0)
+})
+
 test_that("fill_holes() fails for points and lines", {
   point <- st_point(c(0, 0)) %>%
     st_sfc()

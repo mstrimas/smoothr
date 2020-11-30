@@ -7,7 +7,8 @@
 fill_holes(x, threshold)
 }
 \arguments{
-\item{x}{spatial polygons from either the \code{sf} or \code{sp} packages.}
+\item{x}{spatial features; lines or polygons from either the \code{sf}, \code{sp}, or
+\code{terra} packages.}
 
 \item{threshold}{an area threshold, below which holes will be removed.
 Provided either as a \code{units} object (see \code{\link[units:set_units]{units::set_units()}}), or a

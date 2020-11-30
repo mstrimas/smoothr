@@ -7,8 +7,8 @@
 densify(x, n = 10L, max_distance)
 }
 \arguments{
-\item{x}{spatial features; lines or polygons from either the \code{sf} or \code{sp}
-packages.}
+\item{x}{spatial features; lines or polygons from either the \code{sf}, \code{sp}, or
+\code{terra} packages.}
 
 \item{n}{integer; number of times to split each line segment. Ignored if
 \code{max_distance} is specified.}

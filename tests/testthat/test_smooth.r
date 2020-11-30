@@ -87,6 +87,13 @@ test_that("smooth() works for different input formats", {
   expect_equivalent(st_set_geometry(s_sf, NULL), s_spdf@data)
 })
 
+test_that("smooth() works for SpatVector objects", {
+  skip_if_not_installed("terra")
+  jp_terra <- terra::vect(as(jagged_polygons, "Spatial"))
+  s_terra <- expect_warning(smooth(jp_terra))
+  expect_s4_class(s_terra, "SpatVector")
+})
+
 test_that("smooth() preserves holes", {
   p <- jagged_polygons$geometry[[5]]
   expect_true(st_is_valid(smooth(p, method = "chaikin")))

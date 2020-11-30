@@ -6,8 +6,7 @@
 #' components. This means that, in some cases, an entire feature may be removed,
 #' while in other cases, only parts of the multipart feature will be removed.
 #'
-#' @param x spatial features; lines or polygons from either the `sf` or `sp`
-#'   packages.
+#' @inheritParams smooth
 #' @param threshold an area or length threshold, below which features will be
 #'   removed. Provided either as a `units` object (see [units::set_units()]), or
 #'   a numeric threshold in the units of the coordinate reference system. If `x`
@@ -117,4 +116,17 @@ drop_crumbs.Spatial <- function(x, threshold, drop_empty = TRUE) {
     return(NULL)
   }
   methods::as(clean, "Spatial")
+}
+
+#' @export
+drop_crumbs.SpatVector <- function(x, threshold, drop_empty = TRUE) {
+  if (!requireNamespace("terra", quietly = TRUE)) {
+    stop("Install the terra package to smooth SpatVector features.")
+  }
+  warning("SpatVector objects are converted to sf objects in smoothr. ",
+          "This conversion may introduce errors and increase the time ",
+          "required to perform smoothing.")
+  clean <- drop_crumbs(methods::as(x, "Spatial"), threshold = threshold,
+                       drop_empty = TRUE)
+  terra::vect(clean)
 }

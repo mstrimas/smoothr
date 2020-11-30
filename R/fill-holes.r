@@ -2,7 +2,7 @@
 #'
 #' Fill polygon holes that fall below a given area threshold.
 #'
-#' @param x spatial polygons from either the `sf` or `sp` packages.
+#' @inheritParams smooth
 #' @param threshold an area threshold, below which holes will be removed.
 #'   Provided either as a `units` object (see [units::set_units()]), or a
 #'   numeric threshold in the units of the coordinate reference system. If `x`
@@ -94,6 +94,20 @@ fill_holes.Spatial <- function(x, threshold) {
     return(NULL)
   }
   methods::as(clean, "Spatial")
+}
+
+#' @export
+fill_holes.SpatVector <- function(x, threshold) {
+  if (!requireNamespace("terra", quietly = TRUE)) {
+    stop("Install the terra package to smooth SpatVector features.")
+  }
+  warning("SpatVector objects are converted to sf objects in smoothr. ",
+          "This conversion may introduce errors and increase the time ",
+          "required to perform smoothing.")
+
+  # convert to sf object then back
+  clean <- fill_holes(methods::as(x, "Spatial"), threshold = threshold)
+  terra::vect(clean)
 }
 
 hole_area <- function(x, crs) {

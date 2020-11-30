@@ -13,7 +13,8 @@ knitr::opts_chunk$set(
   warning = FALSE,
   error = FALSE,
   comment = "#>",
-  fig.path = "README-"
+  fig.path = "README-",
+  fig.align = "center"
 )
 ```
 

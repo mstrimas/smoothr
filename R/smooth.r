@@ -3,8 +3,8 @@
 #' Smooth out the jagged or sharp corners of spatial lines or polygons to make
 #' them appear more aesthetically pleasing and natural.
 #'
-#' @param x spatial features; lines or polygons from either the `sf` or `sp`
-#'   packages.
+#' @param x spatial features; lines or polygons from either the `sf`, `sp`, or
+#'   `terra` packages.
 #' @param method character; specifies the type of smoothing method to use.
 #'   Possible methods are: `"chaikin"`, `"ksmooth"`, `"spline"`, and
 #'   `"densify"`. Each method has one or more parameters specifying the amount
@@ -183,4 +183,20 @@ smooth.Spatial <- function(x, method = c("chaikin", "ksmooth", "spline",
     stop(paste("No smooth method for class", class(x)))
   }
   methods::as(smoothed, "Spatial")
+}
+
+#' @export
+smooth.SpatVector <- function(x, method = c("chaikin", "ksmooth", "spline",
+                                            "densify"),
+                              ...) {
+  if (!requireNamespace("terra", quietly = TRUE)) {
+    stop("Install the terra package to smooth SpatVector features.")
+  }
+  warning("SpatVector objects are converted to sf objects in smoothr. ",
+          "This conversion may introduce errors and increase the time ",
+          "required to perform smoothing.")
+  method <- match.arg(method)
+  # convert to sp object then back
+  smoothed <- smooth(methods::as(x, "Spatial"), method = method, ...)
+  terra::vect(smoothed)
 }

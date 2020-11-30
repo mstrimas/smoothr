@@ -85,7 +85,7 @@ methods available and plot a comparison:
            col = c("#E41A1C", "#4DAF4A", "#377EB8"),
            lwd = 2, cex = 2, box.lwd = 0, inset = 0, horiz = TRUE)
 
-![](README-smooth-polygons-1.png)
+<img src="README-smooth-polygons-1.png" style="display: block; margin: auto;" />
 
 `jagged_lines` contains 9 lines with sharp edges for smoothing, some are
 closed loops requiring special treatment of the endpoints and some are
@@ -109,7 +109,7 @@ interpolation:
            col = c("#E41A1C", "#4DAF4A", "#377EB8"),
            lwd = 2, cex = 2, box.lwd = 0, inset = 0, horiz = TRUE)
 
-![](README-smooth-lines-1.png)
+<img src="README-smooth-lines-1.png" style="display: block; margin: auto;" />
 
 ### Other goodies
 

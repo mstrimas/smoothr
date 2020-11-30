@@ -62,6 +62,19 @@ test_that("drop_crumbs() works for different input formats", {
   expect_equivalent(st_set_geometry(s_sf, NULL), s_spdf@data)
 })
 
+test_that("drop_crumbs() works for SpatVector objects", {
+  skip_if_not_installed("terra")
+  jp <- jagged_polygons[7, ]
+  jp_terra <- terra::vect(as(jp, "Spatial"))
+  s_terra <- expect_warning(
+    drop_crumbs(jp_terra, threshold = units::set_units(200, km^2))
+  )
+  expect_s4_class(s_terra, "SpatVector")
+
+  a_diff <- terra::area(jp_terra) - terra::area(s_terra)
+  expect_gt(a_diff, 0)
+})
+
 test_that("drop_crumbs() fails for points", {
   point <- st_point(c(0, 0)) %>%
     st_sfc()

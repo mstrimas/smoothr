@@ -7,8 +7,8 @@
 smooth(x, method = c("chaikin", "ksmooth", "spline", "densify"), ...)
 }
 \arguments{
-\item{x}{spatial features; lines or polygons from either the \code{sf} or \code{sp}
-packages.}
+\item{x}{spatial features; lines or polygons from either the \code{sf}, \code{sp}, or
+\code{terra} packages.}
 
 \item{method}{character; specifies the type of smoothing method to use.
 Possible methods are: \code{"chaikin"}, \code{"ksmooth"}, \code{"spline"}, and

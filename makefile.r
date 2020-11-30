@@ -1,3 +1,4 @@
+# clean
 unlink(list.files("man", full.names = TRUE))
 devtools::clean_vignettes()
 pkgdown::clean_site()
@@ -11,8 +12,8 @@ devtools::test()
 devtools::check()
 
 # vignettes, readme, site
-rmarkdown::render("README.Rmd")
 devtools::build_vignettes()
+rmarkdown::render("README.Rmd")
 pkgdown::build_site()
 dir.create("docs/hex-logo/")
 file.copy("hex-logo/smoothr.png", "docs/hex-logo/")

@@ -7,8 +7,8 @@
 #' points, i.e. new points will not fall on a great circle between existing
 #' vertices, rather they'll be along a straight line.
 #'
-#' @param x spatial features; lines or polygons from either the `sf` or `sp`
-#'   packages.
+#' @param x spatial features; lines or polygons from either the `sf`, `sp`, or
+#'   `terra` packages.
 #' @inheritParams smooth_densify
 #'
 #' @return A densified polygon or line in the same format as the input data.
