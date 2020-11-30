@@ -40,8 +40,17 @@ fill_holes.sfc <- function(x, threshold) {
   } else if (thresh_nounits < 0) {
     stop("threshold cannont be negative")
   }
+
+
   # convert threshold to crs units
-  area_units <- units::set_units(1, units(sf::st_area(x[1])), mode = "standard")
+  area_units <-
+  {
+    if (is.na(st_crs(x)))
+      set_units(1, m^2)
+    else
+      units::set_units(1, units(sf::st_area(x[1])), mode = "standard")
+
+  }
   threshold <- units::set_units(threshold, area_units, mode = "standard")
 
   x_crs <- sf::st_crs(x)
