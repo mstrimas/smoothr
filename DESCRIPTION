@@ -21,6 +21,7 @@ Depends:
 Imports: 
     methods,
     raster,
+    rgeos,
     sf,
     stats,
     units
