@@ -110,6 +110,10 @@ smooth <- function(x, method = c("chaikin", "ksmooth", "spline", "densify"),
 smooth.sfg <- function(x, method = c("chaikin", "ksmooth", "spline", "densify"),
                        ...) {
   method <- match.arg(method)
+  if (dim(z_string)[2] != 2) {
+    stop("Input geometry has unsupported Z dimension")
+  }
+
   # choose smoother
   if (method == "chaikin") {
     smoother <- smooth_chaikin
