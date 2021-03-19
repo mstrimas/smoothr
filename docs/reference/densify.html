@@ -96,7 +96,7 @@ vertices, rather they'll be along a straight line." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/mstrimas/smoothr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -156,7 +156,7 @@ distance.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Linking to GEOS 3.8.1, GDAL 3.1.1, PROJ 6.3.1</span></div><div class='input'><span class='va'>l</span> <span class='op'>&lt;-</span> <span class='va'>jagged_lines</span><span class='op'>$</span><span class='va'>geometry</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span>
+</div><div class='output co'>#&gt; <span class='message'>Linking to GEOS 3.8.1, GDAL 3.1.4, PROJ 6.3.1</span></div><div class='input'><span class='va'>l</span> <span class='op'>&lt;-</span> <span class='va'>jagged_lines</span><span class='op'>$</span><span class='va'>geometry</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span>
 <span class='va'>l_dense</span> <span class='op'>&lt;-</span> <span class='fu'>densify</span><span class='op'>(</span><span class='va'>l</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
 <span class='fu'><a href='https://r-spatial.github.io/sf/reference/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>l</span>, lwd <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
 </div><div class='input'><span class='fu'><a href='https://r-spatial.github.io/sf/reference/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>l_dense</span>, col <span class='op'>=</span> <span class='st'>"red"</span>, lwd <span class='op'>=</span> <span class='fl'>2</span>, lty <span class='op'>=</span> <span class='fl'>2</span>, add <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>

@@ -95,9 +95,12 @@
 #' plot(p, add = TRUE)
 smooth_ksmooth <- function(x, wrap = FALSE, smoothness = 1, bandwidth,
                            n = 10L, max_distance) {
-  stopifnot(is.matrix(x), ncol(x) == 2, nrow(x) > 1)
+  stopifnot(is.matrix(x), nrow(x) > 1)
   stopifnot(is_flag(wrap))
   stopifnot(is.numeric(smoothness), length(smoothness) == 1, smoothness > 0)
+  if (ncol(x) != 2) {
+    stop("Only two dimensional objects can be smoothed.")
+  }
 
   # estimate bandwidth
   if (missing(bandwidth)) {

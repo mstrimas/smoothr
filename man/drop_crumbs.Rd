@@ -11,7 +11,7 @@ drop_crumbs(x, threshold, drop_empty = TRUE)
 \code{terra} packages.}
 
 \item{threshold}{an area or length threshold, below which features will be
-removed. Provided either as a \code{units} object (see \code{\link[units:set_units]{units::set_units()}}), or
+removed. Provided either as a \code{units} object (see \code{\link[units:units]{units::set_units()}}), or
 a numeric threshold in the units of the coordinate reference system. If \code{x}
 is in unprojected coordinates, a numeric threshold is assumed to be in
 meters.}

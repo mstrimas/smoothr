@@ -110,9 +110,6 @@ smooth <- function(x, method = c("chaikin", "ksmooth", "spline", "densify"),
 smooth.sfg <- function(x, method = c("chaikin", "ksmooth", "spline", "densify"),
                        ...) {
   method <- match.arg(method)
-  if (dim(z_string)[2] != 2) {
-    stop("Input geometry has unsupported Z dimension")
-  }
 
   # choose smoother
   if (method == "chaikin") {
@@ -156,6 +153,10 @@ smooth.sfg <- function(x, method = c("chaikin", "ksmooth", "spline", "densify"),
 smooth.sfc <- function(x, method = c("chaikin", "ksmooth", "spline", "densify"),
                        ...) {
   method <- match.arg(method)
+  if (!is.null(sf::st_z_range(x))) {
+    stop("Input geometry has unsupported Z dimension")
+  }
+
   for (i in seq_along(x)) {
     x[[i]] <- smooth(x[[i]], method = method, ...)
   }
@@ -166,6 +167,10 @@ smooth.sfc <- function(x, method = c("chaikin", "ksmooth", "spline", "densify"),
 smooth.sf <- function(x, method = c("chaikin", "ksmooth", "spline", "densify"),
                       ...) {
   method <- match.arg(method)
+  if (!is.null(sf::st_z_range(x))) {
+    stop("Input geometry has unsupported Z dimension")
+  }
+
   sf::st_geometry(x) <- smooth(sf::st_geometry(x), method = method, ...)
   x
 }

@@ -42,9 +42,12 @@
 #' plot(p)
 #' plot(p_smooth, border = "red", add = TRUE)
 smooth_chaikin <- function(x, wrap = FALSE, refinements = 3L) {
-  stopifnot(is.matrix(x), ncol(x) == 2)
+  stopifnot(is.matrix(x))
   stopifnot(is_flag(wrap))
   stopifnot(is_count(refinements), refinements <= 10)
+  if (ncol(x) != 2) {
+    stop("Only two dimensional objects can be smoothed.")
+  }
 
   # polygons and closed lines need to be wrapped
   if (wrap) {

@@ -48,7 +48,11 @@
 #' plot(l_dense %>% st_cast("MULTIPOINT"), col = "red", pch = 19,
 #'      add = TRUE)
 smooth_densify <- function(x, wrap = FALSE, n = 10L, max_distance) {
-  stopifnot(is.matrix(x), ncol(x) == 2, nrow(x) > 1)
+  stopifnot(is.matrix(x), nrow(x) > 1)
+  if (ncol(x) != 2) {
+    stop("Only two dimensional objects can be smoothed.")
+  }
+
   n_pts <- nrow(x)
   # set densification parameters
   if (missing(max_distance)) {

@@ -50,7 +50,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/mstrimas/smoothr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -64,8 +64,7 @@
 
       
 
-      </header><script src="smoothr_files/header-attrs-2.5/header-attrs.js"></script><link href="smoothr_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="smoothr_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="smoothr_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>smoothr: Smooth and Tidy Spatial Features in R</h1>
@@ -251,7 +250,7 @@
 <p>For example, to remove polygons less than 200 square kilometers:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">jagged_polygons</span><span class="op">$</span><span class="va">geometry</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span>
-<span class="va">area_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/set_units.html">set_units</a></span><span class="op">(</span><span class="fl">200</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
+<span class="va">area_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html">set_units</a></span><span class="op">(</span><span class="fl">200</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
 <span class="va">p_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span><span class="op">(</span><span class="va">p</span>, threshold <span class="op">=</span> <span class="va">area_thresh</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">p</span>, col <span class="op">=</span> <span class="st">"black"</span>, main <span class="op">=</span> <span class="st">"Original"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">p_dropped</span>, col <span class="op">=</span> <span class="st">"black"</span>, main <span class="op">=</span> <span class="st">"After drop_crumbs()"</span><span class="op">)</span></code></pre></div>
@@ -261,7 +260,7 @@
 <code class="sourceCode R"><span class="va">l</span> <span class="op">&lt;-</span> <span class="va">jagged_lines</span><span class="op">$</span><span class="va">geometry</span><span class="op">[</span><span class="fl">8</span><span class="op">]</span>
 <span class="co"># note that any units can be used</span>
 <span class="co"># conversion to units of projection happens automatically</span>
-<span class="va">length_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/set_units.html">set_units</a></span><span class="op">(</span><span class="fl">25</span>, <span class="va">miles</span><span class="op">)</span>
+<span class="va">length_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html">set_units</a></span><span class="op">(</span><span class="fl">25</span>, <span class="va">miles</span><span class="op">)</span>
 <span class="va">l_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span><span class="op">(</span><span class="va">l</span>, threshold <span class="op">=</span> <span class="va">length_thresh</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">l</span>, lwd <span class="op">=</span> <span class="fl">5</span>, main <span class="op">=</span> <span class="st">"Original"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">l_dropped</span>, lwd <span class="op">=</span> <span class="fl">5</span>, main <span class="op">=</span> <span class="st">"After drop_crumbs()"</span><span class="op">)</span></code></pre></div>
@@ -274,7 +273,7 @@
 <p>For example, to remove holes less than 800 square kilometers in size:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">jagged_polygons</span><span class="op">$</span><span class="va">geometry</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span>
-<span class="va">area_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/set_units.html">set_units</a></span><span class="op">(</span><span class="fl">800</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
+<span class="va">area_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html">set_units</a></span><span class="op">(</span><span class="fl">800</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
 <span class="va">p_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fill_holes.html">fill_holes</a></span><span class="op">(</span><span class="va">p</span>, threshold <span class="op">=</span> <span class="va">area_thresh</span><span class="op">)</span>
 <span class="co"># plot</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">p</span>, col <span class="op">=</span> <span class="st">"black"</span>, main <span class="op">=</span> <span class="st">"Original"</span><span class="op">)</span>
@@ -298,14 +297,14 @@
 <p><img src="smoothr_files/figure-html/polygonize-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>To start cleaning this up, let’s remove all the small polygons resulting from a single raster cell. Recall that the cells is this raster are 100 square kilometers each.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">r_poly_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span><span class="op">(</span><span class="va">r_poly</span>, <span class="fu"><a href="https://rdrr.io/pkg/units/man/set_units.html">set_units</a></span><span class="op">(</span><span class="fl">101</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">r_poly_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span><span class="op">(</span><span class="va">r_poly</span>, <span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html">set_units</a></span><span class="op">(</span><span class="fl">101</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># plot</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/rasterToPolygons.html">rasterToPolygons</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="co"># set up plot extent</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">r_poly_dropped</span>, col <span class="op">=</span> <span class="st">"#4DAF4A"</span>, border <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="smoothr_files/figure-html/raster-drop-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>There are two holes in the large central polygon. Next, let’s fill in the smaller of the two holes, which is two raster cells (200 square kilometers) in size, but keep the larger one.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">r_poly_filled</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fill_holes.html">fill_holes</a></span><span class="op">(</span><span class="va">r_poly_dropped</span>, <span class="fu"><a href="https://rdrr.io/pkg/units/man/set_units.html">set_units</a></span><span class="op">(</span><span class="fl">201</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">r_poly_filled</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fill_holes.html">fill_holes</a></span><span class="op">(</span><span class="va">r_poly_dropped</span>, <span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html">set_units</a></span><span class="op">(</span><span class="fl">201</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># plot</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/rasterToPolygons.html">rasterToPolygons</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="co"># set up plot extent</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">r_poly_filled</span>, col <span class="op">=</span> <span class="st">"#4DAF4A"</span>, border <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>

@@ -91,7 +91,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/mstrimas/smoothr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -130,7 +130,7 @@
     <tr>
       <th>threshold</th>
       <td><p>an area or length threshold, below which features will be
-removed. Provided either as a <code>units</code> object (see <code><a href='https://rdrr.io/pkg/units/man/set_units.html'>units::set_units()</a></code>), or
+removed. Provided either as a <code>units</code> object (see <code><a href='https://rdrr.io/pkg/units/man/units.html'>units::set_units()</a></code>), or
 a numeric threshold in the units of the coordinate reference system. If <code>x</code>
 is in unprojected coordinates, a numeric threshold is assumed to be in
 meters.</p></td>
@@ -159,7 +159,7 @@ while in other cases, only parts of the multipart feature will be removed.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># remove polygons smaller than 200km2</span>
 <span class='va'>p</span> <span class='op'>&lt;-</span> <span class='va'>jagged_polygons</span><span class='op'>$</span><span class='va'>geometry</span><span class='op'>[</span><span class='fl'>7</span><span class='op'>]</span>
-<span class='va'>area_thresh</span> <span class='op'>&lt;-</span> <span class='fu'>units</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/units/man/set_units.html'>set_units</a></span><span class='op'>(</span><span class='fl'>200</span>, <span class='va'>km</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>area_thresh</span> <span class='op'>&lt;-</span> <span class='fu'>units</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/units/man/units.html'>set_units</a></span><span class='op'>(</span><span class='fl'>200</span>, <span class='va'>km</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span>
 <span class='va'>p_dropped</span> <span class='op'>&lt;-</span> <span class='fu'>drop_crumbs</span><span class='op'>(</span><span class='va'>p</span>, threshold <span class='op'>=</span> <span class='va'>area_thresh</span><span class='op'>)</span>
 <span class='co'># plot</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span>, mfrow <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
@@ -170,7 +170,7 @@ while in other cases, only parts of the multipart feature will be removed.</p>
 <span class='va'>l</span> <span class='op'>&lt;-</span> <span class='va'>jagged_lines</span><span class='op'>$</span><span class='va'>geometry</span><span class='op'>[</span><span class='fl'>8</span><span class='op'>]</span>
 <span class='co'># note that any units can be used</span>
 <span class='co'># conversion to units of projection happens automatically</span>
-<span class='va'>length_thresh</span> <span class='op'>&lt;-</span> <span class='fu'>units</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/units/man/set_units.html'>set_units</a></span><span class='op'>(</span><span class='fl'>25</span>, <span class='va'>miles</span><span class='op'>)</span>
+<span class='va'>length_thresh</span> <span class='op'>&lt;-</span> <span class='fu'>units</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/units/man/units.html'>set_units</a></span><span class='op'>(</span><span class='fl'>25</span>, <span class='va'>miles</span><span class='op'>)</span>
 <span class='va'>l_dropped</span> <span class='op'>&lt;-</span> <span class='fu'>drop_crumbs</span><span class='op'>(</span><span class='va'>l</span>, threshold <span class='op'>=</span> <span class='va'>length_thresh</span><span class='op'>)</span>
 <span class='co'># plot</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span>, mfrow <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
