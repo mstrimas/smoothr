@@ -20,12 +20,13 @@ knitr::opts_chunk$set(
 
 # smoothr <img src="hex-logo/smoothr.png" align="right" width=140/>
 
+<!-- badges: start -->
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
-[![Travis build status](https://travis-ci.org/mstrimas/smoothr.svg?branch=master)](https://travis-ci.org/mstrimas/smoothr)
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/mstrimas/smoothr?branch=master&svg=true)](https://ci.appveyor.com/project/mstrimas/smoothr)
+[![R-CMD-check](https://github.com/mstrimas/smoothr/workflows/R-CMD-check/badge.svg)](https://github.com/mstrimas/smoothr/actions)
 [![Coverage status](https://codecov.io/gh/mstrimas/smoothr/branch/master/graph/badge.svg)](https://codecov.io/github/mstrimas/smoothr?branch=master)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/smoothr)](https://cran.r-project.org/package=smoothr)
 [![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/smoothr?color=brightgreen)](http://www.r-pkg.org/pkg/smoothr)
+<!-- badges: end -->
 
 `smoothr` offers a variety of tools for smoothing and tidying spatial features (i.e. polygons and lines) to make them more aesthetically pleasing, especially when converting raster data to vector format. This package offers support for both `sp` and `sf` spatial objects. The following smoothing methods are available:
 

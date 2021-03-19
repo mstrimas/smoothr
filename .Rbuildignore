@@ -10,8 +10,6 @@
 ^_pkgdown\.yml$
 ^docs$
 ^LICENSE\.md$
-^\.travis\.yml$
-^appveyor\.yml$
 ^codecov\.yml$
 ^cran-comments\.md$
 ^\.github$

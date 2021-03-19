@@ -1,6 +1,7 @@
 # smoothr 0.1.3
 
 - Allow threshold = 0 in fill_holes() [issue #4]
+- Provide more intuitive error message if a z-dimension is given [issue #7]
 
 # smoothr 0.1.2
 
