@@ -95,12 +95,9 @@
 #' plot(p, add = TRUE)
 smooth_ksmooth <- function(x, wrap = FALSE, smoothness = 1, bandwidth,
                            n = 10L, max_distance) {
-  stopifnot(is.matrix(x), nrow(x) > 1)
+  stopifnot(is.matrix(x), nrow(x) > 1, ncol(x) > 1)
   stopifnot(is_flag(wrap))
   stopifnot(is.numeric(smoothness), length(smoothness) == 1, smoothness > 0)
-  if (ncol(x) != 2) {
-    stop("Only two dimensional objects can be smoothed.")
-  }
 
   # estimate bandwidth
   if (missing(bandwidth)) {
@@ -110,11 +107,11 @@ smooth_ksmooth <- function(x, wrap = FALSE, smoothness = 1, bandwidth,
   stopifnot(is.numeric(bandwidth), length(bandwidth) == 1, bandwidth > 0)
 
   # grab ends for padding
-  if (!wrap) {
+  if (!isTRUE(wrap)) {
     # extend start and end by one "edge"
     pad <- list(start = rbind(x[1, ], 2 * x[1, ] - x[2, ]),
                 end = rbind(x[nrow(x), ], 2 * x[nrow(x), ] - x[nrow(x) - 1, ]))
-    pad$start <- smooth_densify(pad$start[2:1,], wrap = FALSE, n = n,
+    pad$start <- smooth_densify(pad$start[2:1, ], wrap = FALSE, n = n,
                                 max_distance = max_distance)
     pad$end <- smooth_densify(pad$end, wrap = FALSE, n = n,
                               max_distance = max_distance)
@@ -124,38 +121,51 @@ smooth_ksmooth <- function(x, wrap = FALSE, smoothness = 1, bandwidth,
   x <- smooth_densify(x, wrap = wrap, n = n, max_distance = max_distance)
   n_pts <- nrow(x)
 
-  if (wrap) {
+  if (isTRUE(wrap)) {
     # wrap vertices
     x <- rbind(x[-n_pts, ], x, x[-1, ])
     d <- c(0, cumsum(point_distance(x)))
-    keep_rows <- (d >= d[n_pts]) & (d <= d[(2 * n_pts - 1)])
-    #d <- c(d[1:(n_pts - 1)], d + d[n_pts], d[2:n_pts] + 2 *  d[n_pts])
+
+    # smooth
     # parameterize x and y as functions of distance along curve
-    x_smooth <- stats::ksmooth(d, x[, 1], n.points = length(d),
-                               kernel = "normal", bandwidth = bandwidth)
-    y_smooth <- stats::ksmooth(d, x[, 2], n.points = length(d),
-                               kernel = "normal", bandwidth = bandwidth)
+    pts_smooth <- NULL
+    for (i in seq_len(ncol(x))) {
+      ks <- stats::ksmooth(d, x[, i], n.points = length(d),
+                           kernel = "normal", bandwidth = bandwidth)
+      pts_smooth <- cbind(pts_smooth, ks[["y"]])
+      if (i == 1) {
+        keep_rows <- (ks$x >= d[n_pts]) & (ks$x <= d[(2 * n_pts - 1)])
+      }
+    }
+
     # remove extra wrapped vertices
-    keep_rows <- (x_smooth$x >= d[n_pts]) & (x_smooth$x <= d[(2 * n_pts - 1)])
-    x <- cbind(x_smooth$y, y_smooth$y)[keep_rows, ]
+    pts_smooth <- pts_smooth[keep_rows, ]
+
     # ensure the endpoints match
-    x[nrow(x), ] <- x[1, ]
+    pts_smooth[nrow(pts_smooth), ] <- pts_smooth[1, ]
   } else {
     # pad ends to ensure smoothed line doesn't end early
     x <- rbind(pad$start, x, pad$end)
     d <- c(0, cumsum(point_distance(x)))
+
     # smooth
-    x_smooth <- stats::ksmooth(d, x[, 1], n.points = length(d),
-                               kernel = "normal", bandwidth = bandwidth)
-    y_smooth <- stats::ksmooth(d, x[, 2], n.points = length(d),
-                               kernel = "normal", bandwidth = bandwidth)
+    pts_smooth <- NULL
+    for (i in seq_len(ncol(x))) {
+      ks <- stats::ksmooth(d, x[, i], n.points = length(d),
+                           kernel = "normal", bandwidth = bandwidth)
+      pts_smooth <- cbind(pts_smooth, ks[["y"]])
+      if (i == 1) {
+        keep_rows <- (ks$x >= d[nrow(pad$start) + 1]) &
+          (ks$x <= d[nrow(pad$start) + n_pts])
+      }
+    }
+
     # removing padding
-    keep_rows <- (x_smooth$x >= d[nrow(pad$start) + 1]) &
-      (x_smooth$x <= d[nrow(pad$start) + n_pts])
-    x <- cbind(x_smooth$y, y_smooth$y)[keep_rows, ]
+    pts_smooth <- pts_smooth[keep_rows, ]
+
     # ensure enpoints are fixed
-    x[1, ] <- pad$start[nrow(pad$start), ]
-    x[nrow(x), ] <- pad$end[1, ]
+    pts_smooth[1, ] <- pad$start[nrow(pad$start), ]
+    pts_smooth[nrow(pts_smooth), ] <- pad$end[1, ]
   }
-  return(x)
+  return(pts_smooth)
 }

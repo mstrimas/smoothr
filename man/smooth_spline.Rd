@@ -7,7 +7,7 @@
 smooth_spline(x, wrap = FALSE, vertex_factor = 5, n)
 }
 \arguments{
-\item{x}{numeric matrix; 2-column matrix of coordinates.}
+\item{x}{numeric matrix; matrix of coordinates.}
 
 \item{wrap}{logical; whether the coordinates should be wrapped at the ends,
 as for polygons and closed lines, to ensure a smooth edge.}
@@ -24,9 +24,9 @@ A matrix with the coordinates of the smoothed curve.
 }
 \description{
 Spline interpolation uses \code{\link[stats:splinefun]{stats::spline()}} to interpolate between existing
-vertices using piecewise cubic polynomials. The \code{x} and \code{y} coordinates are
-interpolated independently. The curve will always pass through the vertices
-of the original feature.
+vertices using piecewise cubic polynomials. The coordinates are interpolated
+independently. The curve will always pass through the vertices of the
+original feature.
 }
 \details{
 This function works on matrices of points and is generally not called

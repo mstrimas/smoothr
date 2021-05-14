@@ -1,15 +1,15 @@
 #' Spline interpolation
 #'
 #' Spline interpolation uses [stats::spline()] to interpolate between existing
-#' vertices using piecewise cubic polynomials. The `x` and `y` coordinates are
-#' interpolated independently. The curve will always pass through the vertices
-#' of the original feature.
+#' vertices using piecewise cubic polynomials. The coordinates are interpolated
+#' independently. The curve will always pass through the vertices of the
+#' original feature.
 #'
 #' This function works on matrices of points and is generally not called
 #' directly. Instead, use [smooth()] with `method = "spline"` to apply this
 #' smoothing algorithm to spatial features.
 #'
-#' @param x numeric matrix; 2-column matrix of coordinates.
+#' @param x numeric matrix; matrix of coordinates.
 #' @param wrap logical; whether the coordinates should be wrapped at the ends,
 #'   as for polygons and closed lines, to ensure a smooth edge.
 #' @param vertex_factor double; the proportional increase in the number of
@@ -24,6 +24,7 @@
 #'
 #'   - [Create polygon from set of points distributed](https://stackoverflow.com/a/26089377/3591386)
 #'   - [Smoothing polygons in contour map?](https://gis.stackexchange.com/a/24929/26661)
+#'
 #' @seealso [smooth()]
 #' @export
 #' @examples
@@ -45,7 +46,8 @@
 #' plot(p_smooth, border = "red")
 #' plot(p, add = TRUE)
 smooth_spline <- function(x, wrap = FALSE, vertex_factor = 5, n) {
-  stopifnot(is.matrix(x), ncol(x) == 2, nrow(x) > 1)
+  stopifnot(is.matrix(x), nrow(x) > 1, ncol(x) > 1)
+
   n_pts <- nrow(x)
   stopifnot(is_flag(wrap))
   if (missing(n)) {
@@ -60,7 +62,10 @@ smooth_spline <- function(x, wrap = FALSE, vertex_factor = 5, n) {
   } else {
     method <- "fmm"
   }
-  x1 <- stats::spline(seq_len(n_pts), x[, 1], n = n, method = method)$y
-  x2 <- stats::spline(seq_len(n_pts), x[, 2], n = n, method = method)$y
-  cbind(x1, x2)
+  pts_smooth <- NULL
+  for (i in seq_len(ncol(x))) {
+    xs <- stats::spline(seq_len(n_pts), x[, i], n = n, method = method)$y
+    pts_smooth <- cbind(pts_smooth, xs)
+  }
+  return(pts_smooth)
 }

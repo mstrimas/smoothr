@@ -41,9 +41,9 @@
 
 <meta property="og:title" content="Spline interpolation — smooth_spline" />
 <meta property="og:description" content="Spline interpolation uses stats::spline() to interpolate between existing
-vertices using piecewise cubic polynomials. The x and y coordinates are
-interpolated independently. The curve will always pass through the vertices
-of the original feature." />
+vertices using piecewise cubic polynomials. The coordinates are interpolated
+independently. The curve will always pass through the vertices of the
+original feature." />
 
 
 
@@ -75,7 +75,7 @@ of the original feature." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">smoothr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -118,9 +118,9 @@ of the original feature." />
 
     <div class="ref-description">
     <p>Spline interpolation uses <code><a href='https://rdrr.io/r/stats/splinefun.html'>stats::spline()</a></code> to interpolate between existing
-vertices using piecewise cubic polynomials. The <code>x</code> and <code>y</code> coordinates are
-interpolated independently. The curve will always pass through the vertices
-of the original feature.</p>
+vertices using piecewise cubic polynomials. The coordinates are interpolated
+independently. The curve will always pass through the vertices of the
+original feature.</p>
     </div>
 
     <pre class="usage"><span class='fu'>smooth_spline</span><span class='op'>(</span><span class='va'>x</span>, wrap <span class='op'>=</span> <span class='cn'>FALSE</span>, vertex_factor <span class='op'>=</span> <span class='fl'>5</span>, <span class='va'>n</span><span class='op'>)</span></pre>
@@ -130,7 +130,7 @@ of the original feature.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>numeric matrix; 2-column matrix of coordinates.</p></td>
+      <td><p>numeric matrix; matrix of coordinates.</p></td>
     </tr>
     <tr>
       <th>wrap</th>

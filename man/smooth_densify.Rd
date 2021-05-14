@@ -7,7 +7,7 @@
 smooth_densify(x, wrap = FALSE, n = 10L, max_distance)
 }
 \arguments{
-\item{x}{numeric matrix; 2-column matrix of coordinates.}
+\item{x}{numeric matrix; matrix of coordinates.}
 
 \item{wrap}{logical; whether the coordinates should be wrapped at the ends,
 as for polygons and closed lines, to ensure a smooth edge.}

@@ -3,7 +3,7 @@ library(sf)
 
 test_that("smooth() methods work", {
   # polygons
-  # chaking
+  # chakin
   s <- smooth(jagged_polygons, method = "chaikin")
   # change precision to fix some floating point issues on windows
   s <- st_set_precision(s, 1e6)

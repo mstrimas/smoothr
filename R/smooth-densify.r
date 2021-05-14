@@ -11,7 +11,7 @@
 #' directly. Instead, use [smooth()] with `method = "densify"` to apply this
 #' smoothing algorithm to spatial features.
 #'
-#' @param x numeric matrix; 2-column matrix of coordinates.
+#' @param x numeric matrix; matrix of coordinates.
 #' @param wrap logical; whether the coordinates should be wrapped at the ends,
 #'   as for polygons and closed lines, to ensure a smooth edge.
 #' @param n integer; number of times to split each line segment. Ignored if
@@ -48,10 +48,7 @@
 #' plot(l_dense %>% st_cast("MULTIPOINT"), col = "red", pch = 19,
 #'      add = TRUE)
 smooth_densify <- function(x, wrap = FALSE, n = 10L, max_distance) {
-  stopifnot(is.matrix(x), nrow(x) > 1)
-  if (ncol(x) != 2) {
-    stop("Only two dimensional objects can be smoothed.")
-  }
+  stopifnot(is.matrix(x), nrow(x) > 1, ncol(x) > 1)
 
   n_pts <- nrow(x)
   # set densification parameters
@@ -66,17 +63,20 @@ smooth_densify <- function(x, wrap = FALSE, n = 10L, max_distance) {
     # determine number of points based on max distance
     n <- ceiling(point_distance(x) / max_distance) + 1
   }
-  # generate evenly spaced points for x and y
-  x_dense <- seq_multiple(start = x[1:(n_pts - 1), 1],
-                          end = x[2:n_pts, 1],
-                          n = n)
-  y_dense <- seq_multiple(start = x[1:(n_pts - 1), 2],
-                          end = x[2:n_pts, 2],
-                          n = n)
+
+  # generate evenly spaced points for each dimension
+  pts_dense <- NULL
+  for (i in seq_len(ncol(x))) {
+    sm <- seq_multiple(start = x[1:(n_pts - 1), i],
+                       end = x[2:n_pts, i],
+                       n = n)
+    pts_dense <- cbind(pts_dense, sm)
+  }
+  colnames(pts_dense) <- colnames(x)
+
   # make sure start and end points are the same if wrapped
   if (wrap) {
-    x_dense[length(x_dense)] <- x_dense[1]
-    y_dense[length(y_dense)] <- y_dense[1]
+    pts_dense[nrow(pts_dense), ] <- pts_dense[1, ]
   }
-  cbind(x_dense, y_dense)
+  return(pts_dense)
 }

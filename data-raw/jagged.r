@@ -117,12 +117,28 @@ mls3 <- closed_lines[2:3, ] %>%
 mls <- rbind(mls1, mls2, mls3)
 # output
 jagged_lines <- rbind(open_lines, closed_lines, mls) %>%
-  mutate(id = row_number()) %>%
-  select(id, everything())
+  mutate(id = row_number(), .before = 1)
 jagged_lines %>%
   mutate_if(is.logical, as.character) %>%
   write_sf("data-raw/jagged_lines.gpkg")
 usethis::use_data(jagged_lines, overwrite = TRUE)
+
+# add 3d lines
+# open
+theta <- seq(0, 4 * pi, length.out = 16)
+j3d1 <- st_linestring(cbind(cos(theta), sin(theta), theta / pi / 2),
+                      dim = "XYZ") %>%
+  st_sfc(crs = 4326) %>%
+  st_sf(type = "line", closed = FALSE, multipart = FALSE, geometry = .)
+# closed
+theta <- seq(0, 2 * pi, length.out = 16)
+j3d2 <- st_linestring(cbind(cos(theta), sin(theta) / 4, sin(2 * theta)) / 4,
+                      dim = "XYZ") %>%
+  st_sfc(crs = 4326) %>%
+  st_sf(type = "line", closed = TRUE, multipart = FALSE, geometry = .)
+# 3d line
+jagged_lines_3d <- rbind(j3d1, j3d2)
+usethis::use_data(jagged_lines_3d, overwrite = TRUE)
 
 # raster occupancy
 set.seed(42)

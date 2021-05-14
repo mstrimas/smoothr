@@ -42,18 +42,15 @@
 #' plot(p)
 #' plot(p_smooth, border = "red", add = TRUE)
 smooth_chaikin <- function(x, wrap = FALSE, refinements = 3L) {
-  stopifnot(is.matrix(x))
+  stopifnot(is.matrix(x), nrow(x) > 1, ncol(x) > 1)
   stopifnot(is_flag(wrap))
   stopifnot(is_count(refinements), refinements <= 10)
-  if (ncol(x) != 2) {
-    stop("Only two dimensional objects can be smoothed.")
-  }
 
   # polygons and closed lines need to be wrapped
   if (wrap) {
     for (i in seq.int(refinements)) {
       n_pts <- nrow(x)
-      qr <- matrix(NA_real_, nrow = 2 * (n_pts - 1) + 1, ncol = 2)
+      qr <- matrix(NA_real_, nrow = 2 * (n_pts - 1) + 1, ncol = ncol(x))
       qr[seq(1, nrow(qr) - 1, by = 2), ] <- 0.75 * x[-n_pts, ] + 0.25 * x[-1, ]
       qr[seq(2, nrow(qr) - 1, by = 2), ] <- 0.75 * x[-1, ] + 0.25 * x[-n_pts, ]
       qr[nrow(qr), ] <- qr[1, ]
@@ -63,7 +60,7 @@ smooth_chaikin <- function(x, wrap = FALSE, refinements = 3L) {
   } else {
     for (i in seq.int(refinements)) {
       n_pts <- nrow(x)
-      qr <- matrix(NA_real_, nrow = 2 * (n_pts - 1), ncol = 2)
+      qr <- matrix(NA_real_, nrow = 2 * (n_pts - 1), ncol = ncol(x))
       qr[seq(1, nrow(qr), by = 2), ] <- 0.75 * x[-n_pts, ] + 0.25 * x[-1, ]
       qr[seq(2, nrow(qr), by = 2), ] <- 0.75 * x[-1, ] + 0.25 * x[-n_pts, ]
       qr[1, ] <- x[1, ]
@@ -71,5 +68,5 @@ smooth_chaikin <- function(x, wrap = FALSE, refinements = 3L) {
       x <- qr
     }
   }
-  x
+  return(x)
 }

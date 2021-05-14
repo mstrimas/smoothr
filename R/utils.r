@@ -11,8 +11,8 @@ is_flag <- function(x) {
 }
 
 point_distance <- function(x) {
-  d <- diff(x)
-  sqrt(d[, 1]^2 + d[, 2]^2)
+  d <- diff(x)^2
+  sqrt(rowSums(d))
 }
 
 seq_multiple <- function(start, end, n) {

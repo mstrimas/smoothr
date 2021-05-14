@@ -2,6 +2,7 @@
 
 - Allow threshold = 0 in fill_holes() [issue #4]
 - Provide more intuitive error message if a z-dimension is given [issue #7]
+- Implemented smoothing of 3D spatial features and matrix features in any number of dimensions [issue #9]
 
 # smoothr 0.1.2
 
