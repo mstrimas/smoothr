@@ -13,7 +13,7 @@ Description: Tools for smoothing and tidying spatial features
     Smooth curves, fill holes, and remove small fragments from lines and
     polygons.
 License: GPL-3
-URL: http://strimas.com/smoothr,
+URL: https://strimas.com/smoothr,
     https://github.com/mstrimas/smoothr
 BugReports: https://github.com/mstrimas/smoothr/issues
 Depends: 
