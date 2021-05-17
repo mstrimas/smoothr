@@ -106,14 +106,14 @@ fill_holes.Spatial <- function(x, threshold) {
 #' @export
 fill_holes.SpatVector <- function(x, threshold) {
   if (!requireNamespace("terra", quietly = TRUE)) {
-    stop("Install the terra package to smooth SpatVector features.")
+    stop("Install the terra package to process SpatVector features.")
   }
   warning("SpatVector objects are converted to sf objects in smoothr. ",
           "This conversion may introduce errors and increase the time ",
           "required to perform smoothing.")
 
   # convert to sf object then back
-  clean <- fill_holes(methods::as(x, "Spatial"), threshold = threshold)
+  clean <- fill_holes(sf::st_as_sf(x), threshold = threshold)
   terra::vect(clean)
 }
 

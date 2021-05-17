@@ -15,6 +15,16 @@ test_that("smooth_densify() works on lines", {
   expect_equal(nrow(l_smooth), 3 * (nrow(l) - 1) + 1)
 })
 
+test_that("smooth_densify() works on 3d lines", {
+  g <- sf::st_geometry(jagged_lines_3d)
+  for (i in seq_along(g)) {
+    l <- g[[i]][]
+    l_smooth <- smooth_densify(l, wrap = FALSE, n = 3)
+    expect_is(l_smooth, "matrix")
+    expect_equal(nrow(l_smooth), 3 * (nrow(l) - 1) + 1)
+  }
+})
+
 test_that("smooth_densify() max_distance works", {
   l <- jagged_lines$geometry[[2]][]
   md <- 0.1

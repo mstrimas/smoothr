@@ -5,7 +5,6 @@
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^README\.md$
-^README-.*\.png$
 ^data-raw$
 ^_pkgdown\.yml$
 ^docs$
@@ -15,5 +14,6 @@
 ^\.github$
 ^CODE_OF_CONDUCT\.md$
 ^CONTRIBUTING\.md$
-makefile.r
-hex-logo
+makefile.R
+hex-logo/
+pkgdown/

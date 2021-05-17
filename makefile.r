@@ -15,8 +15,6 @@ devtools::check()
 devtools::build_vignettes()
 rmarkdown::render("README.Rmd")
 pkgdown::build_site()
-dir.create("docs/hex-logo/")
-file.copy("hex-logo/smoothr.png", "docs/hex-logo/")
 
 # checks
 devtools::check_win_devel()

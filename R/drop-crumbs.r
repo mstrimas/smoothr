@@ -121,12 +121,12 @@ drop_crumbs.Spatial <- function(x, threshold, drop_empty = TRUE) {
 #' @export
 drop_crumbs.SpatVector <- function(x, threshold, drop_empty = TRUE) {
   if (!requireNamespace("terra", quietly = TRUE)) {
-    stop("Install the terra package to smooth SpatVector features.")
+    stop("Install the terra package to process SpatVector features.")
   }
   warning("SpatVector objects are converted to sf objects in smoothr. ",
           "This conversion may introduce errors and increase the time ",
           "required to perform smoothing.")
-  clean <- drop_crumbs(methods::as(x, "Spatial"), threshold = threshold,
+  clean <- drop_crumbs(sf::st_as_sf(x), threshold = threshold,
                        drop_empty = TRUE)
   terra::vect(clean)
 }

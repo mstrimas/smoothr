@@ -1,7 +1,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-smoothr <img src="hex-logo/smoothr.png" align="right" width=140/>
-=================================================================
+smoothr <img src='man/figures/logo.png' align="right" height="139" />
+=====================================================================
 
 <!-- badges: start -->
 
@@ -85,7 +85,7 @@ methods available and plot a comparison:
            col = c("#E41A1C", "#4DAF4A", "#377EB8"),
            lwd = 2, cex = 2, box.lwd = 0, inset = 0, horiz = TRUE)
 
-<img src="README-smooth-polygons-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-smooth-polygons-1.png" width="100%" style="display: block; margin: auto;" />
 
 `jagged_lines` contains 9 lines with sharp edges for smoothing, some are
 closed loops requiring special treatment of the endpoints and some are
@@ -109,7 +109,7 @@ interpolation:
            col = c("#E41A1C", "#4DAF4A", "#377EB8"),
            lwd = 2, cex = 2, box.lwd = 0, inset = 0, horiz = TRUE)
 
-<img src="README-smooth-lines-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-smooth-lines-1.png" width="100%" style="display: block; margin: auto;" />
 
 ### Other goodies
 

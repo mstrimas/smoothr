@@ -15,6 +15,16 @@ test_that("smooth_chaikin() works on lines", {
   expect_gt(nrow(l_smooth), nrow(l))
 })
 
+test_that("smooth_chaikin() works on 3d lines", {
+  g <- sf::st_geometry(jagged_lines_3d)
+  for (i in seq_along(g)) {
+    l <- g[[i]][]
+    l_smooth <- smooth_chaikin(l, wrap = FALSE)
+    expect_is(l_smooth, "matrix")
+    expect_gt(nrow(l_smooth), nrow(l))
+  }
+})
+
 test_that("smooth_chaikin() raises error on invalid input", {
   expect_error(smooth_chaikin(jagged_polygons))
   m <- jagged_polygons$geometry[[2]][[1]]

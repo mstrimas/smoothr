@@ -199,6 +199,6 @@ smooth.SpatVector <- function(x, method = c("chaikin", "ksmooth", "spline",
           "required to perform smoothing.")
   method <- match.arg(method)
   # convert to sp object then back
-  smoothed <- smooth(methods::as(x, "Spatial"), method = method, ...)
+  smoothed <- smooth(sf::st_as_sf(x), method = method, ...)
   terra::vect(smoothed)
 }

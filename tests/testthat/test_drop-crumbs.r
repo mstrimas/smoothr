@@ -65,13 +65,13 @@ test_that("drop_crumbs() works for different input formats", {
 test_that("drop_crumbs() works for SpatVector objects", {
   skip_if_not_installed("terra")
   jp <- jagged_polygons[7, ]
-  jp_terra <- terra::vect(as(jp, "Spatial"))
+  jp_terra <- terra::vect(jp)
   s_terra <- expect_warning(
     drop_crumbs(jp_terra, threshold = units::set_units(200, km^2))
   )
   expect_s4_class(s_terra, "SpatVector")
 
-  a_diff <- terra::area(jp_terra) - terra::area(s_terra)
+  a_diff <- terra::expanse(jp_terra) - terra::expanse(s_terra)
   expect_gt(a_diff, 0)
 })
 

@@ -15,6 +15,16 @@ test_that("smooth_spline() works on lines", {
   expect_gt(nrow(l_smooth), nrow(l))
 })
 
+test_that("smooth_spline() works on 3d lines", {
+  g <- sf::st_geometry(jagged_lines_3d)
+  for (i in seq_along(g)) {
+    l <- g[[i]][]
+    l_smooth <- smooth_spline(l, wrap = FALSE)
+    expect_is(l_smooth, "matrix")
+    expect_gt(nrow(l_smooth), nrow(l))
+  }
+})
+
 test_that("smooth_spline() raises error on invalid input", {
   expect_error(smooth_spline(jagged_polygons))
   m <- jagged_polygons$geometry[[2]][[1]]

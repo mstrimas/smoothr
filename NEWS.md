@@ -1,7 +1,8 @@
-# smoothr 0.1.3
+# smoothr 0.2.0
 
 - Allow threshold = 0 in fill_holes() [issue #4]
 - Provide more intuitive error message if a z-dimension is given [issue #7]
+- Updates to align with recent versions of terra, e.g. no need for intermediate convrsion to sp objects
 - Implemented smoothing of 3D spatial features and matrix features in any number of dimensions [issue #9]
 
 # smoothr 0.1.2

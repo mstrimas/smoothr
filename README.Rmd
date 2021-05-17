@@ -13,12 +13,13 @@ knitr::opts_chunk$set(
   warning = FALSE,
   error = FALSE,
   comment = "#>",
-  fig.path = "README-",
+  fig.path = "man/figures/README-",
+  out.width = "100%",
   fig.align = "center"
 )
 ```
 
-# smoothr <img src="hex-logo/smoothr.png" align="right" width=140/>
+# smoothr <img src='man/figures/logo.png' align="right" height="139" />
 
 <!-- badges: start -->
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
