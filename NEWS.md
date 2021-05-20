@@ -1,3 +1,7 @@
+# smoothr 0.2.1
+
+- Fix Solaris CRAN check failure, tested on R-hub
+
 # smoothr 0.2.0
 
 - Allow threshold = 0 in fill_holes() [issue #4]

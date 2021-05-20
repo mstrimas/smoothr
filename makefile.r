@@ -19,4 +19,4 @@ pkgdown::build_site()
 # checks
 devtools::check_win_devel()
 devtools::check_win_release()
-rhub::check_for_cran()
+rhub::check_for_cran(platforms = "solaris-x86-patched")

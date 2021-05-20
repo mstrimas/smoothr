@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">smoothr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -172,8 +172,11 @@ while in other cases, only parts of the multipart feature will be removed.</p>
 <span class='co'># plot</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span>, mfrow <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://r-spatial.github.io/sf/reference/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>p</span>, col <span class='op'>=</span> <span class='st'>"black"</span>, main <span class='op'>=</span> <span class='st'>"Original"</span><span class='op'>)</span>
-<span class='fu'><a href='https://r-spatial.github.io/sf/reference/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>p_dropped</span>, col <span class='op'>=</span> <span class='st'>"black"</span>, main <span class='op'>=</span> <span class='st'>"After drop_crumbs()"</span><span class='op'>)</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>p_dropped</span><span class='op'>)</span> <span class='op'>&gt;</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>p_dropped</span>, col <span class='op'>=</span> <span class='st'>"black"</span>, main <span class='op'>=</span> <span class='st'>"After drop_crumbs()"</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div><div class='img'><img src='drop_crumbs-1.png' alt='' width='700' height='433' /></div><div class='input'>
+
 <span class='co'># remove lines less than 25 miles</span>
 <span class='va'>l</span> <span class='op'>&lt;-</span> <span class='va'>jagged_lines</span><span class='op'>$</span><span class='va'>geometry</span><span class='op'>[</span><span class='fl'>8</span><span class='op'>]</span>
 <span class='co'># note that any units can be used</span>
@@ -183,8 +186,11 @@ while in other cases, only parts of the multipart feature will be removed.</p>
 <span class='co'># plot</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span>, mfrow <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://r-spatial.github.io/sf/reference/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>l</span>, lwd <span class='op'>=</span> <span class='fl'>5</span>, main <span class='op'>=</span> <span class='st'>"Original"</span><span class='op'>)</span>
-<span class='fu'><a href='https://r-spatial.github.io/sf/reference/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>l_dropped</span>, lwd <span class='op'>=</span> <span class='fl'>5</span>, main <span class='op'>=</span> <span class='st'>"After drop_crumbs()"</span><span class='op'>)</span>
-</div><div class='img'><img src='drop_crumbs-2.png' alt='' width='700' height='433' /></div></pre>
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>l_dropped</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>l_dropped</span>, lwd <span class='op'>=</span> <span class='fl'>5</span>, main <span class='op'>=</span> <span class='st'>"After drop_crumbs()"</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div><div class='img'><img src='drop_crumbs-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -196,7 +202,7 @@ while in other cases, only parts of the multipart feature will be removed.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='http://strimas.com'>Matthew Strimas-Mackey</a>.</p>
+  <p>Developed by <a href='https://strimas.com'>Matthew Strimas-Mackey</a>.</p>
 </div>
 
 <div class="pkgdown">

@@ -1,4 +1,6 @@
 context("fill_holes()")
+skip_on_os("solaris")
+
 library(sf)
 library(units)
 

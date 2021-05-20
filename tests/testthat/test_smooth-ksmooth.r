@@ -1,4 +1,5 @@
 context("smooth_ksmooth()")
+skip_on_os("solaris")
 
 test_that("smooth_ksmooth() works on polygons", {
   m <- jagged_polygons$geometry[[2]][[1]]

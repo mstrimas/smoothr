@@ -43,7 +43,10 @@ p_dropped <- drop_crumbs(p, threshold = area_thresh)
 # plot
 par(mar = c(0, 0, 1, 0), mfrow = c(1, 2))
 plot(p, col = "black", main = "Original")
-plot(p_dropped, col = "black", main = "After drop_crumbs()")
+if (length(p_dropped) > 0) {
+  plot(p_dropped, col = "black", main = "After drop_crumbs()")
+}
+
 
 # remove lines less than 25 miles
 l <- jagged_lines$geometry[8]
@@ -54,5 +57,8 @@ l_dropped <- drop_crumbs(l, threshold = length_thresh)
 # plot
 par(mar = c(0, 0, 1, 0), mfrow = c(1, 2))
 plot(l, lwd = 5, main = "Original")
-plot(l_dropped, lwd = 5, main = "After drop_crumbs()")
+if (length(l_dropped)) {
+  plot(l_dropped, lwd = 5, main = "After drop_crumbs()")
+}
+
 }

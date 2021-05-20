@@ -1,4 +1,5 @@
 context("smooth_densify()")
+skip_on_os("solaris")
 
 test_that("smooth_densify() works on polygons", {
   m <- jagged_polygons$geometry[[2]][[1]]

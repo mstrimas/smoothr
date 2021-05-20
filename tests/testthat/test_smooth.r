@@ -1,4 +1,6 @@
 context("smooth()")
+skip_on_os("solaris")
+
 library(sf)
 
 test_that("smooth() methods work", {

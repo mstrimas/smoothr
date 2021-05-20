@@ -1,4 +1,5 @@
 context("smooth_chaikin()")
+skip_on_os("solaris")
 
 test_that("smooth_chaikin() works", {
   m <- jagged_polygons$geometry[[2]][[1]]

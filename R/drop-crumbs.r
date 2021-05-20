@@ -30,7 +30,10 @@
 #' # plot
 #' par(mar = c(0, 0, 1, 0), mfrow = c(1, 2))
 #' plot(p, col = "black", main = "Original")
-#' plot(p_dropped, col = "black", main = "After drop_crumbs()")
+#' if (length(p_dropped) > 0) {
+#'   plot(p_dropped, col = "black", main = "After drop_crumbs()")
+#' }
+#'
 #'
 #' # remove lines less than 25 miles
 #' l <- jagged_lines$geometry[8]
@@ -41,7 +44,10 @@
 #' # plot
 #' par(mar = c(0, 0, 1, 0), mfrow = c(1, 2))
 #' plot(l, lwd = 5, main = "Original")
-#' plot(l_dropped, lwd = 5, main = "After drop_crumbs()")
+#' if (length(l_dropped)) {
+#'   plot(l_dropped, lwd = 5, main = "After drop_crumbs()")
+#' }
+#'
 drop_crumbs <- function(x, threshold, drop_empty = TRUE) {
   UseMethod("drop_crumbs")
 }
@@ -61,6 +67,7 @@ drop_crumbs.sfc <- function(x, threshold, drop_empty = TRUE) {
     stop(paste("drop_crumbs() only works for line and polygon features",
                "and geometry types cannot be mixed."))
   }
+
   # convert threshold to crs units
   size_units <- units::set_units(1, units(size_fxn(x[1])), mode = "standard")
   threshold <- units::set_units(threshold, size_units, mode = "standard")

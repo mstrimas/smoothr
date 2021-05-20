@@ -1,7 +1,7 @@
 Type: Package
 Package: smoothr
 Title: Smooth and Tidy Spatial Features
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: 
     person(given = "Matthew",
            family = "Strimas-Mackey",
@@ -13,7 +13,7 @@ Description: Tools for smoothing and tidying spatial features
     Smooth curves, fill holes, and remove small fragments from lines and
     polygons.
 License: GPL-3
-URL: https://strimas.com/smoothr,
+URL: https://strimas.com/smoothr/,
     https://github.com/mstrimas/smoothr
 BugReports: https://github.com/mstrimas/smoothr/issues
 Depends: 

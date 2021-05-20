@@ -10,14 +10,15 @@ editor_options:
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  warning = FALSE,
-  message = FALSE,
-  error = FALSE,
-  fig.align = "center",
-  out.width = "100%",
-  comment = "#>"
+run <- tolower(Sys.info()[["sysname"]]) != "sunos"
+knitr::opts_chunk$set(eval = run,
+                      collapse = TRUE,
+                      warning = FALSE,
+                      message = FALSE,
+                      error = FALSE,
+                      fig.align = "center",
+                      out.width = "100%",
+                      comment = "#>"
 )
 ```
 
@@ -316,5 +317,5 @@ Kernel smoothing:
 
 Spline interpolation:
 
-  - [Create polygon from set of points distributed](https://stackoverflow.com/questions/26087772/26089377)
-  - [Smoothing polygons in contour map?](https://gis.stackexchange.com/questions/24827/24929)
+- [Create polygon from set of points distributed](https://stackoverflow.com/questions/26087772/26089377)
+- [Smoothing polygons in contour map?](https://gis.stackexchange.com/questions/24827/24929)

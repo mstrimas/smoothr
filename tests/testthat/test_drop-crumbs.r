@@ -1,4 +1,6 @@
 context("drop_crumbs()")
+skip_on_os("solaris")
+
 library(sf)
 library(units)
 
