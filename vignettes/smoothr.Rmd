@@ -74,7 +74,7 @@ print(jagged_lines)
 The final dataset that comes with this package, `jagged_raster`, is a simulated occurrence probability for a species, consisting of a spatially auto-correlated raster layer with values between 0 and 1. It is a 25x25 grid of 100 square kilometer cells in a North American centered Albers Equal Area projection. This raster can be used to experiment with smoothing polygons generated from rasters.
 
 ```{r guass-field, results="hide", dev="png", echo=-1}
-par(mar = c(0, 0, 0, 0))
+par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
 plot(rasterToPolygons(jagged_raster), col = NA, border = NA)
 plot(jagged_raster, col = heat.colors(100), legend = FALSE, add = TRUE)
 ```
@@ -180,7 +180,7 @@ Densification is the process of adding additional points to the line segments de
 Use `smooth(method = "densify")`, or it's alias `densify()` to perform densification. The degree of densification can either be specified as the number of sub-segments each line segment is split into (`n`):
 
 ```{r densify-n, echo=-1}
-par(mar = c(0, 0, 0, 0))
+par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
 l <- jagged_lines$geometry[[2]]
 # split every segment into 2
 l_dense <- densify(l, n = 2)
@@ -192,7 +192,7 @@ plot(l_dense %>% st_cast("MULTIPOINT"), col = "red", pch = 19, add = TRUE)
 Or the maximum Euclidean distance between vertices (`max_distance`):
 
 ```{r densify-md, echo=-1}
-par(mar = c(0, 0, 0, 0))
+par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
 l <- jagged_lines$geometry[[2]]
 # split every segment into 2
 l_dense <- densify(l, max_distance = 0.1)
@@ -250,7 +250,7 @@ plot(p_dropped, col = "black", main = "After fill_holes()")
 The whole point of this `smoothr` business was to smooth out polygons generated from rasters, so let's work through a quick example of that. Treating `jagged_raster` as the occurrence probability for a species, imagine we want to produce a range map for this species, showing where it occurs with at least 50% probability. We can convert the raster to a binary presence/absence map, then polygonize.
 
 ```{r polygonize, dev="png", echo=-1}
-par(mar = c(0, 0, 0, 0))
+par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
 # pres/abs map
 r <- cut(jagged_raster, breaks = c(-Inf, 0.5, Inf)) - 1
 plot(rasterToPolygons(r), col = NA, border = NA) # set up plot extent
@@ -264,7 +264,7 @@ plot(r_poly, col = NA, border = "grey20", lwd = 1.5, add = TRUE)
 To start cleaning this up, let's remove all the small polygons resulting from a single raster cell. Recall that the cells is this raster are 100 square kilometers each.
 
 ```{r raster-drop, echo=-1}
-par(mar = c(0, 0, 0, 0))
+par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
 r_poly_dropped <- drop_crumbs(r_poly, set_units(101, km^2))
 # plot
 plot(rasterToPolygons(r), col = NA, border = NA) # set up plot extent
@@ -274,7 +274,7 @@ plot(r_poly_dropped, col = "#4DAF4A", border = "grey20", lwd = 1.5, add = TRUE)
 There are two holes in the large central polygon. Next, let's fill in the smaller of the two holes, which is two raster cells (200 square kilometers) in size, but keep the larger one.
 
 ```{r raster-fill, echo=-1}
-par(mar = c(0, 0, 0, 0))
+par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
 r_poly_filled <- fill_holes(r_poly_dropped, set_units(201, km^2))
 # plot
 plot(rasterToPolygons(r), col = NA, border = NA) # set up plot extent
@@ -284,7 +284,7 @@ plot(r_poly_filled, col = "#4DAF4A", border = "grey20", lwd = 1.5, add = TRUE)
 Finally, to make this more aesthetically pleasing, I'll smooth out those sharp edges.
 
 ```{r smooth-raster, echo=-1}
-par(mar = c(0, 0, 0, 0))
+par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
 r_poly_smooth <- smooth(r_poly_filled, method = "ksmooth")
 # plot
 plot(rasterToPolygons(r), col = NA, border = NA) # set up plot extent
@@ -294,7 +294,7 @@ plot(r_poly_smooth, col = "#4DAF4A", border = "grey20", lwd = 1.5, add = TRUE)
 For a greater degree of smoothing and generalization, increase the `smoothness` parameter:
 
 ```{r smooth-raster-more, echo=-1}
-par(mar = c(0, 0, 0, 0))
+par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
 r_poly_smooth <- smooth(r_poly_filled, method = "ksmooth", smoothness = 2)
 # plot
 plot(rasterToPolygons(r), col = NA, border = NA) # set up plot extent

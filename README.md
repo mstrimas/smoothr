@@ -1,7 +1,6 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-smoothr <img src='man/figures/logo.png' align="right" height="139" />
-=====================================================================
+# smoothr <img src='man/figures/logo.png' align="right" height="139" />
 
 <!-- badges: start -->
 
@@ -48,8 +47,7 @@ preserve topological boundaries between features, therefore this package
 is not suitable for smoothing isolines (e.g. elevation contours) or
 administrative boundaries (e.g. country borders)
 
-Installation
-------------
+## Installation
 
     # install from cran with
     install.packages("smoothr")
@@ -58,8 +56,7 @@ Installation
     # install.packages("devtools")
     devtools::install_github("mstrimas/smoothr")
 
-Usage
------
+## Usage
 
 Two example feature sets are included in this package. `jagged_polygons`
 contains 9 polygons with sharp edges for smoothing, some have holes and
@@ -126,15 +123,13 @@ features and make them look cleaner and more aesthetically pleasing.
 
 See the documentation for these functions for full details.
 
-Code of Conduct
----------------
+## Code of Conduct
 
 Please note that this project is released with a [Contributor Code of
 Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree
 to abide by its terms.
 
-Contributing
-------------
+## Contributing
 
 To contribute to the development of this project please refer to the
 [guidelines](CONTRIBUTING.md).
