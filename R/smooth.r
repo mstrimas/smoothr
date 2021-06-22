@@ -177,14 +177,21 @@ smooth.Spatial <- function(x, method = c("chaikin", "ksmooth", "spline",
   }
   method <- match.arg(method)
   # convert to sf object then back
+  prj <- sp::proj4string(x)
   if (inherits(x, c("SpatialPolygonsDataFrame", "SpatialLinesDataFrame"))) {
-    smoothed <- smooth(sf::st_as_sf(x), method = method, ...)
+    x_sf <- sf::st_as_sf(x)
   } else if (inherits(x, c("SpatialPolygons", "SpatialLines"))) {
-    smoothed <- smooth(sf::st_as_sfc(x), method = method, ...)
+    x_sf <- sf::st_as_sfc(x)
   } else{
     stop(paste("No smooth method for class", class(x)))
   }
-  methods::as(smoothed, "Spatial")
+  x_sf <- sf::st_set_crs(x_sf,  prj)
+
+  smoothed <- smooth(x_sf, method = method, ...)
+
+  smoothed <- sf::as_Spatial(smoothed)
+  sp::proj4string(smoothed) <- prj
+  return(smoothed)
 }
 
 #' @export

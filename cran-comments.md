@@ -1,6 +1,6 @@
-# smoothr 0.2.1
+# smoothr 0.2.2
 
-- Fix Solaris CRAN check failure, tested and working on R-hub solaris-x86-patched
+- Fix errors arising from sf upgrade to 1.0-0 [issue #12]
 
 ## Test environments
 

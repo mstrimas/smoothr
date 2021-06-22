@@ -68,10 +68,19 @@ drop_crumbs.sfc <- function(x, threshold, drop_empty = TRUE) {
                "and geometry types cannot be mixed."))
   }
 
+  # zero threshold returns the input features unchanged
+  thresh_nounits <- as.numeric(threshold)
+  if (thresh_nounits < 0) {
+    stop("threshold cannont be negative")
+  }
+
   # convert threshold to crs units
-  size_units <- units::set_units(1, units(size_fxn(x[1])), mode = "standard")
-  threshold <- units::set_units(threshold, size_units, mode = "standard")
-  stopifnot(threshold > units::set_units(0, size_units, mode = "standard"))
+  sz <- size_fxn(x[1])
+  if (inherits(sz, "units")) {
+    size_units <- units::set_units(1, units(sz), mode = "standard")
+    threshold <- units::set_units(threshold, size_units, mode = "standard")
+    stopifnot(threshold > units::set_units(0, size_units, mode = "standard"))
+  }
 
   # loop over features
   for (i in seq_along(x)) {
@@ -110,19 +119,24 @@ drop_crumbs.Spatial <- function(x, threshold, drop_empty = TRUE) {
     stop("Install the sp package to use drop_crumbs on sp features.")
   }
   # convert to sf object then back
+  prj <- sp::proj4string(x)
   if (inherits(x, c("SpatialPolygonsDataFrame", "SpatialLinesDataFrame"))) {
-    clean <- drop_crumbs(sf::st_as_sf(x), threshold = threshold,
-                         drop_empty = TRUE)
+    x_sf <- sf::st_as_sf(x)
   } else if (inherits(x, c("SpatialPolygons", "SpatialLines"))) {
-    clean <- drop_crumbs(sf::st_as_sfc(x), threshold = threshold,
-                         drop_empty = TRUE)
+    x_sf <- sf::st_as_sfc(x)
   } else{
     stop(paste("No drop_crumbs method for class", class(x)))
   }
+  x_sf <- sf::st_set_crs(x_sf,  prj)
+
+  clean <- drop_crumbs(x_sf, threshold = threshold, drop_empty = TRUE)
+
   if (all(sf::st_is_empty(clean))) {
     return(NULL)
   }
-  methods::as(clean, "Spatial")
+  clean <- sf::as_Spatial(clean)
+  sp::proj4string(clean) <- prj
+  return(clean)
 }
 
 #' @export

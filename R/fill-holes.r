@@ -90,17 +90,24 @@ fill_holes.Spatial <- function(x, threshold) {
     stop("Install the sp package to use fill_holes on sp features.")
   }
   # convert to sf object then back
+  prj <- sp::proj4string(x)
   if (inherits(x, c("SpatialPolygonsDataFrame"))) {
-    clean <- fill_holes(sf::st_as_sf(x), threshold = threshold)
+    x_sf <- sf::st_as_sf(x)
   } else if (inherits(x, c("SpatialPolygons"))) {
-    clean <- fill_holes(sf::st_as_sfc(x), threshold = threshold)
+    x_sf <- sf::st_as_sfc(x)
   } else {
     stop(paste("No fill_holes method for class", class(x)))
   }
+  x_sf <- sf::st_set_crs(x_sf,  prj)
+
+  clean <- fill_holes(x_sf, threshold = threshold)
+
   if (all(sf::st_is_empty(clean))) {
     return(NULL)
   }
-  methods::as(clean, "Spatial")
+  clean <- sf::as_Spatial(clean)
+  sp::proj4string(clean) <- prj
+  return(clean)
 }
 
 #' @export

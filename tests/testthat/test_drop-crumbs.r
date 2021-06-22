@@ -42,7 +42,9 @@ test_that("drop_crumbs() drop_empty works", {
 test_that("drop_crumbs() handling of empty results", {
   s_sf <- drop_crumbs(jagged_polygons, threshold = 2e20)
   s_sfc <- drop_crumbs(st_geometry(jagged_polygons), threshold = 2e20)
-  s_spdf <- drop_crumbs(as(jagged_polygons, "Spatial"), threshold = 2e20)
+  jp_sp <- as(jagged_polygons, "Spatial")
+  sp::proj4string(jp_sp) <- st_crs(jagged_polygons)$proj4string
+  s_spdf <- drop_crumbs(jp_sp, threshold = 2e20)
 
   expect_equal(nrow(s_sf), 0)
   expect_equal(length(s_sfc), 0)
@@ -52,9 +54,15 @@ test_that("drop_crumbs() handling of empty results", {
 test_that("drop_crumbs() works for different input formats", {
   s_sf <- drop_crumbs(jagged_polygons, threshold = 2e8)
   s_sfc <- drop_crumbs(st_geometry(jagged_polygons), threshold = 2e8)
-  s_spdf <- drop_crumbs(as(jagged_polygons, "Spatial"), threshold = 2e8)
-  s_sp <- drop_crumbs(as(as(jagged_polygons, "Spatial"), "SpatialPolygons"),
-                      threshold = 2e8)
+
+  jp_spdf <- as_Spatial(jagged_polygons)
+  sp::proj4string(jp_spdf) <- st_crs(jagged_polygons)$proj4string
+  s_spdf <- drop_crumbs(jp_spdf, threshold = 2e8)
+
+  jp_sp <- as(jp_spdf, "SpatialPolygons")
+  sp::proj4string(jp_sp) <- st_crs(jagged_polygons)$proj4string
+  s_sp <- drop_crumbs(jp_sp, threshold = 2e8)
+
   expect_s3_class(s_sf, "sf")
   expect_s3_class(s_sfc, "sfc")
   expect_s4_class(s_spdf, "SpatialPolygonsDataFrame")

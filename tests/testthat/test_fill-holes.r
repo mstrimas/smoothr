@@ -24,8 +24,12 @@ test_that("fill_holes() works for different input formats", {
   jp <- jagged_polygons[5:6, ]
   s_sf <- fill_holes(jp, threshold = 2e8)
   s_sfc <- fill_holes(st_geometry(jp), threshold = 2e8)
-  s_spdf <- fill_holes(as(jp, "Spatial"), threshold = 2e8)
-  s_sp <- fill_holes(as(as(jp, "Spatial"), "SpatialPolygons"), threshold = 2e8)
+
+  jp_sp <- as(jp, "Spatial")
+  sp::proj4string(jp_sp) <- st_crs(jp)$proj4string
+
+  s_spdf <- fill_holes(jp_sp, threshold = 2e8)
+  s_sp <- fill_holes(as(jp_sp, "SpatialPolygons"), threshold = 2e8)
   expect_s3_class(s_sf, "sf")
   expect_s3_class(s_sfc, "sfc")
   expect_s4_class(s_spdf, "SpatialPolygonsDataFrame")
