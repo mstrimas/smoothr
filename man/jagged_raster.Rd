@@ -5,17 +5,18 @@
 \alias{jagged_raster}
 \title{Simulated raster for polygonizing and smoothing}
 \format{
-An object of class \code{RasterLayer} of dimension 25 x 25 x 1.
+A wrapped \link[terra:SpatRaster-class]{SpatRaster} object with one layer. Call
+\code{\link[terra:rast]{terra::rast()}} to unwrap it.
 }
 \usage{
 jagged_raster
 }
 \description{
 One of the primary applications of this package is for smoothing polygons
-generated from rasters. This example RasterLayer is meant to be a simulated
-occurrence probability for a species, consisting of a spatially
+generated from rasters. This example raster dataset is meant to be a
+simulated occurrence probability for a species, consisting of a spatially
 auto-correlated Gaussian field with values between 0 and 1. This raster is a
-25x25 grid of 100 square kilometer cells in a North American centered Alber's
+25x25 grid of 100 square kilometer cells in a North American centered Albers
 Equal Area projection.
 }
 \keyword{datasets}

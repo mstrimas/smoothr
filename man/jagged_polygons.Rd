@@ -5,7 +5,7 @@
 \alias{jagged_polygons}
 \title{Jagged polygons for smoothing}
 \format{
-An \code{sf} object with 9 features and 3 attribute:
+An \link[sf:sf]{sf}  object with 9 features and 3 attribute:
 \itemize{
 \item \strong{\code{type}}: character; the geometry, i.e. "polygon" or "line".
 \item \strong{\code{hole}}: logical; whether the polygon has holes or not.
@@ -16,9 +16,9 @@ An \code{sf} object with 9 features and 3 attribute:
 jagged_polygons
 }
 \description{
-Spatial polygons in \code{sf} format for smoothing. Most of these polygons have
-been created by converting rasters to polygons and therefore consist entirely
-of right angles. There are examples of polygons with holes and multipart
-polygons.
+Spatial polygons in \link[sf:sf]{sf} format for smoothing. Most of these polygons
+have been created by converting rasters to polygons and therefore consist
+entirely of right angles. There are examples of polygons with holes and
+multipart polygons.
 }
 \keyword{datasets}

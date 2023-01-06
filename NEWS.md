@@ -1,3 +1,7 @@
+# smoothr 1.0.0
+
+- transition to terra, remove raster dependency
+
 # smoothr 0.2.2
 
 - Fix errors arising from sf upgrade to 1.0-0 [issue #12]

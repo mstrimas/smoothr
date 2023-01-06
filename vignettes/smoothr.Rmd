@@ -22,7 +22,7 @@ knitr::opts_chunk$set(eval = run,
 )
 ```
 
-`smoothr` offers a variety of tools for smoothing and tidying spatial features (i.e. polygons and lines) to make them more aesthetically pleasing, especially when converting raster data to vector format. This package offers support for both `sp` and `sf` spatial objects. The following smoothing methods are available:
+`smoothr` offers a variety of tools for smoothing and tidying spatial features (i.e. polygons and lines) to make them more aesthetically pleasing, especially when converting raster data to vector format. This package offers support for both `sp`, `sf`, and `terra` vector objects. The following smoothing methods are available:
 
 - **Chaikin's corner cutting algorithm**: smoothing using Chaikin's corner cutting algorithm, which iteratively replaces every point by two new points: one 1/4 of the way to the next point and one 1/4 of the way to the previous point. This method applies a moderate amount of smoothing of sharp corners without extensive generalization.
 - **Kernel smoothing:** smoothing using Gaussian kernel regression via the `ksmooth()` function. This approach first densifies the feature (i.e. adds more vertices) then applies the kernel smoothing. Kernel smoothing simultaneously smooths and generalizes curves, and can be turned to produce extensively smoothed curves.
@@ -33,7 +33,7 @@ In addition to these smoothing functions, `smoothr` offers functions for filling
 ## Setup
 
 ```{r packages}
-library(raster)
+library(terra)
 library(sf)
 library(units)
 library(smoothr)
@@ -50,7 +50,7 @@ for (i in 1:nrow(jagged_polygons)) {
 }
 ```
 
-Notice that these polygons have a range of complexities, some have holes, and some are mutlipart polygons. I've added a few flags to distinguish between the different types.
+Notice that these polygons have a range of complexities, some have holes, and some are mutlipart polygons. Feature attributes help distinguish between the different types.
 
 ```{r jagged-polygons_print, echo=FALSE}
 print(jagged_polygons)
@@ -71,12 +71,11 @@ Again, there's a range of complexities, some lines form closed loops, and some a
 print(jagged_lines)
 ```
 
-The final dataset that comes with this package, `jagged_raster`, is a simulated occurrence probability for a species, consisting of a spatially auto-correlated raster layer with values between 0 and 1. It is a 25x25 grid of 100 square kilometer cells in a North American centered Albers Equal Area projection. This raster can be used to experiment with smoothing polygons generated from rasters.
+The final dataset that comes with this package, `jagged_raster`, is a simulated occurrence probability for a species, consisting of a spatially auto-correlated raster layer with values between 0 and 1. It is a 25x25 grid of 100 square kilometer cells in a North American centered Albers Equal Area projection. This raster can be used to experiment with smoothing polygons generated from rasters. It is a wrapped `SpatRaster` object, so we need to call `rast()` to unwrap it prior to use.
 
 ```{r guass-field, results="hide", dev="png", echo=-1}
 par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
-plot(rasterToPolygons(jagged_raster), col = NA, border = NA)
-plot(jagged_raster, col = heat.colors(100), legend = FALSE, add = TRUE)
+plot(rast(jagged_raster), col = heat.colors(100), axes = FALSE)
 ```
 
 ## Smoothing methods
@@ -251,13 +250,19 @@ The whole point of this `smoothr` business was to smooth out polygons generated 
 
 ```{r polygonize, dev="png", echo=-1}
 par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
+# unwrap for use
+data(jagged_raster)
+jagged_raster <- rast(jagged_raster)
+
 # pres/abs map
-r <- cut(jagged_raster, breaks = c(-Inf, 0.5, Inf)) - 1
-plot(rasterToPolygons(r), col = NA, border = NA) # set up plot extent
-plot(r, col = c("white", "#4DAF4A"), legend = FALSE, add = TRUE, box = FALSE)
+r <- classify(jagged_raster, rcl = c(-Inf, 0.5, Inf)) %>% 
+  as.numeric()
+plot(r, col = c("white", "#4DAF4A"), legend = FALSE, axes = FALSE)
+
 # polygonize
-r_poly <- rasterToPolygons(r, function(x){x == 1}, dissolve = TRUE) %>% 
-  st_as_sf()
+r_poly <- as.polygons(r) %>% 
+  st_as_sf() %>% 
+  subset(value > 0)
 plot(r_poly, col = NA, border = "grey20", lwd = 1.5, add = TRUE)
 ```
 
@@ -267,8 +272,7 @@ To start cleaning this up, let's remove all the small polygons resulting from a 
 par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
 r_poly_dropped <- drop_crumbs(r_poly, set_units(101, km^2))
 # plot
-plot(rasterToPolygons(r), col = NA, border = NA) # set up plot extent
-plot(r_poly_dropped, col = "#4DAF4A", border = "grey20", lwd = 1.5, add = TRUE)
+plot(r_poly_dropped, col = "#4DAF4A", border = "grey20", lwd = 1.5, main = NULL)
 ```
 
 There are two holes in the large central polygon. Next, let's fill in the smaller of the two holes, which is two raster cells (200 square kilometers) in size, but keep the larger one.
@@ -277,18 +281,16 @@ There are two holes in the large central polygon. Next, let's fill in the smalle
 par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
 r_poly_filled <- fill_holes(r_poly_dropped, set_units(201, km^2))
 # plot
-plot(rasterToPolygons(r), col = NA, border = NA) # set up plot extent
-plot(r_poly_filled, col = "#4DAF4A", border = "grey20", lwd = 1.5, add = TRUE)
+plot(r_poly_filled, col = "#4DAF4A", border = "grey20", lwd = 1.5, main = NULL)
 ```
 
-Finally, to make this more aesthetically pleasing, I'll smooth out those sharp edges.
+Finally, to make this more aesthetically pleasing, let's smooth out those sharp edges.
 
 ```{r smooth-raster, echo=-1}
 par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
 r_poly_smooth <- smooth(r_poly_filled, method = "ksmooth")
 # plot
-plot(rasterToPolygons(r), col = NA, border = NA) # set up plot extent
-plot(r_poly_smooth, col = "#4DAF4A", border = "grey20", lwd = 1.5, add = TRUE)
+plot(r_poly_smooth, col = "#4DAF4A", border = "grey20", lwd = 1.5, main = NULL)
 ```
 
 For a greater degree of smoothing and generalization, increase the `smoothness` parameter:
@@ -297,8 +299,7 @@ For a greater degree of smoothing and generalization, increase the `smoothness` 
 par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
 r_poly_smooth <- smooth(r_poly_filled, method = "ksmooth", smoothness = 2)
 # plot
-plot(rasterToPolygons(r), col = NA, border = NA) # set up plot extent
-plot(r_poly_smooth, col = "#4DAF4A", border = "grey20", lwd = 1.5, add = TRUE)
+plot(r_poly_smooth, col = "#4DAF4A", border = "grey20", lwd = 1.5, main = NULL)
 ```
 
 Nice, so much easier on the eyes! 

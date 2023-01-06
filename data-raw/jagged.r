@@ -1,30 +1,26 @@
-library(sp)
-library(raster)
 library(tidyverse)
 library(sf)
+library(terra)
 library(gstat)
+sf_use_s2(FALSE)
 set.seed(2)
 
 # create some rasterized concentric circles to test smoothing on
-r <- raster(nrows = 9, ncols = 9, xmn = 0, xmx = 1, ymn = 0, ymx = 1)
+r <- rast(nrows = 9, ncols = 9, xmin = 0, xmax = 1, ymin = 0, ymax = 1)
 circle <- function(radius, r) {
   st_as_sfc("SRID=4326;POINT(0.5 0.5)") %>%
     st_buffer(radius) %>%
-    as("Spatial") %>%
+    vect() %>%
     rasterize(r)
 }
 # raster circles
 radii <- seq(0.05, 0.45, by = 0.1)
 layer_names <- paste0("polygon_", seq_along(radii))
-circles <- radii %>%
-  map(circle, r = r) %>%
-  stack() %>%
-  setNames(layer_names)
+circles <- map(radii, circle, r = r)
 # convert back to jagged polygons
-circles_poly <- map(1:nlayers(circles),
-                    ~ rasterToPolygons(circles[[.x]], dissolve = TRUE)) %>%
+circles_poly <- map(circles, as.polygons) %>%
   map(~ st_as_sf(.x) %>% select(geometry)) %>%
-  do.call(rbind, .) %>%
+  bind_rows() %>%
   mutate(type = "polygon", hole = FALSE, multipart = FALSE)
 circles_poly <- circles_poly[c(1, 2, 5), ]
 
@@ -44,26 +40,23 @@ ply <- st_polygon(list(xy)) %>%
   mutate(type = "polygon", hole = FALSE, multipart = FALSE)
 
 # circles with holes
-chole <- map(4:5, ~ mask(circles[[.x]], circles[[.x - 2]], inverse = TRUE)) %>%
-  stack() %>%
-  setNames(paste0("hole_polygon_", 1:nlayers(.)))
+chole <- map(4:5, ~ mask(circles[[.x]], circles[[.x - 2]], inverse = TRUE))
 # convert to jagged polygons
-chole_poly <- map(1:nlayers(chole),
-                  ~ rasterToPolygons(chole[[.x]], dissolve = TRUE)) %>%
+chole_poly <- map(chole, as.polygons) %>%
   map(~ st_as_sf(.x) %>% select(geometry)) %>%
-  do.call(rbind, .) %>%
+  bind_rows() %>%
   mutate(type = "polygon", hole = TRUE, multipart = FALSE)
 
 # multipart polygons
 r_mp1 <- r
 r_mp1[sample.int(ncell(r), 27)] <- 1
-mp1 <- rasterToPolygons(r_mp1, dissolve = TRUE) %>%
+mp1 <- as.polygons(r_mp1) %>%
   st_as_sf() %>%
   select(geometry) %>%
   mutate(type = "polygon", hole = FALSE, multipart = TRUE)
 r_mp2 <- r
 r_mp2[c(1:9 + 0:8 * 9, 8 * 9 + 1, 9)] <- 1
-mp2 <- rasterToPolygons(r_mp2, dissolve = TRUE) %>%
+mp2 <- as.polygons(r_mp2) %>%
   st_as_sf() %>%
   select(geometry) %>%
   mutate(type = "polygon", hole = FALSE, multipart = TRUE)
@@ -71,10 +64,10 @@ mp3 <- rbind(chole_poly[2, ], circles_poly[2, ]) %>%
   st_combine() %>%
   st_sf(geometry = .) %>%
   mutate(type = "polygon", hole = TRUE, multipart = TRUE)
-mp <- rbind(mp1, mp2, mp3)
+mp <- bind_rows(mp1, mp2, mp3)
 
 # output
-jagged_polygons <- rbind(circles_poly, ply, chole_poly, mp) %>%
+jagged_polygons <- bind_rows(circles_poly, ply, chole_poly, mp) %>%
   mutate(id = row_number()) %>%
   select(id, everything())
 jagged_polygons %>%
@@ -145,18 +138,23 @@ set.seed(42)
 gaussian_field <- function(r, range, beta = c(1, 0, 0)) {
   gsim <- gstat(formula = (z ~ x + y), dummy = TRUE, beta = beta, nmax = 20,
                 model = vgm(psill = 1, range = range, model = "Exp"))
-  vals <- rasterToPoints(r, spatial = TRUE) %>%
-    geometry() %>%
-    predict(gsim, newdata = ., nsim = 1) %>%
-    {scale(.$sim1)}
+  coords <- as.points(r) %>%
+    crds() %>%
+    as.data.frame()
+  sp::coordinates(coords) <- ~ x + y
+  vals <- predict(gsim, newdata = coords, nsim = 1) %>%
+    {.$sim1} %>%
+    {(. - min(.)) / (max(.) - min(.))}
   r[] <- vals
   r
 }
-jagged_raster <- extent(c(0, 25e4, 0, 25e4)) %>%
-  raster(nrows = 25, ncols = 25, vals = 1) %>%
+jagged_raster <- ext(c(0, 25e4, 0, 25e4)) %>%
+  rast(nrows = 25, ncols = 25, vals = 1) %>%
+  setNames("occurrence") %>%
   gaussian_field(range = 1e5)
-projection(jagged_raster) <- paste("+proj=aea +lat_1=20 +lat_2=60 +lat_0=40",
-                                   "+lon_0=-96 +x_0=0 +y_0=0",
-                                   "+ellps=GRS80 +datum=NAD83",
-                                   "+units=m +no_defs")
+crs(jagged_raster) <- paste("+proj=aea +lat_1=20 +lat_2=60 +lat_0=40",
+                            "+lon_0=-96 +x_0=0 +y_0=0",
+                            "+ellps=GRS80 +datum=NAD83",
+                            "+units=m +no_defs")
+jagged_raster <- wrap(jagged_raster)
 usethis::use_data(jagged_raster, overwrite = TRUE)

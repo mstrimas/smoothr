@@ -6,5 +6,5 @@
 #'
 #' @name smoothr
 #' @docType package
-#' @importClassesFrom raster Raster RasterLayer RasterStack
+#' @importClassesFrom terra SpatRaster
 NULL

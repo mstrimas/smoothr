@@ -1,23 +1,26 @@
-# clean
+# clean up
 unlink(list.files("man", full.names = TRUE))
-devtools::clean_vignettes()
-pkgdown::clean_site()
 
 # rebuild docs and install
 devtools::document()
-devtools::install()
+pak::pak()
 
-# local tests and checks
+# local tests
 devtools::test()
-devtools::check()
 
 # vignettes, readme, site
-devtools::build_vignettes()
+devtools::clean_vignettes()
+pkgdown::clean_site()
 rmarkdown::render("README.Rmd")
+unlink("README.html")
 pkgdown::build_site()
 
 # checks
+# local checks
+devtools::check()
+
+# remote checks
 devtools::check_win_devel()
 devtools::check_win_release()
-rhub::check_for_cran(platforms = "solaris-x86-patched")
-rhub::check_for_cran(platforms = "debian-gcc-release")
+rhub::check_for_cran(platforms = c("solaris-x86-patched", "debian-gcc-release"),
+                     show_status = FALSE)

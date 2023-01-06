@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,18 +40,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">smoothr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/smoothr.html">Get started</a>
 </li>
@@ -62,7 +58,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/mstrimas/smoothr/">
+  <a href="https://github.com/mstrimas/smoothr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -77,284 +73,404 @@
 
       
 
-      </header><script src="smoothr_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>smoothr: Smooth and Tidy Spatial Features in R</h1>
+      <h1 data-toc-skip>smoothr: Smooth and Tidy Spatial Features in
+R</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/mstrimas/smoothr/blob/master/vignettes/smoothr.Rmd"><code>vignettes/smoothr.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/mstrimas/smoothr/blob/HEAD/vignettes/smoothr.Rmd" class="external-link"><code>vignettes/smoothr.Rmd</code></a></small>
       <div class="hidden name"><code>smoothr.Rmd</code></div>
 
     </div>
 
     
     
-<p><code>smoothr</code> offers a variety of tools for smoothing and tidying spatial features (i.e. polygons and lines) to make them more aesthetically pleasing, especially when converting raster data to vector format. This package offers support for both <code>sp</code> and <code>sf</code> spatial objects. The following smoothing methods are available:</p>
+<p><code>smoothr</code> offers a variety of tools for smoothing and
+tidying spatial features (i.e. polygons and lines) to make them more
+aesthetically pleasing, especially when converting raster data to vector
+format. This package offers support for both <code>sp</code>,
+<code>sf</code>, and <code>terra</code> vector objects. The following
+smoothing methods are available:</p>
 <ul>
 <li>
-<strong>Chaikin’s corner cutting algorithm</strong>: smoothing using Chaikin’s corner cutting algorithm, which iteratively replaces every point by two new points: one 1/4 of the way to the next point and one 1/4 of the way to the previous point. This method applies a moderate amount of smoothing of sharp corners without extensive generalization.</li>
+<strong>Chaikin’s corner cutting algorithm</strong>: smoothing using
+Chaikin’s corner cutting algorithm, which iteratively replaces every
+point by two new points: one 1/4 of the way to the next point and one
+1/4 of the way to the previous point. This method applies a moderate
+amount of smoothing of sharp corners without extensive
+generalization.</li>
 <li>
-<strong>Kernel smoothing:</strong> smoothing using Gaussian kernel regression via the <code><a href="https://rdrr.io/r/stats/ksmooth.html">ksmooth()</a></code> function. This approach first densifies the feature (i.e. adds more vertices) then applies the kernel smoothing. Kernel smoothing simultaneously smooths and generalizes curves, and can be turned to produce extensively smoothed curves.</li>
+<strong>Kernel smoothing:</strong> smoothing using Gaussian kernel
+regression via the <code><a href="https://rdrr.io/r/stats/ksmooth.html" class="external-link">ksmooth()</a></code> function. This approach first
+densifies the feature (i.e. adds more vertices) then applies the kernel
+smoothing. Kernel smoothing simultaneously smooths and generalizes
+curves, and can be turned to produce extensively smoothed curves.</li>
 <li>
-<strong>Spline interpolation</strong>: smoothing using spline interpolation via the <code><a href="https://rdrr.io/r/stats/splinefun.html">spline()</a></code> function. This method interpolates between existing vertices and should be used when the resulting smoothed feature must pass through the vertices of the input feature.</li>
+<strong>Spline interpolation</strong>: smoothing using spline
+interpolation via the <code><a href="https://rdrr.io/r/stats/splinefun.html" class="external-link">spline()</a></code> function. This method
+interpolates between existing vertices and should be used when the
+resulting smoothed feature must pass through the vertices of the input
+feature.</li>
 </ul>
-<p>In addition to these smoothing functions, <code>smoothr</code> offers functions for filling polygon holes and dropping line and polygon fragments based on a size threshold, as well as densification (i.e. adding additional vertices along curves).</p>
-<div id="setup" class="section level2">
-<h2 class="hasAnchor">
-<a href="#setup" class="anchor"></a>Setup</h2>
+<p>In addition to these smoothing functions, <code>smoothr</code> offers
+functions for filling polygon holes and dropping line and polygon
+fragments based on a size threshold, as well as densification
+(i.e. adding additional vertices along curves).</p>
+<div class="section level2">
+<h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster">raster</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-quantities/units/">units</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://strimas.com/smoothr/">smoothr</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-quantities/units" class="external-link">units</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://strimas.com/smoothr/" class="external-link">smoothr</a></span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="example-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example-data" class="anchor"></a>Example data</h2>
-<p>This package comes with two simple spatial datasets in <code>sf</code> format to test the smoothing algorithms on. <code>jagged_polygons</code> contains 9 polygons with sharp corners begging to be smoothed out:</p>
+<div class="section level2">
+<h2 id="example-data">Example data<a class="anchor" aria-label="anchor" href="#example-data"></a>
+</h2>
+<p>This package comes with two simple spatial datasets in
+<code>sf</code> format to test the smoothing algorithms on.
+<code>jagged_polygons</code> contains 9 polygons with sharp corners
+begging to be smoothed out:</p>
 <p><img src="smoothr_files/figure-html/jagged-polygons-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>Notice that these polygons have a range of complexities, some have holes, and some are mutlipart polygons. I’ve added a few flags to distinguish between the different types.</p>
-<pre><code>#&gt; Simple feature collection with 9 features and 4 fields
-#&gt; Geometry type: GEOMETRY
-#&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: 0 ymin: 0 xmax: 1 ymax: 1
-#&gt; CRS:           +proj=longlat +datum=WGS84 +no_defs
-#&gt;    id    type  hole multipart                       geometry
-#&gt; 1   1 polygon FALSE     FALSE POLYGON ((0.4444444 0.55555...
-#&gt; 2   2 polygon FALSE     FALSE POLYGON ((0.5555556 0.44444...
-#&gt; 5   3 polygon FALSE     FALSE POLYGON ((0.5555556 0.11111...
-#&gt; 11  4 polygon FALSE     FALSE POLYGON ((0.7854351 0.47743...
-#&gt; 12  5 polygon  TRUE     FALSE POLYGON ((0.5555556 0.22222...
-#&gt; 21  6 polygon  TRUE     FALSE POLYGON ((0.5555556 0.11111...
-#&gt; 13  7 polygon FALSE      TRUE MULTIPOLYGON (((0.4444444 0...
-#&gt; 22  8 polygon FALSE      TRUE MULTIPOLYGON (((0 0.1111111...
-#&gt; 3   9 polygon  TRUE      TRUE MULTIPOLYGON (((0.5555556 0...</code></pre>
-<p><code>jagged_lines</code> contains 9 polylines with disgustingly crooked edges.</p>
+<p>Notice that these polygons have a range of complexities, some have
+holes, and some are mutlipart polygons. Feature attributes help
+distinguish between the different types.</p>
+<pre><code><span><span class="co">#&gt; Simple feature collection with 9 features and 4 fields</span></span>
+<span><span class="co">#&gt; Geometry type: GEOMETRY</span></span>
+<span><span class="co">#&gt; Dimension:     XY</span></span>
+<span><span class="co">#&gt; Bounding box:  xmin: 0 ymin: 0 xmax: 1 ymax: 1</span></span>
+<span><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
+<span><span class="co">#&gt;   id    type  hole multipart                       geometry</span></span>
+<span><span class="co">#&gt; 1  1 polygon FALSE     FALSE POLYGON ((0.4444444 0.55555...</span></span>
+<span><span class="co">#&gt; 2  2 polygon FALSE     FALSE POLYGON ((0.4444444 0.66666...</span></span>
+<span><span class="co">#&gt; 3  3 polygon FALSE     FALSE POLYGON ((0.4444444 1, 0.55...</span></span>
+<span><span class="co">#&gt; 4  4 polygon FALSE     FALSE POLYGON ((0.7854351 0.47743...</span></span>
+<span><span class="co">#&gt; 5  5 polygon  TRUE     FALSE POLYGON ((0.4444444 0.88888...</span></span>
+<span><span class="co">#&gt; 6  6 polygon  TRUE     FALSE POLYGON ((0.4444444 1, 0.55...</span></span>
+<span><span class="co">#&gt; 7  7 polygon FALSE      TRUE MULTIPOLYGON (((0 1, 0 0.88...</span></span>
+<span><span class="co">#&gt; 8  8 polygon FALSE      TRUE MULTIPOLYGON (((0 1, 0 0.88...</span></span>
+<span><span class="co">#&gt; 9  9 polygon  TRUE      TRUE MULTIPOLYGON (((0.4444444 1...</span></span></code></pre>
+<p><code>jagged_lines</code> contains 9 polylines with disgustingly
+crooked edges.</p>
 <p><img src="smoothr_files/figure-html/jagged-lines-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>Again, there’s a range of complexities, some lines form closed loops, and some are multipart.</p>
-<pre><code>#&gt; Simple feature collection with 9 features and 4 fields
-#&gt; Geometry type: GEOMETRY
-#&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: 0 ymin: 0 xmax: 1 ymax: 1
-#&gt; Geodetic CRS:  WGS 84
-#&gt;    id type closed multipart                       geometry
-#&gt; 1   1 line  FALSE     FALSE LINESTRING (0 0, 0.25 0.003...
-#&gt; 2   2 line  FALSE     FALSE LINESTRING (0 0.5, 0.2 0.97...
-#&gt; 3   3 line  FALSE     FALSE LINESTRING (0 0.5, 0.05 0.9...
-#&gt; 11  4 line   TRUE     FALSE LINESTRING (0.4444444 0.555...
-#&gt; 21  5 line   TRUE     FALSE LINESTRING (0.5555556 0.444...
-#&gt; 5   6 line   TRUE     FALSE LINESTRING (0.5555556 0.111...
-#&gt; 12  7 line  FALSE      TRUE MULTILINESTRING ((0 0, 0.25...
-#&gt; 22  8 line  FALSE      TRUE MULTILINESTRING ((0 0, 0.25...
-#&gt; 31  9 line   TRUE      TRUE MULTILINESTRING ((0.5555556...</code></pre>
-<p>The final dataset that comes with this package, <code>jagged_raster</code>, is a simulated occurrence probability for a species, consisting of a spatially auto-correlated raster layer with values between 0 and 1. It is a 25x25 grid of 100 square kilometer cells in a North American centered Albers Equal Area projection. This raster can be used to experiment with smoothing polygons generated from rasters.</p>
+<p>Again, there’s a range of complexities, some lines form closed loops,
+and some are multipart.</p>
+<pre><code><span><span class="co">#&gt; Simple feature collection with 9 features and 4 fields</span></span>
+<span><span class="co">#&gt; Geometry type: GEOMETRY</span></span>
+<span><span class="co">#&gt; Dimension:     XY</span></span>
+<span><span class="co">#&gt; Bounding box:  xmin: 0 ymin: 0 xmax: 1 ymax: 1</span></span>
+<span><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
+<span><span class="co">#&gt;    id type closed multipart                       geometry</span></span>
+<span><span class="co">#&gt; 1   1 line  FALSE     FALSE LINESTRING (0 0, 0.25 0.003...</span></span>
+<span><span class="co">#&gt; 2   2 line  FALSE     FALSE LINESTRING (0 0.5, 0.2 0.97...</span></span>
+<span><span class="co">#&gt; 3   3 line  FALSE     FALSE LINESTRING (0 0.5, 0.05 0.9...</span></span>
+<span><span class="co">#&gt; 11  4 line   TRUE     FALSE LINESTRING (0.4444444 0.555...</span></span>
+<span><span class="co">#&gt; 21  5 line   TRUE     FALSE LINESTRING (0.4444444 0.666...</span></span>
+<span><span class="co">#&gt; 5   6 line   TRUE     FALSE LINESTRING (0.4444444 1, 0....</span></span>
+<span><span class="co">#&gt; 12  7 line  FALSE      TRUE MULTILINESTRING ((0 0, 0.25...</span></span>
+<span><span class="co">#&gt; 22  8 line  FALSE      TRUE MULTILINESTRING ((0 0, 0.25...</span></span>
+<span><span class="co">#&gt; 31  9 line   TRUE      TRUE MULTILINESTRING ((0.4444444...</span></span></code></pre>
+<p>The final dataset that comes with this package,
+<code>jagged_raster</code>, is a simulated occurrence probability for a
+species, consisting of a spatially auto-correlated raster layer with
+values between 0 and 1. It is a 25x25 grid of 100 square kilometer cells
+in a North American centered Albers Equal Area projection. This raster
+can be used to experiment with smoothing polygons generated from
+rasters. It is a wrapped <code>SpatRaster</code> object, so we need to
+call <code><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast()</a></code> to unwrap it prior to use.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/rasterToPolygons.html">rasterToPolygons</a></span><span class="op">(</span><span class="va">jagged_raster</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">jagged_raster</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">heat.colors</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, legend <span class="op">=</span> <span class="cn">FALSE</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">jagged_raster</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">heat.colors</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/guass-field-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div id="smoothing-methods" class="section level2">
-<h2 class="hasAnchor">
-<a href="#smoothing-methods" class="anchor"></a>Smoothing methods</h2>
-<p>Currently, three smoothing methods have been implemented: Chaikin’s corner cutting algorithm, Gaussian kernel smoothing, and spline interpolation. All are accessed with the <code><a href="../reference/smooth.html">smooth()</a></code> function, and all methods work on spatial lines and polygons in <code>sf</code> and <code>sp</code> format.</p>
-<div id="chaikins-corner-cutting-algorithm" class="section level3">
-<h3 class="hasAnchor">
-<a href="#chaikins-corner-cutting-algorithm" class="anchor"></a>Chaikin’s corner cutting algorithm</h3>
-<p>Chaikin’s corner cutting algorithm smooths by iteratively replacing every point by two new points: one 1/4 of the way to the next point and one 1/4 of the way to the previous point. This method applies a moderate amount of smoothing of sharp corners without extensive generalization, and is a good choice when the desire is to smooth without drastically altering the input features. In addition, this algorithm has the benefit of only requiring a single, easily interpretable parameter: the number of smoothing iterations.</p>
-<p>This method can be applied with <code><a href="../reference/smooth.html">smooth(x, method = "chaikin")</a></code>. Here’s what this looks like for the polygons:</p>
+<div class="section level2">
+<h2 id="smoothing-methods">Smoothing methods<a class="anchor" aria-label="anchor" href="#smoothing-methods"></a>
+</h2>
+<p>Currently, three smoothing methods have been implemented: Chaikin’s
+corner cutting algorithm, Gaussian kernel smoothing, and spline
+interpolation. All are accessed with the <code><a href="../reference/smooth.html">smooth()</a></code> function,
+and all methods work on spatial lines and polygons in <code>sf</code>
+and <code>sp</code> format.</p>
+<div class="section level3">
+<h3 id="chaikins-corner-cutting-algorithm">Chaikin’s corner cutting algorithm<a class="anchor" aria-label="anchor" href="#chaikins-corner-cutting-algorithm"></a>
+</h3>
+<p>Chaikin’s corner cutting algorithm smooths by iteratively replacing
+every point by two new points: one 1/4 of the way to the next point and
+one 1/4 of the way to the previous point. This method applies a moderate
+amount of smoothing of sharp corners without extensive generalization,
+and is a good choice when the desire is to smooth without drastically
+altering the input features. In addition, this algorithm has the benefit
+of only requiring a single, easily interpretable parameter: the number
+of smoothing iterations.</p>
+<p>This method can be applied with
+<code>smooth(x, method = "chaikin")</code>. Here’s what this looks like
+for the polygons:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p_smooth_chaikin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smooth.html">smooth</a></span><span class="op">(</span><span class="va">jagged_polygons</span>, method <span class="op">=</span> <span class="st">"chaikin"</span><span class="op">)</span>
-<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span><span class="op">(</span><span class="va">jagged_polygons</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">jagged_polygons</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"grey40"</span>, border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">p_smooth_chaikin</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="st">"#E41A1C"</span>, 
-       lwd <span class="op">=</span> <span class="fl">2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">p_smooth_chaikin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smooth.html">smooth</a></span><span class="op">(</span><span class="va">jagged_polygons</span>, method <span class="op">=</span> <span class="st">"chaikin"</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">jagged_polygons</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">jagged_polygons</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"grey40"</span>, border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">p_smooth_chaikin</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="st">"#E41A1C"</span>, </span>
+<span>       lwd <span class="op">=</span> <span class="fl">2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/chaikin-polygons-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>And for the lines:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">l_smooth_chaikin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smooth.html">smooth</a></span><span class="op">(</span><span class="va">jagged_lines</span>, method <span class="op">=</span> <span class="st">"chaikin"</span><span class="op">)</span>
-<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span><span class="op">(</span><span class="va">jagged_lines</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">jagged_lines</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">l_smooth_chaikin</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#E41A1C"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">l_smooth_chaikin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smooth.html">smooth</a></span><span class="op">(</span><span class="va">jagged_lines</span>, method <span class="op">=</span> <span class="st">"chaikin"</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">jagged_lines</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">jagged_lines</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">l_smooth_chaikin</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#E41A1C"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/chaikin-lines-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div id="kernel-smoothing" class="section level3">
-<h3 class="hasAnchor">
-<a href="#kernel-smoothing" class="anchor"></a>Kernel smoothing</h3>
-<p>This method applies Gaussian kernel regression to the x and y coordinates independently using the built-in <code><a href="https://rdrr.io/r/stats/ksmooth.html">ksmooth()</a></code> function. Prior to smoothing, additional vertices are added via densification with <code><a href="../reference/smooth_densify.html">smooth_densify()</a></code>. For polygons (and closed lines), <code>method = "periodic"</code> is used to avoid getting a kink at the start/end of the curve defining the boundary.</p>
-<p>Kernel smoothing simultaneously smooths and generalizes curves, and can be tuned to produce drastically smoothed curves. This method produces results similar to the <a href="http://pro.arcgis.com/en/pro-app/tool-reference/cartography/how-smooth-line-and-smooth-polygon-work.htm">PAEK algorithm used in ArcGIS</a>. <code><a href="../reference/smooth_ksmooth.html">smooth_ksmooth()</a></code> has parameters specifying the number of points in the resulting feature (either the number of sub-segments to split each line segment into or the maximum distance between points) and the bandwidth of the Gaussian kernel. Choosing a suitable bandwidth is critical for correctly smoothing features using this algorithm and typically users will want to explore a range of bandwidth to find a value that works for their particular scenario.</p>
-<p>This method can be applied with <code><a href="../reference/smooth.html">smooth(x, method = "ksmooth")</a></code>. Here’s what this looks like for the polygons:</p>
+<div class="section level3">
+<h3 id="kernel-smoothing">Kernel smoothing<a class="anchor" aria-label="anchor" href="#kernel-smoothing"></a>
+</h3>
+<p>This method applies Gaussian kernel regression to the x and y
+coordinates independently using the built-in <code><a href="https://rdrr.io/r/stats/ksmooth.html" class="external-link">ksmooth()</a></code>
+function. Prior to smoothing, additional vertices are added via
+densification with <code><a href="../reference/smooth_densify.html">smooth_densify()</a></code>. For polygons (and
+closed lines), <code>method = "periodic"</code> is used to avoid getting
+a kink at the start/end of the curve defining the boundary.</p>
+<p>Kernel smoothing simultaneously smooths and generalizes curves, and
+can be tuned to produce drastically smoothed curves. This method
+produces results similar to the <a href="http://pro.arcgis.com/en/pro-app/tool-reference/cartography/how-smooth-line-and-smooth-polygon-work.htm" class="external-link">PAEK
+algorithm used in ArcGIS</a>. <code><a href="../reference/smooth_ksmooth.html">smooth_ksmooth()</a></code> has
+parameters specifying the number of points in the resulting feature
+(either the number of sub-segments to split each line segment into or
+the maximum distance between points) and the bandwidth of the Gaussian
+kernel. Choosing a suitable bandwidth is critical for correctly
+smoothing features using this algorithm and typically users will want to
+explore a range of bandwidth to find a value that works for their
+particular scenario.</p>
+<p>This method can be applied with
+<code>smooth(x, method = "ksmooth")</code>. Here’s what this looks like
+for the polygons:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p_smooth_ksmooth</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smooth.html">smooth</a></span><span class="op">(</span><span class="va">jagged_polygons</span>, method <span class="op">=</span> <span class="st">"ksmooth"</span><span class="op">)</span>
-<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span><span class="op">(</span><span class="va">jagged_polygons</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">jagged_polygons</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"grey40"</span>, border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">p_smooth_ksmooth</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="st">"#E41A1C"</span>, 
-       lwd <span class="op">=</span> <span class="fl">2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">p_smooth_ksmooth</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smooth.html">smooth</a></span><span class="op">(</span><span class="va">jagged_polygons</span>, method <span class="op">=</span> <span class="st">"ksmooth"</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">jagged_polygons</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">jagged_polygons</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"grey40"</span>, border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">p_smooth_ksmooth</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="st">"#E41A1C"</span>, </span>
+<span>       lwd <span class="op">=</span> <span class="fl">2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/smooth-polygons-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>And for the lines:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">l_smooth_ksmooth</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smooth.html">smooth</a></span><span class="op">(</span><span class="va">jagged_lines</span>, method <span class="op">=</span> <span class="st">"ksmooth"</span><span class="op">)</span>
-<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span><span class="op">(</span><span class="va">jagged_lines</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">jagged_lines</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">l_smooth_ksmooth</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#E41A1C"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">l_smooth_ksmooth</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smooth.html">smooth</a></span><span class="op">(</span><span class="va">jagged_lines</span>, method <span class="op">=</span> <span class="st">"ksmooth"</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">jagged_lines</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">jagged_lines</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">l_smooth_ksmooth</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#E41A1C"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/ksmooth-lines-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div id="spline-interpolation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#spline-interpolation" class="anchor"></a>Spline interpolation</h3>
-<p>This method applies a spline interpolation to the x and y coordinates independently using the built-in <code><a href="https://rdrr.io/r/stats/splinefun.html">spline()</a></code> function. For polygons (and closed lines), <code>method = "periodic"</code> is used to avoid getting a kink at the start/end of the curve defining the boundary. Unlike the corner cutting algorithm, this method results in a curve that passes through the vertices of the original curve, which may be a desirable feature. Unfortunately, this results in an unnaturally wiggly curve. Spline interpolation requires a parameter specifying the number of points to interpolate at, which can either be an absolute number or a relative increase in the number of vertices.</p>
-<p>This method can be applied with <code><a href="../reference/smooth.html">smooth(x, method = "spline")</a></code>. Here’s what this looks like for the polygons:</p>
+<div class="section level3">
+<h3 id="spline-interpolation">Spline interpolation<a class="anchor" aria-label="anchor" href="#spline-interpolation"></a>
+</h3>
+<p>This method applies a spline interpolation to the x and y coordinates
+independently using the built-in <code><a href="https://rdrr.io/r/stats/splinefun.html" class="external-link">spline()</a></code> function. For
+polygons (and closed lines), <code>method = "periodic"</code> is used to
+avoid getting a kink at the start/end of the curve defining the
+boundary. Unlike the corner cutting algorithm, this method results in a
+curve that passes through the vertices of the original curve, which may
+be a desirable feature. Unfortunately, this results in an unnaturally
+wiggly curve. Spline interpolation requires a parameter specifying the
+number of points to interpolate at, which can either be an absolute
+number or a relative increase in the number of vertices.</p>
+<p>This method can be applied with
+<code>smooth(x, method = "spline")</code>. Here’s what this looks like
+for the polygons:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p_smooth_spline</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smooth.html">smooth</a></span><span class="op">(</span><span class="va">jagged_polygons</span>, method <span class="op">=</span> <span class="st">"spline"</span><span class="op">)</span>
-<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span><span class="op">(</span><span class="va">jagged_polygons</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">p_smooth_spline</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">jagged_polygons</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"grey40"</span>, border <span class="op">=</span> <span class="cn">NA</span>, 
-       add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">p_smooth_spline</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="st">"#E41A1C"</span>, 
-       lwd <span class="op">=</span> <span class="fl">2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">p_smooth_spline</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smooth.html">smooth</a></span><span class="op">(</span><span class="va">jagged_polygons</span>, method <span class="op">=</span> <span class="st">"spline"</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">jagged_polygons</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">p_smooth_spline</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">jagged_polygons</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"grey40"</span>, border <span class="op">=</span> <span class="cn">NA</span>, </span>
+<span>       add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">p_smooth_spline</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="st">"#E41A1C"</span>, </span>
+<span>       lwd <span class="op">=</span> <span class="fl">2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/spline-polygons-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>And for the lines:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">l_smooth_spline</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smooth.html">smooth</a></span><span class="op">(</span><span class="va">jagged_lines</span>, method <span class="op">=</span> <span class="st">"spline"</span><span class="op">)</span>
-<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span><span class="op">(</span><span class="va">jagged_lines</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">l_smooth_spline</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">jagged_lines</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">3</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">l_smooth_spline</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#E41A1C"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">l_smooth_spline</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smooth.html">smooth</a></span><span class="op">(</span><span class="va">jagged_lines</span>, method <span class="op">=</span> <span class="st">"spline"</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">jagged_lines</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">l_smooth_spline</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">jagged_lines</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">3</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">l_smooth_spline</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#E41A1C"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/spline-lines-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
-<div id="other-goodies" class="section level2">
-<h2 class="hasAnchor">
-<a href="#other-goodies" class="anchor"></a>Other goodies</h2>
-<p><code>smoothr</code> contains some additional tools that aren’t strictly for smoothing, but can help clean up polygons and lines and make them appear more aesthetically pleasing. I’ll outline these miscellaneous tools below.</p>
-<div id="densification" class="section level3">
-<h3 class="hasAnchor">
-<a href="#densification" class="anchor"></a>Densification</h3>
-<p>Densification is the process of adding additional points to the line segments defining polylines or polygons. Each line segment is split into multiple sub-segments of equal length, and the original vertices are always included in the densified feature. Note that the densification algorithm treats all vertices as Euclidean points, i.e. new points will not fall on a great circle between existing vertices, rather they’ll be along a straight line.</p>
-<p>Use <code><a href="../reference/smooth.html">smooth(method = "densify")</a></code>, or it’s alias <code><a href="../reference/densify.html">densify()</a></code> to perform densification. The degree of densification can either be specified as the number of sub-segments each line segment is split into (<code>n</code>):</p>
+<div class="section level2">
+<h2 id="other-goodies">Other goodies<a class="anchor" aria-label="anchor" href="#other-goodies"></a>
+</h2>
+<p><code>smoothr</code> contains some additional tools that aren’t
+strictly for smoothing, but can help clean up polygons and lines and
+make them appear more aesthetically pleasing. I’ll outline these
+miscellaneous tools below.</p>
+<div class="section level3">
+<h3 id="densification">Densification<a class="anchor" aria-label="anchor" href="#densification"></a>
+</h3>
+<p>Densification is the process of adding additional points to the line
+segments defining polylines or polygons. Each line segment is split into
+multiple sub-segments of equal length, and the original vertices are
+always included in the densified feature. Note that the densification
+algorithm treats all vertices as Euclidean points, i.e. new points will
+not fall on a great circle between existing vertices, rather they’ll be
+along a straight line.</p>
+<p>Use <code>smooth(method = "densify")</code>, or it’s alias
+<code><a href="../reference/densify.html">densify()</a></code> to perform densification. The degree of
+densification can either be specified as the number of sub-segments each
+line segment is split into (<code>n</code>):</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">l</span> <span class="op">&lt;-</span> <span class="va">jagged_lines</span><span class="op">$</span><span class="va">geometry</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>
-<span class="co"># split every segment into 2</span>
-<span class="va">l_dense</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/densify.html">densify</a></span><span class="op">(</span><span class="va">l</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">l</span>, lwd <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">l_dense</span>, col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, lty <span class="op">=</span> <span class="fl">2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">l_dense</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_cast.html">st_cast</a></span><span class="op">(</span><span class="st">"MULTIPOINT"</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"red"</span>, pch <span class="op">=</span> <span class="fl">19</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="va">jagged_lines</span><span class="op">$</span><span class="va">geometry</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co"># split every segment into 2</span></span>
+<span><span class="va">l_dense</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/densify.html">densify</a></span><span class="op">(</span><span class="va">l</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">l</span>, lwd <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">l_dense</span>, col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, lty <span class="op">=</span> <span class="fl">2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">l_dense</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_cast.html" class="external-link">st_cast</a></span><span class="op">(</span><span class="st">"MULTIPOINT"</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"red"</span>, pch <span class="op">=</span> <span class="fl">19</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/densify-n-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>Or the maximum Euclidean distance between vertices (<code>max_distance</code>):</p>
+<p>Or the maximum Euclidean distance between vertices
+(<code>max_distance</code>):</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">l</span> <span class="op">&lt;-</span> <span class="va">jagged_lines</span><span class="op">$</span><span class="va">geometry</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>
-<span class="co"># split every segment into 2</span>
-<span class="va">l_dense</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/densify.html">densify</a></span><span class="op">(</span><span class="va">l</span>, max_distance <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">l</span>, lwd <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">l_dense</span>, col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, lty <span class="op">=</span> <span class="fl">2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">l_dense</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_cast.html">st_cast</a></span><span class="op">(</span><span class="st">"MULTIPOINT"</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"red"</span>, pch <span class="op">=</span> <span class="fl">19</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="va">jagged_lines</span><span class="op">$</span><span class="va">geometry</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co"># split every segment into 2</span></span>
+<span><span class="va">l_dense</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/densify.html">densify</a></span><span class="op">(</span><span class="va">l</span>, max_distance <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">l</span>, lwd <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">l_dense</span>, col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, lty <span class="op">=</span> <span class="fl">2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">l_dense</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_cast.html" class="external-link">st_cast</a></span><span class="op">(</span><span class="st">"MULTIPOINT"</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"red"</span>, pch <span class="op">=</span> <span class="fl">19</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/densify-md-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div id="drop-crumbs" class="section level3">
-<h3 class="hasAnchor">
-<a href="#drop-crumbs" class="anchor"></a>Drop crumbs</h3>
-<p><code><a href="../reference/drop_crumbs.html">drop_crumbs()</a></code> removes small lines or polygons based on a length or area threshold. For multipart features, this function dives into the individual component features and applies the threshold. The threshold can either be provided as a number, assumed to be in the units of the coordinates reference system (meters for unprojected coordinates), or as a <code>units</code> object. This latter approach provides more flexibility because a threshold can be given in any type of units and it will be converted to the correct units automatically.</p>
+<div class="section level3">
+<h3 id="drop-crumbs">Drop crumbs<a class="anchor" aria-label="anchor" href="#drop-crumbs"></a>
+</h3>
+<p><code><a href="../reference/drop_crumbs.html">drop_crumbs()</a></code> removes small lines or polygons based on a
+length or area threshold. For multipart features, this function dives
+into the individual component features and applies the threshold. The
+threshold can either be provided as a number, assumed to be in the units
+of the coordinates reference system (meters for unprojected
+coordinates), or as a <code>units</code> object. This latter approach
+provides more flexibility because a threshold can be given in any type
+of units and it will be converted to the correct units
+automatically.</p>
 <p>For example, to remove polygons less than 200 square kilometers:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">jagged_polygons</span><span class="op">$</span><span class="va">geometry</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span>
-<span class="va">area_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html">set_units</a></span><span class="op">(</span><span class="fl">200</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
-<span class="va">p_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span><span class="op">(</span><span class="va">p</span>, threshold <span class="op">=</span> <span class="va">area_thresh</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">p</span>, col <span class="op">=</span> <span class="st">"black"</span>, main <span class="op">=</span> <span class="st">"Original"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">p_dropped</span>, col <span class="op">=</span> <span class="st">"black"</span>, main <span class="op">=</span> <span class="st">"After drop_crumbs()"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">jagged_polygons</span><span class="op">$</span><span class="va">geometry</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span></span>
+<span><span class="va">area_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">200</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">p_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span><span class="op">(</span><span class="va">p</span>, threshold <span class="op">=</span> <span class="va">area_thresh</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p</span>, col <span class="op">=</span> <span class="st">"black"</span>, main <span class="op">=</span> <span class="st">"Original"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_dropped</span>, col <span class="op">=</span> <span class="st">"black"</span>, main <span class="op">=</span> <span class="st">"After drop_crumbs()"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/drop-crumbs-polygons-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>And, to remove lines shorter than 25 miles:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">l</span> <span class="op">&lt;-</span> <span class="va">jagged_lines</span><span class="op">$</span><span class="va">geometry</span><span class="op">[</span><span class="fl">8</span><span class="op">]</span>
-<span class="co"># note that any units can be used</span>
-<span class="co"># conversion to units of projection happens automatically</span>
-<span class="va">length_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html">set_units</a></span><span class="op">(</span><span class="fl">25</span>, <span class="va">miles</span><span class="op">)</span>
-<span class="va">l_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span><span class="op">(</span><span class="va">l</span>, threshold <span class="op">=</span> <span class="va">length_thresh</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">l</span>, lwd <span class="op">=</span> <span class="fl">5</span>, main <span class="op">=</span> <span class="st">"Original"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">l_dropped</span>, lwd <span class="op">=</span> <span class="fl">5</span>, main <span class="op">=</span> <span class="st">"After drop_crumbs()"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="va">jagged_lines</span><span class="op">$</span><span class="va">geometry</span><span class="op">[</span><span class="fl">8</span><span class="op">]</span></span>
+<span><span class="co"># note that any units can be used</span></span>
+<span><span class="co"># conversion to units of projection happens automatically</span></span>
+<span><span class="va">length_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">25</span>, <span class="va">miles</span><span class="op">)</span></span>
+<span><span class="va">l_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span><span class="op">(</span><span class="va">l</span>, threshold <span class="op">=</span> <span class="va">length_thresh</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">l</span>, lwd <span class="op">=</span> <span class="fl">5</span>, main <span class="op">=</span> <span class="st">"Original"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">l_dropped</span>, lwd <span class="op">=</span> <span class="fl">5</span>, main <span class="op">=</span> <span class="st">"After drop_crumbs()"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/drop-crumbs-lines-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div id="fill-holes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#fill-holes" class="anchor"></a>Fill holes</h3>
-<p><code><a href="../reference/fill_holes.html">fill_holes()</a></code> fills (i.e. removes) holes in polygons when they are below a given area threshold. As with <code><a href="../reference/drop_crumbs.html">drop_crumbs()</a></code>, the threshold can either be provided as a number or a <code>units</code> object.</p>
-<p>For example, to remove holes less than 800 square kilometers in size:</p>
+<div class="section level3">
+<h3 id="fill-holes">Fill holes<a class="anchor" aria-label="anchor" href="#fill-holes"></a>
+</h3>
+<p><code><a href="../reference/fill_holes.html">fill_holes()</a></code> fills (i.e. removes) holes in polygons when
+they are below a given area threshold. As with
+<code><a href="../reference/drop_crumbs.html">drop_crumbs()</a></code>, the threshold can either be provided as a
+number or a <code>units</code> object.</p>
+<p>For example, to remove holes less than 800 square kilometers in
+size:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">jagged_polygons</span><span class="op">$</span><span class="va">geometry</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span>
-<span class="va">area_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html">set_units</a></span><span class="op">(</span><span class="fl">800</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
-<span class="va">p_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fill_holes.html">fill_holes</a></span><span class="op">(</span><span class="va">p</span>, threshold <span class="op">=</span> <span class="va">area_thresh</span><span class="op">)</span>
-<span class="co"># plot</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">p</span>, col <span class="op">=</span> <span class="st">"black"</span>, main <span class="op">=</span> <span class="st">"Original"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">p_dropped</span>, col <span class="op">=</span> <span class="st">"black"</span>, main <span class="op">=</span> <span class="st">"After fill_holes()"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">jagged_polygons</span><span class="op">$</span><span class="va">geometry</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span></span>
+<span><span class="va">area_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">800</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">p_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fill_holes.html">fill_holes</a></span><span class="op">(</span><span class="va">p</span>, threshold <span class="op">=</span> <span class="va">area_thresh</span><span class="op">)</span></span>
+<span><span class="co"># plot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p</span>, col <span class="op">=</span> <span class="st">"black"</span>, main <span class="op">=</span> <span class="st">"Original"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_dropped</span>, col <span class="op">=</span> <span class="st">"black"</span>, main <span class="op">=</span> <span class="st">"After fill_holes()"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/fill-polygons-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
-<div id="raster-to-polygon-conversion" class="section level2">
-<h2 class="hasAnchor">
-<a href="#raster-to-polygon-conversion" class="anchor"></a>Raster-to-polygon conversion</h2>
-<p>The whole point of this <code>smoothr</code> business was to smooth out polygons generated from rasters, so let’s work through a quick example of that. Treating <code>jagged_raster</code> as the occurrence probability for a species, imagine we want to produce a range map for this species, showing where it occurs with at least 50% probability. We can convert the raster to a binary presence/absence map, then polygonize.</p>
+<div class="section level2">
+<h2 id="raster-to-polygon-conversion">Raster-to-polygon conversion<a class="anchor" aria-label="anchor" href="#raster-to-polygon-conversion"></a>
+</h2>
+<p>The whole point of this <code>smoothr</code> business was to smooth
+out polygons generated from rasters, so let’s work through a quick
+example of that. Treating <code>jagged_raster</code> as the occurrence
+probability for a species, imagine we want to produce a range map for
+this species, showing where it occurs with at least 50% probability. We
+can convert the raster to a binary presence/absence map, then
+polygonize.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># pres/abs map</span>
-<span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/cut.html">cut</a></span><span class="op">(</span><span class="va">jagged_raster</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="cn">Inf</span>, <span class="fl">0.5</span>, <span class="cn">Inf</span><span class="op">)</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/rasterToPolygons.html">rasterToPolygons</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="co"># set up plot extent</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">r</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"#4DAF4A"</span><span class="op">)</span>, legend <span class="op">=</span> <span class="cn">FALSE</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, box <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co"># polygonize</span>
-<span class="va">r_poly</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/rasterToPolygons.html">rasterToPolygons</a></span><span class="op">(</span><span class="va">r</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="va">x</span> <span class="op">==</span> <span class="fl">1</span><span class="op">}</span>, dissolve <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">r_poly</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># unwrap for use</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">jagged_raster</span><span class="op">)</span></span>
+<span><span class="va">jagged_raster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">jagged_raster</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># pres/abs map</span></span>
+<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/classify.html" class="external-link">classify</a></span><span class="op">(</span><span class="va">jagged_raster</span>, rcl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="cn">Inf</span>, <span class="fl">0.5</span>, <span class="cn">Inf</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"#4DAF4A"</span><span class="op">)</span>, legend <span class="op">=</span> <span class="cn">FALSE</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># polygonize</span></span>
+<span><span class="va">r_poly</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.spatvector.html" class="external-link">as.polygons</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">value</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r_poly</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/polygonize-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>To start cleaning this up, let’s remove all the small polygons resulting from a single raster cell. Recall that the cells is this raster are 100 square kilometers each.</p>
+<p>To start cleaning this up, let’s remove all the small polygons
+resulting from a single raster cell. Recall that the cells is this
+raster are 100 square kilometers each.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">r_poly_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span><span class="op">(</span><span class="va">r_poly</span>, <span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html">set_units</a></span><span class="op">(</span><span class="fl">101</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># plot</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/rasterToPolygons.html">rasterToPolygons</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="co"># set up plot extent</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">r_poly_dropped</span>, col <span class="op">=</span> <span class="st">"#4DAF4A"</span>, border <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">r_poly_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span><span class="op">(</span><span class="va">r_poly</span>, <span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">101</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># plot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r_poly_dropped</span>, col <span class="op">=</span> <span class="st">"#4DAF4A"</span>, border <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>, main <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/raster-drop-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>There are two holes in the large central polygon. Next, let’s fill in the smaller of the two holes, which is two raster cells (200 square kilometers) in size, but keep the larger one.</p>
+<p>There are two holes in the large central polygon. Next, let’s fill in
+the smaller of the two holes, which is two raster cells (200 square
+kilometers) in size, but keep the larger one.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">r_poly_filled</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fill_holes.html">fill_holes</a></span><span class="op">(</span><span class="va">r_poly_dropped</span>, <span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html">set_units</a></span><span class="op">(</span><span class="fl">201</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># plot</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/rasterToPolygons.html">rasterToPolygons</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="co"># set up plot extent</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">r_poly_filled</span>, col <span class="op">=</span> <span class="st">"#4DAF4A"</span>, border <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">r_poly_filled</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fill_holes.html">fill_holes</a></span><span class="op">(</span><span class="va">r_poly_dropped</span>, <span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">201</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># plot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r_poly_filled</span>, col <span class="op">=</span> <span class="st">"#4DAF4A"</span>, border <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>, main <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/raster-fill-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>Finally, to make this more aesthetically pleasing, I’ll smooth out those sharp edges.</p>
+<p>Finally, to make this more aesthetically pleasing, let’s smooth out
+those sharp edges.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">r_poly_smooth</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smooth.html">smooth</a></span><span class="op">(</span><span class="va">r_poly_filled</span>, method <span class="op">=</span> <span class="st">"ksmooth"</span><span class="op">)</span>
-<span class="co"># plot</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/rasterToPolygons.html">rasterToPolygons</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="co"># set up plot extent</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">r_poly_smooth</span>, col <span class="op">=</span> <span class="st">"#4DAF4A"</span>, border <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">r_poly_smooth</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smooth.html">smooth</a></span><span class="op">(</span><span class="va">r_poly_filled</span>, method <span class="op">=</span> <span class="st">"ksmooth"</span><span class="op">)</span></span>
+<span><span class="co"># plot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r_poly_smooth</span>, col <span class="op">=</span> <span class="st">"#4DAF4A"</span>, border <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>, main <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/smooth-raster-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>For a greater degree of smoothing and generalization, increase the <code>smoothness</code> parameter:</p>
+<p>For a greater degree of smoothing and generalization, increase the
+<code>smoothness</code> parameter:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">r_poly_smooth</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smooth.html">smooth</a></span><span class="op">(</span><span class="va">r_poly_filled</span>, method <span class="op">=</span> <span class="st">"ksmooth"</span>, smoothness <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-<span class="co"># plot</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/rasterToPolygons.html">rasterToPolygons</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="co"># set up plot extent</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">r_poly_smooth</span>, col <span class="op">=</span> <span class="st">"#4DAF4A"</span>, border <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">r_poly_smooth</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smooth.html">smooth</a></span><span class="op">(</span><span class="va">r_poly_filled</span>, method <span class="op">=</span> <span class="st">"ksmooth"</span>, smoothness <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co"># plot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r_poly_smooth</span>, col <span class="op">=</span> <span class="st">"#4DAF4A"</span>, border <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>, main <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/smooth-raster-more-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>Nice, so much easier on the eyes!</p>
 </div>
-<div id="references" class="section level2">
-<h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h2>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <p>Chaikin’s corner cutting algorithm:</p>
 <ul>
-<li>Chaikin, G. An algorithm for high speed curve generation. Computer Graphics and Image Processing 3 (1974), 346–349 -<a href="http://www.cs.unc.edu/~dm/UNC/COMP258/LECTURES/Chaikins-Algorithm.pdf" class="uri">http://www.cs.unc.edu/~dm/UNC/COMP258/LECTURES/Chaikins-Algorithm.pdf</a>
+<li>Chaikin, G. An algorithm for high speed curve generation. Computer
+Graphics and Image Processing 3 (1974), 346–349 -<a href="http://www.cs.unc.edu/~dm/UNC/COMP258/LECTURES/Chaikins-Algorithm.pdf" class="external-link uri">http://www.cs.unc.edu/~dm/UNC/COMP258/LECTURES/Chaikins-Algorithm.pdf</a>
 </li>
-<li><a href="https://stackoverflow.com/a/47255374/3591386">Where to find Python implementation of Chaikin’s corner cutting algorithm?</a></li>
+<li><a href="https://stackoverflow.com/a/47255374/3591386" class="external-link">Where to find
+Python implementation of Chaikin’s corner cutting algorithm?</a></li>
 </ul>
 <p>Kernel smoothing:</p>
 <ul>
-<li><a href="https://stats.stackexchange.com/a/143608/44268">Nadaraya-Watson Optimal Bandwidth</a></li>
+<li><a href="https://stats.stackexchange.com/a/143608/44268" class="external-link">Nadaraya-Watson
+Optimal Bandwidth</a></li>
 </ul>
 <p>Spline interpolation:</p>
 <ul>
-<li><a href="https://stackoverflow.com/questions/26087772/26089377">Create polygon from set of points distributed</a></li>
-<li><a href="https://gis.stackexchange.com/questions/24827/24929">Smoothing polygons in contour map?</a></li>
+<li><a href="https://stackoverflow.com/questions/26087772/26089377" class="external-link">Create
+polygon from set of points distributed</a></li>
+<li><a href="https://gis.stackexchange.com/questions/24827/24929" class="external-link">Smoothing
+polygons in contour map?</a></li>
 </ul>
 </div>
   </div>
@@ -370,11 +486,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://strimas.com">Matthew Strimas-Mackey</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://strimas.com" class="external-link">Matthew Strimas-Mackey</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer>
@@ -382,6 +500,8 @@
 
   
 
+
+  
 
   </body>
 </html>

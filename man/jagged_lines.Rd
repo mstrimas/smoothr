@@ -5,7 +5,7 @@
 \alias{jagged_lines}
 \title{Jagged lines for smoothing}
 \format{
-An \code{sf} object with 9 features and 3 attribute:
+An \link[sf:sf]{sf}  object with 9 features and 3 attribute:
 \itemize{
 \item \strong{\code{type}}: character; the geometry, i.e. "polygon" or "line".
 \item \strong{\code{closed}}: logical; whether the line forms a closed loop or not.
@@ -16,7 +16,7 @@ An \code{sf} object with 9 features and 3 attribute:
 jagged_lines
 }
 \description{
-Spatial lines in \code{sf} format for smoothing. There are examples of lines
-forming a closed loop and multipart lines.
+Spatial lines in \link[sf:sf]{sf} format for smoothing. There are examples of
+lines forming a closed loop and multipart lines.
 }
 \keyword{datasets}

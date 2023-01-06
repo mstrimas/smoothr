@@ -29,6 +29,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -41,18 +43,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">smoothr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="articles/smoothr.html">Get started</a>
 </li>
@@ -65,7 +61,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/mstrimas/smoothr/">
+  <a href="https://github.com/mstrimas/smoothr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -82,9 +78,8 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="smoothr-" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#smoothr-" class="anchor"></a>smoothr <img src="reference/figures/logo.png" align="right" height="139">
+<div class="section level1">
+<div class="page-header"><h1 id="smoothr-">smoothr <img src="reference/figures/logo.png" align="right" height="139"><a class="anchor" aria-label="anchor" href="#smoothr-"></a>
 </h1></div>
 <!-- badges: start -->
 
@@ -93,15 +88,15 @@
 <li>
 <strong>Chaikin’s corner cutting algorithm</strong>: smoothing using Chaikin’s corner cutting algorithm, which iteratively replaces every point by two new points: one 1/4 of the way to the next point and one 1/4 of the way to the previous point. This method applies a moderate amount of smoothing of sharp corners without extensive generalization.</li>
 <li>
-<strong>Kernel smoothing:</strong> smoothing using Gaussian kernel regression via the <code><a href="https://rdrr.io/r/stats/ksmooth.html">ksmooth()</a></code> function. This approach first densifies the feature (i.e. adds more vertices) then applies the kernel smoothing. Kernel smoothing simultaneously smooths and generalizes curves, and can be tuned to produce extensively smoothed curves.</li>
+<strong>Kernel smoothing:</strong> smoothing using Gaussian kernel regression via the <code><a href="https://rdrr.io/r/stats/ksmooth.html" class="external-link">ksmooth()</a></code> function. This approach first densifies the feature (i.e. adds more vertices) then applies the kernel smoothing. Kernel smoothing simultaneously smooths and generalizes curves, and can be tuned to produce extensively smoothed curves.</li>
 <li>
-<strong>Spline interpolation</strong>: smoothing using spline interpolation via the <code><a href="https://rdrr.io/r/stats/splinefun.html">spline()</a></code> function. This method interpolates between existing vertices and should be used when the resulting smoothed feature must pass through the vertices of the input feature.</li>
+<strong>Spline interpolation</strong>: smoothing using spline interpolation via the <code><a href="https://rdrr.io/r/stats/splinefun.html" class="external-link">spline()</a></code> function. This method interpolates between existing vertices and should be used when the resulting smoothed feature must pass through the vertices of the input feature.</li>
 </ul>
 <p>In addition to these smoothing functions, <code>smoothr</code> offers functions for filling polygon holes and dropping line and polygon fragments based on a size threshold, as well as densification (i.e. adding additional vertices along curves).</p>
 <p><strong>When using <code>smoothr</code>, a couple important warnings should be considered:</strong> 1. Smoothing can give the false perception of higher precision than actually exists in the data, so users should be cautious when applying these algorithms. 2. The smoothing algorithms used do not preserve topological boundaries between features, therefore this package is not suitable for smoothing isolines (e.g. elevation contours) or administrative boundaries (e.g. country borders)</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install from cran with</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"smoothr"</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -109,9 +104,9 @@
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("devtools")</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"mstrimas/smoothr"</span>)</span></code></pre></div>
 </div>
-<div id="usage" class="section level2">
-<h2 class="hasAnchor">
-<a href="#usage" class="anchor"></a>Usage</h2>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
 <p>Two example feature sets are included in this package. <code>jagged_polygons</code> contains 9 polygons with sharp edges for smoothing, some have holes and some are multipart polygons. We can smooth these using the different methods available and plot a comparison:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(smoothr)</span>
@@ -150,13 +145,13 @@
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"#E41A1C"</span>, <span class="st">"#4DAF4A"</span>, <span class="st">"#377EB8"</span>),</span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">cex =</span> <span class="dv">2</span>, <span class="at">box.lwd =</span> <span class="dv">0</span>, <span class="at">inset =</span> <span class="dv">0</span>, <span class="at">horiz =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="reference/figures/README-smooth-lines-1.png" width="100%" style="display: block; margin: auto;"></p>
-<div id="other-goodies" class="section level3">
-<h3 class="hasAnchor">
-<a href="#other-goodies" class="anchor"></a>Other goodies</h3>
+<div class="section level3">
+<h3 id="other-goodies">Other goodies<a class="anchor" aria-label="anchor" href="#other-goodies"></a>
+</h3>
 <p><code>smoothr</code> contains a handful of other tools to help clean up spatial features and make them look cleaner and more aesthetically pleasing.</p>
 <ul>
 <li>
-<code><a href="reference/densify.html">densify()</a></code> (and it’s alias <code><a href="reference/smooth.html">smooth(x, method = "densify")</a></code>) densifies lines and polygons, adding additional vertices along line segments.</li>
+<code><a href="reference/densify.html">densify()</a></code> (and it’s alias <code>smooth(x, method = "densify")</code>) densifies lines and polygons, adding additional vertices along line segments.</li>
 <li>
 <code><a href="reference/drop_crumbs.html">drop_crumbs()</a></code> removes small lines or polygons based on a length or area threshold.</li>
 <li>
@@ -165,14 +160,14 @@
 <p>See the documentation for these functions for full details.</p>
 </div>
 </div>
-<div id="code-of-conduct" class="section level2">
-<h2 class="hasAnchor">
-<a href="#code-of-conduct" class="anchor"></a>Code of Conduct</h2>
+<div class="section level2">
+<h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
+</h2>
 <p>Please note that this project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>
-<div id="contributing" class="section level2">
-<h2 class="hasAnchor">
-<a href="#contributing" class="anchor"></a>Contributing</h2>
+<div class="section level2">
+<h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
+</h2>
 <p>To contribute to the development of this project please refer to the <a href="CONTRIBUTING.html">guidelines</a>.</p>
 </div>
 </div>
@@ -180,58 +175,68 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=smoothr">https://​cloud.r-project.org/​package=smoothr</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/mstrimas/smoothr/">https://​github.com/​mstrimas/​smoothr/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/mstrimas/smoothr/issues">https://​github.com/​mstrimas/​smoothr/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=smoothr" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/mstrimas/smoothr/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/mstrimas/smoothr/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></small></li>
+<li><small><a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a></small></li>
 </ul>
 </div>
+
 <div class="community">
-<h2>Community</h2>
+<h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CONTRIBUTING.html">Contributing guide</a></li>
 <li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
 </ul>
 </div>
-<div class="developers">
-<h2>Developers</h2>
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li>
-<a href="https://strimas.com">Matthew Strimas-Mackey</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-8929-7776" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html#citation">Citing smoothr</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li><a href="http://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPL%20v3-blue.svg" alt="License: GPL v3"></a></li>
-<li><a href="https://github.com/mstrimas/smoothr/actions"><img src="https://github.com/mstrimas/smoothr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://codecov.io/github/mstrimas/smoothr?branch=master"><img src="https://codecov.io/gh/mstrimas/smoothr/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
-<li><a href="https://cran.r-project.org/package=smoothr"><img src="http://www.r-pkg.org/badges/version/smoothr" alt="CRAN_Status_Badge"></a></li>
-<li><a href="http://www.r-pkg.org/pkg/smoothr"><img src="http://cranlogs.r-pkg.org/badges/grand-total/smoothr?color=brightgreen" alt="Downloads"></a></li>
+<li>
+<a href="https://strimas.com" class="external-link">Matthew Strimas-Mackey</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-8929-7776" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="http://www.gnu.org/licenses/gpl-3.0" class="external-link"><img src="https://img.shields.io/badge/License-GPL%20v3-blue.svg" alt="License: GPL v3"></a></li>
+<li><a href="https://github.com/mstrimas/smoothr/actions" class="external-link"><img src="https://github.com/mstrimas/smoothr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://codecov.io/github/mstrimas/smoothr?branch=master" class="external-link"><img src="https://codecov.io/gh/mstrimas/smoothr/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
+<li><a href="https://cran.r-project.org/package=smoothr" class="external-link"><img src="http://www.r-pkg.org/badges/version/smoothr" alt="CRAN_Status_Badge"></a></li>
+<li><a href="http://www.r-pkg.org/pkg/smoothr" class="external-link"><img src="http://cranlogs.r-pkg.org/badges/grand-total/smoothr?color=brightgreen" alt="Downloads"></a></li>
+</ul>
 </div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://strimas.com">Matthew Strimas-Mackey</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://strimas.com" class="external-link">Matthew Strimas-Mackey</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer>
@@ -239,6 +244,8 @@
 
   
 
+
+  
 
   </body>
 </html>
