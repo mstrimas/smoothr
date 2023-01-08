@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 [![R-CMD-check](https://github.com/mstrimas/smoothr/workflows/R-CMD-check/badge.svg)](https://github.com/mstrimas/smoothr/actions)
-[![Coverage status](https://codecov.io/gh/mstrimas/smoothr/branch/master/graph/badge.svg)](https://codecov.io/github/mstrimas/smoothr?branch=master)
+[![Coverage status](https://codecov.io/gh/mstrimas/smoothr/branch/main/graph/badge.svg)](https://codecov.io/github/mstrimas/smoothr?branch=main)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/smoothr)](https://cran.r-project.org/package=smoothr)
 [![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/smoothr?color=brightgreen)](http://www.r-pkg.org/pkg/smoothr)
 <!-- badges: end -->

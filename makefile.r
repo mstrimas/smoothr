@@ -15,12 +15,13 @@ rmarkdown::render("README.Rmd")
 unlink("README.html")
 pkgdown::build_site()
 
-# checks
 # local checks
 devtools::check()
 
 # remote checks
 devtools::check_win_devel()
 devtools::check_win_release()
-rhub::check_for_cran(platforms = c("solaris-x86-patched", "debian-gcc-release"),
+rhub::check_for_cran(platforms = c("solaris-x86-patched",
+                                   "windows-x86_64-release",
+                                   "debian-gcc-release"),
                      show_status = FALSE)
