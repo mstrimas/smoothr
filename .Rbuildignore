@@ -17,3 +17,4 @@
 makefile.R
 hex-logo/
 pkgdown/
+^CRAN-SUBMISSION$
