@@ -21,7 +21,7 @@ Depends:
 Imports: 
     sf,
     stats,
-    terra,
+    terra (>= 1.6-3),
     units
 Suggests: 
     covr,
