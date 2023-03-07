@@ -260,9 +260,9 @@ r <- classify(jagged_raster, rcl = c(-Inf, 0.5, Inf)) %>%
 plot(r, col = c("white", "#4DAF4A"), legend = FALSE, axes = FALSE)
 
 # polygonize
-r_poly <- as.polygons(r) %>% 
-  st_as_sf() %>% 
-  subset(value > 0)
+r_poly <- ifel(r > 0, r, NA) %>%
+  as.polygons() %>% 
+  st_as_sf()
 plot(r_poly, col = NA, border = "grey20", lwd = 1.5, add = TRUE)
 ```
 

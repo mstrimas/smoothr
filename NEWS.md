@@ -1,3 +1,7 @@
+# smoothr 1.0.1
+
+- Fix error in vignette arising from development version of terra [issue #15]
+
 # smoothr 1.0.0
 
 - transition to terra, remove raster dependency

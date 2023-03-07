@@ -21,7 +21,6 @@ devtools::check()
 # remote checks
 devtools::check_win_devel()
 devtools::check_win_release()
-rhub::check_for_cran(platforms = c("solaris-x86-patched",
-                                   "windows-x86_64-release",
-                                   "debian-gcc-release"),
+rhub::check_for_cran(show_status = FALSE)
+rhub::check_for_cran(platforms = "solaris-x86-patched",
                      show_status = FALSE)
