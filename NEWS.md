@@ -1,5 +1,9 @@
 # smoothr 1.0.1
 
+- Remove export of `SpatRaster` class so smoothr works with older versions of Raster
+
+# smoothr 1.0.1
+
 - Fix error in vignette arising from development version of terra [issue #15]
 
 # smoothr 1.0.0

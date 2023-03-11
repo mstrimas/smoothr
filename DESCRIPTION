@@ -1,7 +1,7 @@
 Type: Package
 Package: smoothr
 Title: Smooth and Tidy Spatial Features
-Version: 1.0.1
+Version: 1.0.2
 Authors@R: 
     person(given = "Matthew",
            family = "Strimas-Mackey",
@@ -21,7 +21,7 @@ Depends:
 Imports: 
     sf,
     stats,
-    terra (>= 1.6-3),
+    terra,
     units
 Suggests: 
     covr,

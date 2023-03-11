@@ -6,5 +6,4 @@
 #'
 #' @name smoothr
 #' @docType package
-#' @importClassesFrom terra SpatRaster
 NULL

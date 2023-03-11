@@ -91,7 +91,7 @@ test_that("smooth() works for different input formats", {
 
 test_that("smooth() works for SpatVector objects", {
   skip_if_not_installed("terra")
-  jp_terra <- terra::vect(as(jagged_polygons, "Spatial"))
+  jp_terra <- terra::vect(jagged_polygons)
   s_terra <- expect_warning(smooth(jp_terra))
   expect_s4_class(s_terra, "SpatVector")
 })

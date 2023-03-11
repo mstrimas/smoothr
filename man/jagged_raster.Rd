@@ -5,7 +5,7 @@
 \alias{jagged_raster}
 \title{Simulated raster for polygonizing and smoothing}
 \format{
-A wrapped \link[terra:SpatRaster-class]{SpatRaster} object with one layer. Call
+A wrapped \link[terra:rast]{SpatRaster} object with one layer. Call
 \code{\link[terra:rast]{terra::rast()}} to unwrap it.
 }
 \usage{

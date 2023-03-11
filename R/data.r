@@ -42,6 +42,6 @@
 #' 25x25 grid of 100 square kilometer cells in a North American centered Albers
 #' Equal Area projection.
 #'
-#' @format A wrapped [SpatRaster][terra::SpatRaster] object with one layer. Call
+#' @format A wrapped [SpatRaster][terra::rast()] object with one layer. Call
 #'   [terra::rast()] to unwrap it.
 "jagged_raster"
