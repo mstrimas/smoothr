@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">smoothr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.2</span>
       </span>
     </div>
 
@@ -68,7 +68,7 @@
 
 <dt>threshold</dt>
 <dd><p>an area threshold, below which holes will be removed.
-Provided either as a <code>units</code> object (see <code><a href="https://rdrr.io/pkg/units/man/units.html" class="external-link">units::set_units()</a></code>), or a
+Provided either as a <code>units</code> object (see <code><a href="https://r-quantities.github.io/units/reference/units.html" class="external-link">units::set_units()</a></code>), or a
 numeric threshold in the units of the coordinate reference system. If <code>x</code>
 is in unprojected coordinates, a numeric threshold is assumed to be in
 square meters. A threshold of 0 will return the input polygons unchanged.</p></dd>
@@ -86,7 +86,7 @@ data.</p>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># fill holes smaller than 1000km2</span></span></span>
 <span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">jagged_polygons</span><span class="op">$</span><span class="va">geometry</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="va">area_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">area_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://r-quantities.github.io/units/reference/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">p_dropped</span> <span class="op">&lt;-</span> <span class="fu">fill_holes</span><span class="op">(</span><span class="va">p</span>, threshold <span class="op">=</span> <span class="va">area_thresh</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># plot</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -107,7 +107,7 @@ data.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

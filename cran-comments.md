@@ -1,15 +1,15 @@
-# smoothr 1.0.1
+# smoothr 1.0.2
 
-- Remove export of `SpatRaster` class so smoothr works with older versions of Raster
+- change package-level documentation as per roxygen2 suggestions
 
 ## Test environments
 
-- local OS X install, R 4.2
-- OS X (github actions), R 4.2
-- Windows (github actions), R 4.2
-- ubuntu 14.04 (github actions), R 4.2
+- local OS X install, R 4.3
+- OS X (github actions), R 4.3
+- Windows (github actions), R 4.3
+- ubuntu 14.04 (github actions), R 4.3
 - win-builder (devel and release)
-- R-hub (Solaris), R 4.2
+- R-hub (Solaris), R 4.3
 
 ## R CMD check results
 

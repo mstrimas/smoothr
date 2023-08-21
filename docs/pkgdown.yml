@@ -1,7 +1,7 @@
-pandoc: 2.19.2
-pkgdown: 2.0.5
+pandoc: 3.1.1
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   smoothr: smoothr.html
-last_built: 2023-03-10T16:04Z
+last_built: 2023-08-21T16:17Z
 

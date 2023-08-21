@@ -1,3 +1,7 @@
+# smoothr 1.0.2
+
+- change package-level documentation as per roxygen2 suggestions
+
 # smoothr 1.0.1
 
 - Remove export of `SpatRaster` class so smoothr works with older versions of Raster

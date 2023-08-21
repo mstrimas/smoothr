@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">smoothr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.2</span>
       </span>
     </div>
 
@@ -122,9 +122,9 @@ fragments based on a size threshold, as well as densification
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-quantities/units" class="external-link">units</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-quantities.github.io/units/" class="external-link">units</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://strimas.com/smoothr/" class="external-link">smoothr</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -356,7 +356,7 @@ automatically.</p>
 <p>For example, to remove polygons less than 200 square kilometers:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">jagged_polygons</span><span class="op">$</span><span class="va">geometry</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span></span>
-<span><span class="va">area_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">200</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">area_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://r-quantities.github.io/units/reference/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">200</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">p_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span><span class="op">(</span><span class="va">p</span>, threshold <span class="op">=</span> <span class="va">area_thresh</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p</span>, col <span class="op">=</span> <span class="st">"black"</span>, main <span class="op">=</span> <span class="st">"Original"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_dropped</span>, col <span class="op">=</span> <span class="st">"black"</span>, main <span class="op">=</span> <span class="st">"After drop_crumbs()"</span><span class="op">)</span></span></code></pre></div>
@@ -366,7 +366,7 @@ automatically.</p>
 <code class="sourceCode R"><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="va">jagged_lines</span><span class="op">$</span><span class="va">geometry</span><span class="op">[</span><span class="fl">8</span><span class="op">]</span></span>
 <span><span class="co"># note that any units can be used</span></span>
 <span><span class="co"># conversion to units of projection happens automatically</span></span>
-<span><span class="va">length_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">25</span>, <span class="va">miles</span><span class="op">)</span></span>
+<span><span class="va">length_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://r-quantities.github.io/units/reference/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">25</span>, <span class="va">miles</span><span class="op">)</span></span>
 <span><span class="va">l_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span><span class="op">(</span><span class="va">l</span>, threshold <span class="op">=</span> <span class="va">length_thresh</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">l</span>, lwd <span class="op">=</span> <span class="fl">5</span>, main <span class="op">=</span> <span class="st">"Original"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">l_dropped</span>, lwd <span class="op">=</span> <span class="fl">5</span>, main <span class="op">=</span> <span class="st">"After drop_crumbs()"</span><span class="op">)</span></span></code></pre></div>
@@ -383,7 +383,7 @@ number or a <code>units</code> object.</p>
 size:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">jagged_polygons</span><span class="op">$</span><span class="va">geometry</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span></span>
-<span><span class="va">area_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">800</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">area_thresh</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://r-quantities.github.io/units/reference/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">800</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">p_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fill_holes.html">fill_holes</a></span><span class="op">(</span><span class="va">p</span>, threshold <span class="op">=</span> <span class="va">area_thresh</span><span class="op">)</span></span>
 <span><span class="co"># plot</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p</span>, col <span class="op">=</span> <span class="st">"black"</span>, main <span class="op">=</span> <span class="st">"Original"</span><span class="op">)</span></span>
@@ -413,7 +413,7 @@ polygonize.</p>
 <span></span>
 <span><span class="co"># polygonize</span></span>
 <span><span class="va">r_poly</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/ifelse.html" class="external-link">ifel</a></span><span class="op">(</span><span class="va">r</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="va">r</span>, <span class="cn">NA</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.spatvector.html" class="external-link">as.polygons</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.polygons.html" class="external-link">as.polygons</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r_poly</span>, col <span class="op">=</span> <span class="cn">NA</span>, border <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/polygonize-1.png" width="100%" style="display: block; margin: auto;"></p>
@@ -421,7 +421,7 @@ polygonize.</p>
 resulting from a single raster cell. Recall that the cells is this
 raster are 100 square kilometers each.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">r_poly_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span><span class="op">(</span><span class="va">r_poly</span>, <span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">101</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">r_poly_dropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drop_crumbs.html">drop_crumbs</a></span><span class="op">(</span><span class="va">r_poly</span>, <span class="fu"><a href="https://r-quantities.github.io/units/reference/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">101</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># plot</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r_poly_dropped</span>, col <span class="op">=</span> <span class="st">"#4DAF4A"</span>, border <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>, main <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/raster-drop-1.png" width="100%" style="display: block; margin: auto;"></p>
@@ -429,7 +429,7 @@ raster are 100 square kilometers each.</p>
 the smaller of the two holes, which is two raster cells (200 square
 kilometers) in size, but keep the larger one.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">r_poly_filled</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fill_holes.html">fill_holes</a></span><span class="op">(</span><span class="va">r_poly_dropped</span>, <span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">201</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">r_poly_filled</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fill_holes.html">fill_holes</a></span><span class="op">(</span><span class="va">r_poly_dropped</span>, <span class="fu"><a href="https://r-quantities.github.io/units/reference/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">201</span>, <span class="va">km</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># plot</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r_poly_filled</span>, col <span class="op">=</span> <span class="st">"#4DAF4A"</span>, border <span class="op">=</span> <span class="st">"grey20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>, main <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/raster-fill-1.png" width="100%" style="display: block; margin: auto;"></p>
@@ -492,7 +492,7 @@ polygons in contour map?</a></li>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
