@@ -9,7 +9,6 @@
 - Windows (github actions), R 4.5
 - ubuntu 14.04 (github actions), R 4.5
 - win-builder (devel and release)
-- R-hub (Solaris), R 4.5
 
 ## R CMD check results
 
