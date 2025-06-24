@@ -107,7 +107,7 @@ drop_crumbs.sfc <- function(x, threshold, drop_empty = TRUE) {
   }
 
   # re-group
-  comb_fxn <- \(y) sf::st_cast(sf::st_combine(y), y[["type"]][1])
+  comb_fxn <- function(y) sf::st_cast(sf::st_combine(y), y[["type"]][1])
   x <- tapply(x, INDEX = x[["id"]], FUN = comb_fxn, simplify = FALSE)
   do.call(c, x)
 }
