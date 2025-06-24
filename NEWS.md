@@ -1,6 +1,6 @@
 # smoothr 1.1.0
 
-- 
+- Efficiency improvements for `drop_crumbs()`
 
 # smoothr 1.0.2
 

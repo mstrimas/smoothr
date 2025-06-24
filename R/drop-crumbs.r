@@ -82,24 +82,34 @@ drop_crumbs.sfc <- function(x, threshold, drop_empty = TRUE) {
     stopifnot(threshold > units::set_units(0, size_units, mode = "standard"))
   }
 
-  # loop over features
-  for (i in seq_along(x)) {
-    # split up multipart geometries
-    singles <- sf::st_cast(x[i], geo_type)
-    # test threshold
-    passed <- singles[size_fxn(singles) >= threshold]
-    # recombine
-    if (length(passed) != 1) {
-      passed <- sf::st_combine(passed)
+  # assign a unique polygon id before breaking up multipart geometries
+  x <- sf::st_as_sf(x, id = seq_along(x))
+  all_ids <- x[["id"]]
+  # split up multipart geometries
+  x[["type"]] <- as.character(sf::st_geometry_type(x))
+  x <- sf::st_cast(x, paste0("MULTI", geo_type), warn = FALSE)
+  x <- sf::st_cast(x, geo_type, warn = FALSE)
+  # apply threshold
+  x <- x[size_fxn(x) > threshold, ]
+
+  # add fully dropped features back in as empty geometries
+  missing_ids <- setdiff(all_ids, x[["id"]])
+  if (!drop_empty && length(missing_ids) > 0) {
+    empty <- rep(sf::st_as_sfc("GEOMETRYCOLLECTION EMPTY", crs = sf::st_crs(x)),
+                 length(missing_ids))
+    empty <- sf::st_as_sf(empty, id = missing_ids, type = "GEOMETRYCOLLECTION")
+    if (nrow(x) > 0) {
+      x <- rbind(x, empty)
+    } else {
+      x <- empty
     }
-    x[[i]] <- passed[[1]]
+    x <- x[order(x[["id"]]), ]
   }
-  # remove empty geometries
-  x <- sf::st_sfc(x)
-  if (drop_empty) {
-    x <- x[!sf::st_is_empty(x)]
-  }
-  x
+
+  # re-group
+  comb_fxn <- \(y) sf::st_cast(sf::st_combine(y), y[["type"]][1])
+  x <- tapply(x, INDEX = x[["id"]], FUN = comb_fxn, simplify = FALSE)
+  do.call(c, x)
 }
 
 #' @export
