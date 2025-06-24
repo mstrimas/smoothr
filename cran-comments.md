@@ -1,15 +1,15 @@
-# smoothr 1.0.2
+# smoothr 1.1.0
 
-- change package-level documentation as per roxygen2 suggestions
+- 
 
 ## Test environments
 
-- local OS X install, R 4.3
-- OS X (github actions), R 4.3
-- Windows (github actions), R 4.3
-- ubuntu 14.04 (github actions), R 4.3
+- local OS X install, R 4.5
+- OS X (github actions), R 4.5
+- Windows (github actions), R 4.5
+- ubuntu 14.04 (github actions), R 4.5
 - win-builder (devel and release)
-- R-hub (Solaris), R 4.3
+- R-hub (Solaris), R 4.5
 
 ## R CMD check results
 

@@ -1,3 +1,7 @@
+# smoothr 1.1.0
+
+- 
+
 # smoothr 1.0.2
 
 - change package-level documentation as per roxygen2 suggestions

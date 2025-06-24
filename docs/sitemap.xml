@@ -1,72 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/smoothr.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/densify.html</loc>
-  </url>
-  <url>
-    <loc>/reference/drop_crumbs.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fill_holes.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/jagged_lines.html</loc>
-  </url>
-  <url>
-    <loc>/reference/jagged_lines_3d.html</loc>
-  </url>
-  <url>
-    <loc>/reference/jagged_polygons.html</loc>
-  </url>
-  <url>
-    <loc>/reference/jagged_raster.html</loc>
-  </url>
-  <url>
-    <loc>/reference/smooth.html</loc>
-  </url>
-  <url>
-    <loc>/reference/smooth_chaikin.html</loc>
-  </url>
-  <url>
-    <loc>/reference/smooth_densify.html</loc>
-  </url>
-  <url>
-    <loc>/reference/smooth_ksmooth.html</loc>
-  </url>
-  <url>
-    <loc>/reference/smooth_spline.html</loc>
-  </url>
-  <url>
-    <loc>/reference/smoothr-package.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>/CONTRIBUTING.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/smoothr.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/densify.html</loc></url>
+<url><loc>/reference/drop_crumbs.html</loc></url>
+<url><loc>/reference/fill_holes.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/jagged_lines.html</loc></url>
+<url><loc>/reference/jagged_lines_3d.html</loc></url>
+<url><loc>/reference/jagged_polygons.html</loc></url>
+<url><loc>/reference/jagged_raster.html</loc></url>
+<url><loc>/reference/smooth.html</loc></url>
+<url><loc>/reference/smooth_chaikin.html</loc></url>
+<url><loc>/reference/smooth_densify.html</loc></url>
+<url><loc>/reference/smooth_ksmooth.html</loc></url>
+<url><loc>/reference/smooth_spline.html</loc></url>
+<url><loc>/reference/smoothr-package.html</loc></url>
 </urlset>
+
