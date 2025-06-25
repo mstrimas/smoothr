@@ -2,8 +2,8 @@
 title: "smoothr: Smooth and Tidy Spatial Features in R"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{smoothr: Smooth and Tidy Spatial Features in R}
   %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{smoothr: Smooth and Tidy Spatial Features in R}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
@@ -310,13 +310,13 @@ Chaikin's corner cutting algorithm:
 
 - Chaikin, G. An algorithm for high speed curve generation. Computer Graphics and Image Processing 3 (1974), 346–349
 -http://www.cs.unc.edu/~dm/UNC/COMP258/LECTURES/Chaikins-Algorithm.pdf
-- [Where to find Python implementation of Chaikin's corner cutting algorithm?](https://stackoverflow.com/a/47255374/3591386)
+- Where to find Python implementation of Chaikin's corner cutting algorithm?: `https://stackoverflow.com/a/47255374/3591386`
 
 Kernel smoothing:
 
-- [Nadaraya-Watson Optimal Bandwidth](https://stats.stackexchange.com/a/143608/44268)
+- Nadaraya-Watson Optimal Bandwidth: `https://stats.stackexchange.com/a/143608/44268`
 
 Spline interpolation:
 
-- [Create polygon from set of points distributed](https://stackoverflow.com/questions/26087772/26089377)
-- [Smoothing polygons in contour map?](https://gis.stackexchange.com/questions/24827/24929)
+- Create polygon from set of points distributed: `https://stackoverflow.com/questions/26087772/26089377`
+- Smoothing polygons in contour map?: `https://gis.stackexchange.com/questions/24827/24929`
