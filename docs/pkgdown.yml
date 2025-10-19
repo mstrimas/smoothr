@@ -1,6 +1,6 @@
-pandoc: '3.2'
+pandoc: 3.6.3
 pkgdown: 2.1.2
 pkgdown_sha: ~
 articles:
   smoothr: smoothr.html
-last_built: 2025-06-25T19:20Z
+last_built: 2025-10-19T13:14Z
