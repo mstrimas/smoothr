@@ -21,7 +21,6 @@ Depends:
 Imports: 
     sf,
     stats,
-    terra,
     units
 Suggests: 
     covr,
@@ -30,7 +29,8 @@ Suggests:
     methods,
     rmarkdown,
     sp,
-    testthat
+    testthat,
+    terra
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

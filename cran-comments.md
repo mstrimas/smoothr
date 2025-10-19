@@ -1,6 +1,6 @@
-# smoothr 1.1.0
+# smoothr 1.2.0
 
-- Efficiency improvements for `drop_crumbs()`
+- move terra to Suggests (issue #19)
 
 ## Test environments
 
