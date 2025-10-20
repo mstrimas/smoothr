@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">smoothr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
       </span>
     </div>
 
@@ -176,10 +176,13 @@ species, consisting of a spatially auto-correlated raster layer with
 values between 0 and 1. It is a 25x25 grid of 100 square kilometer cells
 in a North American centered Albers Equal Area projection. This raster
 can be used to experiment with smoothing polygons generated from
-rasters. It is a wrapped <code>SpatRaster</code> object, so we need to
-call <code><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast()</a></code> to unwrap it prior to use.</p>
+rasters. It is stored within this package as a GeoTIFF so we need to
+load it using <code><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast()</a></code> from the <code>terra</code> package
+prior to use.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">jagged_raster</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">heat.colors</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"jagged-raster.tif"</span>, package <span class="op">=</span> <span class="st">"smoothr"</span><span class="op">)</span></span>
+<span><span class="va">jagged_raster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">jagged_raster</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">heat.colors</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="smoothr_files/figure-html/guass-field-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
@@ -399,9 +402,8 @@ this species, showing where it occurs with at least 50% probability. We
 can convert the raster to a binary presence/absence map, then
 polygonize.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># unwrap for use</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">jagged_raster</span><span class="op">)</span></span>
-<span><span class="va">jagged_raster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">jagged_raster</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"jagged-raster.tif"</span>, package <span class="op">=</span> <span class="st">"smoothr"</span><span class="op">)</span></span>
+<span><span class="va">jagged_raster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># pres/abs map</span></span>
 <span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/classify.html" class="external-link">classify</a></span><span class="op">(</span><span class="va">jagged_raster</span>, rcl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="cn">Inf</span>, <span class="fl">0.5</span>, <span class="cn">Inf</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>

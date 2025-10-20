@@ -71,11 +71,13 @@ Again, there's a range of complexities, some lines form closed loops, and some a
 print(jagged_lines)
 ```
 
-The final dataset that comes with this package, `jagged_raster`, is a simulated occurrence probability for a species, consisting of a spatially auto-correlated raster layer with values between 0 and 1. It is a 25x25 grid of 100 square kilometer cells in a North American centered Albers Equal Area projection. This raster can be used to experiment with smoothing polygons generated from rasters. It is a wrapped `SpatRaster` object, so we need to call `rast()` to unwrap it prior to use.
+The final dataset that comes with this package, `jagged_raster`, is a simulated occurrence probability for a species, consisting of a spatially auto-correlated raster layer with values between 0 and 1. It is a 25x25 grid of 100 square kilometer cells in a North American centered Albers Equal Area projection. This raster can be used to experiment with smoothing polygons generated from rasters. It is stored within this package as a GeoTIFF so we need to load it using `rast()` from the `terra` package prior to use.
 
 ```{r guass-field, results="hide", dev="png", echo=-1}
 par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
-plot(rast(jagged_raster), col = heat.colors(100), axes = FALSE)
+file <- system.file("extdata", "jagged-raster.tif", package = "smoothr")
+jagged_raster <- rast(file)
+plot(jagged_raster, col = heat.colors(100), axes = FALSE)
 ```
 
 ## Smoothing methods
@@ -250,9 +252,8 @@ The whole point of this `smoothr` business was to smooth out polygons generated 
 
 ```{r polygonize, dev="png", echo=-1}
 par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
-# unwrap for use
-data(jagged_raster)
-jagged_raster <- rast(jagged_raster)
+file <- system.file("extdata", "jagged-raster.tif", package = "smoothr")
+jagged_raster <- rast(file)
 
 # pres/abs map
 r <- classify(jagged_raster, rcl = c(-Inf, 0.5, Inf)) %>% 

@@ -156,5 +156,8 @@ crs(jagged_raster) <- paste("+proj=aea +lat_1=20 +lat_2=60 +lat_0=40",
                             "+lon_0=-96 +x_0=0 +y_0=0",
                             "+ellps=GRS80 +datum=NAD83",
                             "+units=m +no_defs")
-jagged_raster <- wrap(jagged_raster)
-usethis::use_data(jagged_raster, overwrite = TRUE)
+dir.create("inst/extdata", recursive = TRUE, showWarnings = FALSE)
+writeRaster(jagged_raster,
+            filename = "inst/extdata/jagged-raster.tif",
+            overwrite = TRUE,
+            gdal = "COMPRESS=DEFLATE")

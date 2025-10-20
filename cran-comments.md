@@ -1,4 +1,8 @@
-# smoothr 1.2.0
+## Resubmission
+
+- removed `jagged_raster` `terra` object to allow `terra` to be moved to Suggests, then replaced with a GeoTIFF file in `inst/extdata/jagged-raster.tif`
+
+# smoothr 1.2.1
 
 - move terra to Suggests (issue #19)
 
