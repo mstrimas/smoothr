@@ -26,10 +26,20 @@ test_that("smooth_spline() works on 3d lines", {
   }
 })
 
+test_that("smooth_spline() vertex_factor produces correct vertex count", {
+  m <- jagged_polygons$geometry[[2]][[1]]
+  n_orig <- nrow(m)
+  m_vf2 <- smooth_spline(m, wrap = TRUE, vertex_factor = 2)
+  expect_equal(nrow(m_vf2), n_orig * 2)
+  m_vf2L <- smooth_spline(m, wrap = TRUE, vertex_factor = 2L)
+  expect_equal(nrow(m_vf2L), n_orig * 2)
+})
+
 test_that("smooth_spline() raises error on invalid input", {
   expect_error(smooth_spline(jagged_polygons))
   m <- jagged_polygons$geometry[[2]][[1]]
   expect_error(smooth_spline(m, n = -1))
   expect_error(smooth_spline(m, n = 1.5))
   expect_error(smooth_spline(m, n = nrow(m) - 1))
+  expect_error(smooth_spline(m, vertex_factor = 0.5))
 })

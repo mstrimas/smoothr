@@ -5,7 +5,7 @@
 #' entirely of right angles. There are examples of polygons with holes and
 #' multipart polygons.
 #'
-#' @format An [sf][sf::sf]  object with 9 features and 3 attribute:
+#' @format An [sf][sf::sf] object with 9 features and 3 attributes:
 #'   - **`type`**: character; the geometry, i.e. "polygon" or "line".
 #'   - **`hole`**: logical; whether the polygon has holes or not.
 #'   - **`multipart`**: logical; whether the feature is single or multipart.
@@ -16,7 +16,7 @@
 #' Spatial lines in [sf][sf::sf] format for smoothing. There are examples of
 #' lines forming a closed loop and multipart lines.
 #'
-#' @format An [sf][sf::sf]  object with 9 features and 3 attribute:
+#' @format An [sf][sf::sf] object with 9 features and 3 attributes:
 #'   - **`type`**: character; the geometry, i.e. "polygon" or "line".
 #'   - **`closed`**: logical; whether the line forms a closed loop or not.
 #'   - **`multipart`**: logical; whether the feature is single or multipart.
@@ -27,7 +27,7 @@
 #' Spatial lines in [sf][sf::sf]  format for smoothing in three dimensions.
 #' There are examples of open and closed loops
 #'
-#' @format An [sf][sf::sf] object with 9 features and 3 attribute:
+#' @format An [sf][sf::sf] object with 9 features and 3 attributes:
 #'   - **`type`**: character; the geometry, i.e. "polygon" or "line".
 #'   - **`closed`**: logical; whether the line forms a closed loop or not.
 #'   - **`multipart`**: logical; whether the feature is single or multipart.

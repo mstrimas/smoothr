@@ -18,11 +18,11 @@ point_distance <- function(x) {
 seq_multiple <- function(start, end, n) {
   f <- function(x, y, z) {
     sq <- seq(from = x, to = y, length.out = z)
-    # remove start since it will be duplicated by end of previous seqment
+    # remove start since it will be duplicated by end of previous segment
     sq[-1]
   }
   # interpolate evenly between a series of points
   sq_mult <- mapply(f, start, end, n, SIMPLIFY = FALSE)
-  # combine seqments, need to add overall start point
+  # combine segments, need to add overall start point
   c(start[1], do.call(c, sq_mult))
 }

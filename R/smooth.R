@@ -105,7 +105,7 @@
 #' }
 #' par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), new = TRUE)
 #' plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n", axes = FALSE)
-#' legend("bottom", legend = c("chaikin", "smooth", "spline"),
+#' legend("bottom", legend = c("chaikin", "ksmooth", "spline"),
 #'        col = c("#E41A1C", "#4DAF4A", "#377EB8"),
 #'        lwd = 2, cex = 2, box.lwd = 0, inset = 0, horiz = TRUE)
 smooth <- function(

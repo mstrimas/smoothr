@@ -5,7 +5,7 @@
 \alias{jagged_lines}
 \title{Jagged lines for smoothing}
 \format{
-An \link[sf:sf]{sf}  object with 9 features and 3 attribute:
+An \link[sf:sf]{sf} object with 9 features and 3 attributes:
 \itemize{
 \item \strong{\code{type}}: character; the geometry, i.e. "polygon" or "line".
 \item \strong{\code{closed}}: logical; whether the line forms a closed loop or not.

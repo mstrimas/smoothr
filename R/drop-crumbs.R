@@ -69,10 +69,9 @@ drop_crumbs.sfc <- function(x, threshold, drop_empty = TRUE) {
     ))
   }
 
-  # zero threshold returns the input features unchanged
   thresh_nounits <- as.numeric(threshold)
   if (thresh_nounits < 0) {
-    stop("threshold cannont be negative")
+    stop("threshold cannot be negative")
   }
 
   # convert threshold to crs units

@@ -26,6 +26,11 @@ test_that("smooth_chaikin() works on 3d lines", {
   }
 })
 
+test_that("smooth_chaikin() refinements = 0 returns original matrix", {
+  m <- jagged_polygons$geometry[[2]][[1]]
+  expect_equivalent(m, smooth_chaikin(m, wrap = TRUE, refinements = 0))
+})
+
 test_that("smooth_chaikin() raises error on invalid input", {
   expect_error(smooth_chaikin(jagged_polygons))
   m <- jagged_polygons$geometry[[2]][[1]]

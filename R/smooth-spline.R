@@ -52,7 +52,7 @@ smooth_spline <- function(x, wrap = FALSE, vertex_factor = 5, n) {
   stopifnot(is_flag(wrap))
   if (missing(n)) {
     stopifnot(
-      is.double(vertex_factor),
+      is.numeric(vertex_factor),
       length(vertex_factor) == 1,
       vertex_factor >= 1
     )

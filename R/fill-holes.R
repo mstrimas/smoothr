@@ -38,7 +38,7 @@ fill_holes.sfc <- function(x, threshold) {
   if (thresh_nounits == 0) {
     return(x)
   } else if (thresh_nounits < 0) {
-    stop("threshold cannont be negative")
+    stop("threshold cannot be negative")
   }
 
   # convert threshold to crs units

@@ -28,13 +28,13 @@ test_that("smooth() methods work", {
 
   # lines
   sl <- smooth(jagged_lines, method = "chaikin")
-  expect_true(all(st_is_valid(s)))
+  expect_true(all(st_is_valid(sl)))
   sl <- smooth(jagged_lines, method = "ksmooth")
-  expect_true(all(st_is_valid(s)))
+  expect_true(all(st_is_valid(sl)))
   sl <- smooth(jagged_lines, method = "spline")
-  expect_true(all(st_is_valid(s)))
+  expect_true(all(st_is_valid(sl)))
   sl <- smooth(jagged_lines, method = "densify")
-  expect_true(all(st_is_valid(s)))
+  expect_true(all(st_is_valid(sl)))
 
   # test parameters
   # chaikin

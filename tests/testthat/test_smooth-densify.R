@@ -32,6 +32,12 @@ test_that("smooth_densify() max_distance works", {
   l_smooth <- smooth_densify(l, wrap = FALSE, max_distance = md)
   expect_is(l_smooth, "matrix")
   expect_true(all(smoothr:::point_distance(l_smooth) <= md))
+
+  m <- jagged_polygons$geometry[[2]][[1]]
+  m_smooth <- smooth_densify(m, wrap = TRUE, max_distance = md)
+  expect_is(m_smooth, "matrix")
+  expect_true(all(smoothr:::point_distance(m_smooth) <= md))
+  expect_equal(m_smooth[1, ], m_smooth[nrow(m_smooth), ])
 })
 
 test_that("smooth_densify() edge cases work", {

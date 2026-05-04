@@ -189,7 +189,7 @@ smooth_ksmooth <- function(
     # removing padding
     pts_smooth <- pts_smooth[keep_rows, ]
 
-    # ensure enpoints are fixed
+    # ensure endpoints are fixed
     pts_smooth[1, ] <- pad$start[nrow(pad$start), ]
     pts_smooth[nrow(pts_smooth), ] <- pad$end[1, ]
   }

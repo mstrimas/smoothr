@@ -5,7 +5,7 @@
 \alias{jagged_polygons}
 \title{Jagged polygons for smoothing}
 \format{
-An \link[sf:sf]{sf}  object with 9 features and 3 attribute:
+An \link[sf:sf]{sf} object with 9 features and 3 attributes:
 \itemize{
 \item \strong{\code{type}}: character; the geometry, i.e. "polygon" or "line".
 \item \strong{\code{hole}}: logical; whether the polygon has holes or not.

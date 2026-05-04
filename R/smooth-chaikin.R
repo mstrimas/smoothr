@@ -49,7 +49,7 @@ smooth_chaikin <- function(x, wrap = FALSE, refinements = 3L) {
 
   # polygons and closed lines need to be wrapped
   if (wrap) {
-    for (i in seq.int(refinements)) {
+    for (i in seq_len(refinements)) {
       n_pts <- nrow(x)
       qr <- matrix(NA_real_, nrow = 2 * (n_pts - 1) + 1, ncol = ncol(x))
       qr[seq(1, nrow(qr) - 1, by = 2), ] <- 0.75 * x[-n_pts, ] + 0.25 * x[-1, ]

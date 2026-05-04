@@ -37,6 +37,15 @@ test_that("drop_crumbs() drop_empty works", {
   p_dropped <- drop_crumbs(p, threshold = area_thresh, drop_empty = TRUE)
   expect_lt(length(p_dropped), length(p))
   expect_true(all(!st_is_empty(p_dropped)))
+
+  l <- jagged_lines$geometry
+  length_thresh <- units::set_units(50, km)
+  l_dropped <- drop_crumbs(l, threshold = length_thresh, drop_empty = FALSE)
+  expect_equal(length(l_dropped), length(l))
+  expect_true(any(st_is_empty(l_dropped)))
+  l_dropped <- drop_crumbs(l, threshold = length_thresh, drop_empty = TRUE)
+  expect_lt(length(l_dropped), length(l))
+  expect_true(all(!st_is_empty(l_dropped)))
 })
 
 test_that("drop_crumbs() handling of empty results", {
