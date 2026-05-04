@@ -4,7 +4,6 @@
   CRAN error caused by `sf` no longer re-exporting `%>%` (issue #20).
 - Minimum R version bumped to 4.1.0 to support the native pipe.
 - Remove `codecov` from `Suggests` and delete `codecov.yml`.
-- Added `CLAUDE.md` to configure Claude Code for development on this package.
 
 # smoothr 1.2.1
 
