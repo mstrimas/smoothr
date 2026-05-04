@@ -1,4 +1,4 @@
-# smoothr 1.2.2
+# smoothr 1.3.0
 
 - Replace magrittr pipe `%>%` with the native R pipe `|>`, fixing a CRAN error
   caused by `sf` no longer re-exporting `%>%` (issue #20).
