@@ -58,7 +58,7 @@ step. Ignored if \code{max_distance} is specified.
 features for the densification step. This is the Euclidean distance and
 not the great circle distance.
 }
-\item \code{\link[=smooth_spline]{smooth_spline()}}: spline interpolation via the \code{\link[stats:splinefun]{stats::spline()}}
+\item \code{\link[=smooth_spline]{smooth_spline()}}: spline interpolation via the \code{\link[stats:spline]{stats::spline()}}
 function. This method interpolates between existing vertices and can be
 used when the resulting smoothed feature should pass through the vertices
 of the input feature. Smoothing parameters:
@@ -91,10 +91,14 @@ p_smooth_ksmooth <- smooth(jagged_polygons, method = "ksmooth")
 p_smooth_spline <- smooth(jagged_polygons, method = "spline")
 for (i in 1:nrow(jagged_polygons)) {
   plot(st_geometry(p_smooth_spline[i, ]), col = NA, border = NA)
-  plot(st_geometry(jagged_polygons[i, ]), col = "grey40", border = NA, add = TRUE)
-  plot(st_geometry(p_smooth_chaikin[i, ]), col = NA, border = "#E41A1C", lwd = 2, add = TRUE)
-  plot(st_geometry(p_smooth_ksmooth[i, ]), col = NA, border = "#4DAF4A", lwd = 2, add = TRUE)
-  plot(st_geometry(p_smooth_spline[i, ]), col = NA, border = "#377EB8", lwd = 2, add = TRUE)
+  plot(st_geometry(jagged_polygons[i, ]), col = "grey40", border = NA,
+       add = TRUE)
+  plot(st_geometry(p_smooth_chaikin[i, ]), col = NA, border = "#E41A1C",
+       lwd = 2, add = TRUE)
+  plot(st_geometry(p_smooth_ksmooth[i, ]), col = NA, border = "#4DAF4A",
+       lwd = 2, add = TRUE)
+  plot(st_geometry(p_smooth_spline[i, ]), col = NA, border = "#377EB8",
+       lwd = 2, add = TRUE)
 }
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), new = TRUE)
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n", axes = FALSE)
@@ -110,9 +114,12 @@ l_smooth_spline <- smooth(jagged_lines, method = "spline")
 for (i in 1:nrow(jagged_lines)) {
   plot(st_geometry(l_smooth_spline[i, ]), col = NA)
   plot(st_geometry(jagged_lines[i, ]), col = "grey20", lwd = 3, add = TRUE)
-  plot(st_geometry(l_smooth_chaikin[i, ]), col = "#E41A1C", lwd = 2, lty = 2, add = TRUE)
-  plot(st_geometry(l_smooth_ksmooth[i, ]), col = "#4DAF4A", lwd = 2, lty = 2, add = TRUE)
-  plot(st_geometry(l_smooth_spline[i, ]), col = "#377EB8", lwd = 2, lty = 2, add = TRUE)
+  plot(st_geometry(l_smooth_chaikin[i, ]), col = "#E41A1C", lwd = 2,
+       lty = 2, add = TRUE)
+  plot(st_geometry(l_smooth_ksmooth[i, ]), col = "#4DAF4A", lwd = 2,
+       lty = 2, add = TRUE)
+  plot(st_geometry(l_smooth_spline[i, ]), col = "#377EB8", lwd = 2,
+       lty = 2, add = TRUE)
 }
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), new = TRUE)
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n", axes = FALSE)

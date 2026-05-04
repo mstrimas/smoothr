@@ -114,8 +114,8 @@ plot(p, add = TRUE)
 The kernel smoothing method was inspired by the following
 StackExchange answers:
 \itemize{
-\item \href{https://stats.stackexchange.com/a/143608/44268}{Nadaraya-Watson Optimal Bandwidth}
-\item \href{https://gis.stackexchange.com/a/24929/26661}{Smoothing polygons in contour map?}
+\item \url{https://stats.stackexchange.com/a/143608/44268}
+\item \url{https://gis.stackexchange.com/a/24929/26661}
 }
 }
 \seealso{

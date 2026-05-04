@@ -16,11 +16,12 @@
 #' @return A matrix with the coordinates of the smoothed curve.
 #' @references The original reference for Chaikin's corner cutting algorithm is:
 #'
-#'   - `Chaikin, G. An algorithm for high speed curve generation. Computer Graphics and Image Processing 3 (1974), 346–349`
+#'   - Chaikin, G. An algorithm for high speed curve generation.
+#'     *Computer Graphics and Image Processing* 3 (1974), 346-349.
 #'
 #'   This implementation was inspired by the following StackOverflow answer:
 #'
-#'   - [Where to find Python implementation of Chaikin's corner cutting algorithm?](https://stackoverflow.com/a/47255374/3591386)
+#'   - <https://stackoverflow.com/a/47255374/3591386>
 #' @seealso [smooth()]
 #' @export
 #' @examples
@@ -56,7 +57,7 @@ smooth_chaikin <- function(x, wrap = FALSE, refinements = 3L) {
       qr[nrow(qr), ] <- qr[1, ]
       x <- qr
     }
-  # lines should have endpoints fixed
+    # lines should have endpoints fixed
   } else {
     for (i in seq.int(refinements)) {
       n_pts <- nrow(x)
@@ -68,5 +69,5 @@ smooth_chaikin <- function(x, wrap = FALSE, refinements = 3L) {
       x <- qr
     }
   }
-  return(x)
+  x
 }

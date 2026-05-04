@@ -14,11 +14,28 @@ e <- expression({
   plot(l_smooth[1], col = "#E41A1C", lwd = 1, add = TRUE)
   par(mar = c(0, 0, 0, 0))
   plot(p[2], col = "grey30", border = NA)
-  plot(p_smooth[2], col = "#E41A1CAA", border = "#E41A1C", lwd = 0.5, add = TRUE)
+  plot(
+    p_smooth[2],
+    col = "#E41A1CAA",
+    border = "#E41A1C",
+    lwd = 0.5,
+    add = TRUE
+  )
 })
 
 sysfonts::font_add("Roboto", "/Library/Fonts/RobotoCondensed-Regular.ttf")
-sticker(e, package = "smoothr", filename = "hex-logo/smoothr.png",
-        p_size = 8, p_y = 0.5, p_color = "white", p_family = "Roboto",
-        s_x = 1.02, s_y = 1.1, s_width = 1.5, s_height = 2,
-        h_fill = "#7ac3ff", h_color = "#377eb8")
+sticker(
+  e,
+  package = "smoothr",
+  filename = "hex-logo/smoothr.png",
+  p_size = 8,
+  p_y = 0.5,
+  p_color = "white",
+  p_family = "Roboto",
+  s_x = 1.02,
+  s_y = 1.1,
+  s_width = 1.5,
+  s_height = 2,
+  h_fill = "#7ac3ff",
+  h_color = "#377eb8"
+)

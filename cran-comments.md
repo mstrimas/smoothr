@@ -1,17 +1,17 @@
-## Resubmission
+# smoothr 1.2.2
 
-- removed `jagged_raster` `terra` object to allow `terra` to be moved to Suggests, then replaced with a GeoTIFF file in `inst/extdata/jagged-raster.tif`
+- Replace magrittr pipe `%>%` with the native R pipe `|>`, fixing a CRAN error
+  caused by `sf` no longer re-exporting `%>%` (issue #20).
+- Minimum R version bumped to 4.1.0 to support the native pipe.
+- Remove `codecov` from `Suggests` and delete `codecov.yml`.
 
-# smoothr 1.2.1
-
-- move terra to Suggests (issue #19)
 
 ## Test environments
 
-- local OS X install, R 4.5
-- OS X (github actions), R 4.5
+- local macOS install, R 4.5
+- macOS (github actions), R 4.5
 - Windows (github actions), R 4.5
-- ubuntu 14.04 (github actions), R 4.5
+- Ubuntu (github actions), R 4.5
 - win-builder (devel and release)
 
 ## R CMD check results
@@ -20,7 +20,8 @@
 
 ## revdepcheck results
 
-We checked 9 reverse dependencies (8 from CRAN + 1 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+We checked 10 reverse dependencies, comparing R CMD check results across CRAN
+and dev versions of this package.
 
  * We saw 0 new problems
  * We failed to check 0 packages

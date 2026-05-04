@@ -49,12 +49,13 @@ plot(p_smooth, border = "red", add = TRUE)
 \references{
 The original reference for Chaikin's corner cutting algorithm is:
 \itemize{
-\item \verb{Chaikin, G. An algorithm for high speed curve generation. Computer Graphics and Image Processing 3 (1974), 346–349}
+\item Chaikin, G. An algorithm for high speed curve generation.
+\emph{Computer Graphics and Image Processing} 3 (1974), 346-349.
 }
 
 This implementation was inspired by the following StackOverflow answer:
 \itemize{
-\item \href{https://stackoverflow.com/a/47255374/3591386}{Where to find Python implementation of Chaikin's corner cutting algorithm?}
+\item \url{https://stackoverflow.com/a/47255374/3591386}
 }
 }
 \seealso{

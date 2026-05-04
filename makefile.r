@@ -9,7 +9,6 @@ pak::local_install()
 devtools::test()
 
 # vignettes, readme, site
-devtools::clean_vignettes()
 pkgdown::clean_site()
 rmarkdown::render("README.Rmd")
 unlink("README.html")

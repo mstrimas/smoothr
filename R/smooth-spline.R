@@ -22,8 +22,8 @@
 #' @references The spline method was inspired by the following StackExchange
 #'   answers:
 #'
-#'   - [Create polygon from set of points distributed](https://stackoverflow.com/a/26089377/3591386)
-#'   - [Smoothing polygons in contour map?](https://gis.stackexchange.com/a/24929/26661)
+#'   - <https://stackoverflow.com/a/26089377/3591386>
+#'   - <https://gis.stackexchange.com/a/24929/26661>
 #'
 #' @seealso [smooth()]
 #' @export
@@ -51,14 +51,17 @@ smooth_spline <- function(x, wrap = FALSE, vertex_factor = 5, n) {
   n_pts <- nrow(x)
   stopifnot(is_flag(wrap))
   if (missing(n)) {
-    stopifnot(is.double(vertex_factor), length(vertex_factor) == 1,
-              vertex_factor >= 1)
+    stopifnot(
+      is.double(vertex_factor),
+      length(vertex_factor) == 1,
+      vertex_factor >= 1
+    )
     n <- max(round(vertex_factor * n_pts), n_pts)
   } else {
     stopifnot(is_count(n), n >= n_pts)
   }
   if (wrap) {
-      method <- "periodic"
+    method <- "periodic"
   } else {
     method <- "fmm"
   }
@@ -67,5 +70,5 @@ smooth_spline <- function(x, wrap = FALSE, vertex_factor = 5, n) {
     xs <- stats::spline(seq_len(n_pts), x[, i], n = n, method = method)$y
     pts_smooth <- cbind(pts_smooth, xs)
   }
-  return(pts_smooth)
+  pts_smooth
 }

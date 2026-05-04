@@ -1,6 +1,6 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# smoothr <img src='man/figures/logo.png' align="right" height="139" />
+# smoothr <img src='man/figures/logo.png' alt='smoothr logo' align="right" height="139" />
 
 <!-- badges: start -->
 
@@ -19,20 +19,20 @@ pleasing, especially when converting raster data to vector format. This
 package offers support for both `sp` and `sf` spatial objects. The
 following smoothing methods are available:
 
--   **Chaikin’s corner cutting algorithm**: smoothing using Chaikin’s
-    corner cutting algorithm, which iteratively replaces every point by
-    two new points: one 1/4 of the way to the next point and one 1/4 of
-    the way to the previous point. This method applies a moderate amount
-    of smoothing of sharp corners without extensive generalization.
--   **Kernel smoothing:** smoothing using Gaussian kernel regression via
-    the `ksmooth()` function. This approach first densifies the feature
-    (i.e. adds more vertices) then applies the kernel smoothing. Kernel
-    smoothing simultaneously smooths and generalizes curves, and can be
-    tuned to produce extensively smoothed curves.
--   **Spline interpolation**: smoothing using spline interpolation via
-    the `spline()` function. This method interpolates between existing
-    vertices and should be used when the resulting smoothed feature must
-    pass through the vertices of the input feature.
+- **Chaikin’s corner cutting algorithm**: smoothing using Chaikin’s
+  corner cutting algorithm, which iteratively replaces every point by
+  two new points: one 1/4 of the way to the next point and one 1/4 of
+  the way to the previous point. This method applies a moderate amount
+  of smoothing of sharp corners without extensive generalization.
+- **Kernel smoothing:** smoothing using Gaussian kernel regression via
+  the `ksmooth()` function. This approach first densifies the feature
+  (i.e. adds more vertices) then applies the kernel smoothing. Kernel
+  smoothing simultaneously smooths and generalizes curves, and can be
+  tuned to produce extensively smoothed curves.
+- **Spline interpolation**: smoothing using spline interpolation via the
+  `spline()` function. This method interpolates between existing
+  vertices and should be used when the resulting smoothed feature must
+  pass through the vertices of the input feature.
 
 In addition to these smoothing functions, `smoothr` offers functions for
 filling polygon holes and dropping line and polygon fragments based on a
@@ -82,7 +82,7 @@ methods available and plot a comparison:
            col = c("#E41A1C", "#4DAF4A", "#377EB8"),
            lwd = 2, cex = 2, box.lwd = 0, inset = 0, horiz = TRUE)
 
-<img src="man/figures/README-smooth-polygons-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-smooth-polygons-1.png" alt="" width="100%" style="display: block; margin: auto;" />
 
 `jagged_lines` contains 9 lines with sharp edges for smoothing, some are
 closed loops requiring special treatment of the endpoints and some are
@@ -106,20 +106,19 @@ interpolation:
            col = c("#E41A1C", "#4DAF4A", "#377EB8"),
            lwd = 2, cex = 2, box.lwd = 0, inset = 0, horiz = TRUE)
 
-<img src="man/figures/README-smooth-lines-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-smooth-lines-1.png" alt="" width="100%" style="display: block; margin: auto;" />
 
 ### Other goodies
 
 `smoothr` contains a handful of other tools to help clean up spatial
 features and make them look cleaner and more aesthetically pleasing.
 
--   `densify()` (and it’s alias `smooth(x, method = "densify")`)
-    densifies lines and polygons, adding additional vertices along line
-    segments.
--   `drop_crumbs()` removes small lines or polygons based on a length or
-    area threshold.
--   `fill_holes()` fills (i.e. removes) holes from polygons when they
-    are below a given area threshold.
+- `densify()` (and it’s alias `smooth(x, method = "densify")`) densifies
+  lines and polygons, adding additional vertices along line segments.
+- `drop_crumbs()` removes small lines or polygons based on a length or
+  area threshold.
+- `fill_holes()` fills (i.e. removes) holes from polygons when they are
+  below a given area threshold.
 
 See the documentation for these functions for full details.
 

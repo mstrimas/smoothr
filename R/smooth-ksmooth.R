@@ -46,8 +46,8 @@
 #' @references The kernel smoothing method was inspired by the following
 #'   StackExchange answers:
 #'
-#'   - [Nadaraya-Watson Optimal Bandwidth](https://stats.stackexchange.com/a/143608/44268)
-#'   - [Smoothing polygons in contour map?](https://gis.stackexchange.com/a/24929/26661)
+#'   - <https://stats.stackexchange.com/a/143608/44268>
+#'   - <https://gis.stackexchange.com/a/24929/26661>
 #' @seealso [smooth()]
 #' @export
 #' @examples
@@ -93,8 +93,14 @@
 #' class(p_smooth)
 #' plot(p_smooth, border = "red")
 #' plot(p, add = TRUE)
-smooth_ksmooth <- function(x, wrap = FALSE, smoothness = 1, bandwidth,
-                           n = 10L, max_distance) {
+smooth_ksmooth <- function(
+  x,
+  wrap = FALSE,
+  smoothness = 1,
+  bandwidth,
+  n = 10L,
+  max_distance
+) {
   stopifnot(is.matrix(x), nrow(x) > 1, ncol(x) > 1)
   stopifnot(is_flag(wrap))
   stopifnot(is.numeric(smoothness), length(smoothness) == 1, smoothness > 0)
@@ -109,12 +115,22 @@ smooth_ksmooth <- function(x, wrap = FALSE, smoothness = 1, bandwidth,
   # grab ends for padding
   if (!isTRUE(wrap)) {
     # extend start and end by one "edge"
-    pad <- list(start = rbind(x[1, ], 2 * x[1, ] - x[2, ]),
-                end = rbind(x[nrow(x), ], 2 * x[nrow(x), ] - x[nrow(x) - 1, ]))
-    pad$start <- smooth_densify(pad$start[2:1, ], wrap = FALSE, n = n,
-                                max_distance = max_distance)
-    pad$end <- smooth_densify(pad$end, wrap = FALSE, n = n,
-                              max_distance = max_distance)
+    pad <- list(
+      start = rbind(x[1, ], 2 * x[1, ] - x[2, ]),
+      end = rbind(x[nrow(x), ], 2 * x[nrow(x), ] - x[nrow(x) - 1, ])
+    )
+    pad$start <- smooth_densify(
+      pad$start[2:1, ],
+      wrap = FALSE,
+      n = n,
+      max_distance = max_distance
+    )
+    pad$end <- smooth_densify(
+      pad$end,
+      wrap = FALSE,
+      n = n,
+      max_distance = max_distance
+    )
   }
 
   # first densify
@@ -130,8 +146,13 @@ smooth_ksmooth <- function(x, wrap = FALSE, smoothness = 1, bandwidth,
     # parameterize x and y as functions of distance along curve
     pts_smooth <- NULL
     for (i in seq_len(ncol(x))) {
-      ks <- stats::ksmooth(d, x[, i], n.points = length(d),
-                           kernel = "normal", bandwidth = bandwidth)
+      ks <- stats::ksmooth(
+        d,
+        x[, i],
+        n.points = length(d),
+        kernel = "normal",
+        bandwidth = bandwidth
+      )
       pts_smooth <- cbind(pts_smooth, ks[["y"]])
       if (i == 1) {
         keep_rows <- (ks$x >= d[n_pts]) & (ks$x <= d[(2 * n_pts - 1)])
@@ -151,8 +172,13 @@ smooth_ksmooth <- function(x, wrap = FALSE, smoothness = 1, bandwidth,
     # smooth
     pts_smooth <- NULL
     for (i in seq_len(ncol(x))) {
-      ks <- stats::ksmooth(d, x[, i], n.points = length(d),
-                           kernel = "normal", bandwidth = bandwidth)
+      ks <- stats::ksmooth(
+        d,
+        x[, i],
+        n.points = length(d),
+        kernel = "normal",
+        bandwidth = bandwidth
+      )
       pts_smooth <- cbind(pts_smooth, ks[["y"]])
       if (i == 1) {
         keep_rows <- (ks$x >= d[nrow(pad$start) + 1]) &
@@ -167,5 +193,5 @@ smooth_ksmooth <- function(x, wrap = FALSE, smoothness = 1, bandwidth,
     pts_smooth[1, ] <- pad$start[nrow(pad$start), ]
     pts_smooth[nrow(pts_smooth), ] <- pad$end[1, ]
   }
-  return(pts_smooth)
+  pts_smooth
 }

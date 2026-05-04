@@ -73,10 +73,14 @@
 #' p_smooth_spline <- smooth(jagged_polygons, method = "spline")
 #' for (i in 1:nrow(jagged_polygons)) {
 #'   plot(st_geometry(p_smooth_spline[i, ]), col = NA, border = NA)
-#'   plot(st_geometry(jagged_polygons[i, ]), col = "grey40", border = NA, add = TRUE)
-#'   plot(st_geometry(p_smooth_chaikin[i, ]), col = NA, border = "#E41A1C", lwd = 2, add = TRUE)
-#'   plot(st_geometry(p_smooth_ksmooth[i, ]), col = NA, border = "#4DAF4A", lwd = 2, add = TRUE)
-#'   plot(st_geometry(p_smooth_spline[i, ]), col = NA, border = "#377EB8", lwd = 2, add = TRUE)
+#'   plot(st_geometry(jagged_polygons[i, ]), col = "grey40", border = NA,
+#'        add = TRUE)
+#'   plot(st_geometry(p_smooth_chaikin[i, ]), col = NA, border = "#E41A1C",
+#'        lwd = 2, add = TRUE)
+#'   plot(st_geometry(p_smooth_ksmooth[i, ]), col = NA, border = "#4DAF4A",
+#'        lwd = 2, add = TRUE)
+#'   plot(st_geometry(p_smooth_spline[i, ]), col = NA, border = "#377EB8",
+#'        lwd = 2, add = TRUE)
 #' }
 #' par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), new = TRUE)
 #' plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n", axes = FALSE)
@@ -92,23 +96,32 @@
 #' for (i in 1:nrow(jagged_lines)) {
 #'   plot(st_geometry(l_smooth_spline[i, ]), col = NA)
 #'   plot(st_geometry(jagged_lines[i, ]), col = "grey20", lwd = 3, add = TRUE)
-#'   plot(st_geometry(l_smooth_chaikin[i, ]), col = "#E41A1C", lwd = 2, lty = 2, add = TRUE)
-#'   plot(st_geometry(l_smooth_ksmooth[i, ]), col = "#4DAF4A", lwd = 2, lty = 2, add = TRUE)
-#'   plot(st_geometry(l_smooth_spline[i, ]), col = "#377EB8", lwd = 2, lty = 2, add = TRUE)
+#'   plot(st_geometry(l_smooth_chaikin[i, ]), col = "#E41A1C", lwd = 2,
+#'        lty = 2, add = TRUE)
+#'   plot(st_geometry(l_smooth_ksmooth[i, ]), col = "#4DAF4A", lwd = 2,
+#'        lty = 2, add = TRUE)
+#'   plot(st_geometry(l_smooth_spline[i, ]), col = "#377EB8", lwd = 2,
+#'        lty = 2, add = TRUE)
 #' }
 #' par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), new = TRUE)
 #' plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n", axes = FALSE)
 #' legend("bottom", legend = c("chaikin", "smooth", "spline"),
 #'        col = c("#E41A1C", "#4DAF4A", "#377EB8"),
 #'        lwd = 2, cex = 2, box.lwd = 0, inset = 0, horiz = TRUE)
-smooth <- function(x, method = c("chaikin", "ksmooth", "spline", "densify"),
-                   ...) {
+smooth <- function(
+  x,
+  method = c("chaikin", "ksmooth", "spline", "densify"),
+  ...
+) {
   UseMethod("smooth")
 }
 
 #' @export
-smooth.sfg <- function(x, method = c("chaikin", "ksmooth", "spline", "densify"),
-                       ...) {
+smooth.sfg <- function(
+  x,
+  method = c("chaikin", "ksmooth", "spline", "densify"),
+  ...
+) {
   method <- match.arg(method)
 
   # choose smoother
@@ -150,8 +163,11 @@ smooth.sfg <- function(x, method = c("chaikin", "ksmooth", "spline", "densify"),
 }
 
 #' @export
-smooth.sfc <- function(x, method = c("chaikin", "ksmooth", "spline", "densify"),
-                       ...) {
+smooth.sfc <- function(
+  x,
+  method = c("chaikin", "ksmooth", "spline", "densify"),
+  ...
+) {
   method <- match.arg(method)
 
   for (i in seq_along(x)) {
@@ -161,17 +177,22 @@ smooth.sfc <- function(x, method = c("chaikin", "ksmooth", "spline", "densify"),
 }
 
 #' @export
-smooth.sf <- function(x, method = c("chaikin", "ksmooth", "spline", "densify"),
-                      ...) {
+smooth.sf <- function(
+  x,
+  method = c("chaikin", "ksmooth", "spline", "densify"),
+  ...
+) {
   method <- match.arg(method)
   sf::st_geometry(x) <- smooth(sf::st_geometry(x), method = method, ...)
   x
 }
 
 #' @export
-smooth.Spatial <- function(x, method = c("chaikin", "ksmooth", "spline",
-                                         "densify"),
-                           ...) {
+smooth.Spatial <- function(
+  x,
+  method = c("chaikin", "ksmooth", "spline", "densify"),
+  ...
+) {
   if (!requireNamespace("sp", quietly = TRUE)) {
     stop("Install the sp package to smooth sp features.")
   }
@@ -182,28 +203,32 @@ smooth.Spatial <- function(x, method = c("chaikin", "ksmooth", "spline",
     x_sf <- sf::st_as_sf(x)
   } else if (inherits(x, c("SpatialPolygons", "SpatialLines"))) {
     x_sf <- sf::st_as_sfc(x)
-  } else{
+  } else {
     stop(paste("No smooth method for class", class(x)))
   }
-  x_sf <- sf::st_set_crs(x_sf,  prj)
+  x_sf <- sf::st_set_crs(x_sf, prj)
 
   smoothed <- smooth(x_sf, method = method, ...)
 
   smoothed <- sf::as_Spatial(smoothed)
   sp::proj4string(smoothed) <- prj
-  return(smoothed)
+  smoothed
 }
 
 #' @export
-smooth.SpatVector <- function(x, method = c("chaikin", "ksmooth", "spline",
-                                            "densify"),
-                              ...) {
+smooth.SpatVector <- function(
+  x,
+  method = c("chaikin", "ksmooth", "spline", "densify"),
+  ...
+) {
   if (!requireNamespace("terra", quietly = TRUE)) {
     stop("Install the terra package to smooth SpatVector features.")
   }
-  warning("SpatVector objects are converted to sf objects in smoothr. ",
-          "This conversion may introduce errors and increase the time ",
-          "required to perform smoothing.")
+  warning(
+    "SpatVector objects are converted to sf objects in smoothr. ",
+    "This conversion may introduce errors and increase the time ",
+    "required to perform smoothing."
+  )
   method <- match.arg(method)
   # convert to sp object then back
   smoothed <- smooth(sf::st_as_sf(x), method = method, ...)

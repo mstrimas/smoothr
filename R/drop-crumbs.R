@@ -54,8 +54,7 @@ drop_crumbs <- function(x, threshold, drop_empty = TRUE) {
 
 #' @export
 drop_crumbs.sfc <- function(x, threshold, drop_empty = TRUE) {
-  stopifnot(inherits(threshold, c("units", "numeric")),
-            length(threshold) == 1)
+  stopifnot(inherits(threshold, c("units", "numeric")), length(threshold) == 1)
   # check geometry types and get units of feature size
   if (all(sf::st_is(x, c("POLYGON", "MULTIPOLYGON")))) {
     size_fxn <- sf::st_area
@@ -64,8 +63,10 @@ drop_crumbs.sfc <- function(x, threshold, drop_empty = TRUE) {
     size_fxn <- sf::st_length
     geo_type <- "LINESTRING"
   } else {
-    stop(paste("drop_crumbs() only works for line and polygon features",
-               "and geometry types cannot be mixed."))
+    stop(paste(
+      "drop_crumbs() only works for line and polygon features",
+      "and geometry types cannot be mixed."
+    ))
   }
 
   # zero threshold returns the input features unchanged
@@ -95,8 +96,10 @@ drop_crumbs.sfc <- function(x, threshold, drop_empty = TRUE) {
   # add fully dropped features back in as empty geometries
   missing_ids <- setdiff(all_ids, x[["id"]])
   if (!drop_empty && length(missing_ids) > 0) {
-    empty <- rep(sf::st_as_sfc("GEOMETRYCOLLECTION EMPTY", crs = sf::st_crs(x)),
-                 length(missing_ids))
+    empty <- rep(
+      sf::st_as_sfc("GEOMETRYCOLLECTION EMPTY", crs = sf::st_crs(x)),
+      length(missing_ids)
+    )
     empty <- sf::st_as_sf(empty, id = missing_ids, type = "GEOMETRYCOLLECTION")
     if (nrow(x) > 0) {
       x <- rbind(x, empty)
@@ -114,8 +117,11 @@ drop_crumbs.sfc <- function(x, threshold, drop_empty = TRUE) {
 
 #' @export
 drop_crumbs.sf <- function(x, threshold, drop_empty = TRUE) {
-  g <- drop_crumbs(sf::st_geometry(x), threshold = threshold,
-                   drop_empty = FALSE)
+  g <- drop_crumbs(
+    sf::st_geometry(x),
+    threshold = threshold,
+    drop_empty = FALSE
+  )
   sf::st_geometry(x) <- g
   if (drop_empty) {
     x <- x[!sf::st_is_empty(x), ]
@@ -134,10 +140,10 @@ drop_crumbs.Spatial <- function(x, threshold, drop_empty = TRUE) {
     x_sf <- sf::st_as_sf(x)
   } else if (inherits(x, c("SpatialPolygons", "SpatialLines"))) {
     x_sf <- sf::st_as_sfc(x)
-  } else{
+  } else {
     stop(paste("No drop_crumbs method for class", class(x)))
   }
-  x_sf <- sf::st_set_crs(x_sf,  prj)
+  x_sf <- sf::st_set_crs(x_sf, prj)
 
   clean <- drop_crumbs(x_sf, threshold = threshold, drop_empty = TRUE)
 
@@ -146,7 +152,7 @@ drop_crumbs.Spatial <- function(x, threshold, drop_empty = TRUE) {
   }
   clean <- sf::as_Spatial(clean)
   sp::proj4string(clean) <- prj
-  return(clean)
+  clean
 }
 
 #' @export
@@ -154,10 +160,15 @@ drop_crumbs.SpatVector <- function(x, threshold, drop_empty = TRUE) {
   if (!requireNamespace("terra", quietly = TRUE)) {
     stop("Install the terra package to process SpatVector features.")
   }
-  warning("SpatVector objects are converted to sf objects in smoothr. ",
-          "This conversion may introduce errors and increase the time ",
-          "required to perform smoothing.")
-  clean <- drop_crumbs(sf::st_as_sf(x), threshold = threshold,
-                       drop_empty = TRUE)
+  warning(
+    "SpatVector objects are converted to sf objects in smoothr. ",
+    "This conversion may introduce errors and increase the time ",
+    "required to perform smoothing."
+  )
+  clean <- drop_crumbs(
+    sf::st_as_sf(x),
+    threshold = threshold,
+    drop_empty = TRUE
+  )
   terra::vect(clean)
 }

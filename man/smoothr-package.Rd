@@ -22,5 +22,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Matthew Strimas-Mackey \email{mstrimas@gmail.com} (\href{https://orcid.org/0000-0001-8929-7776}{ORCID})
 
+Authors:
+\itemize{
+  \item Matthew Strimas-Mackey \email{mstrimas@gmail.com} (\href{https://orcid.org/0000-0001-8929-7776}{ORCID})
+}
+
 }
 \keyword{internal}

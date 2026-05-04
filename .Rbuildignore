@@ -19,3 +19,5 @@ hex-logo/
 pkgdown/
 ^CRAN-SUBMISSION$
 ^revdep$
+^CLAUDE\.md$
+^\.claude$

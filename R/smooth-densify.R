@@ -45,7 +45,7 @@
 #' class(l_dense)
 #' plot(l, lwd = 5)
 #' plot(l_dense, col = "red", lwd = 2, lty = 2, add = TRUE)
-#' plot(l_dense %>% st_cast("MULTIPOINT"), col = "red", pch = 19,
+#' plot(l_dense |> st_cast("MULTIPOINT"), col = "red", pch = 19,
 #'      add = TRUE)
 smooth_densify <- function(x, wrap = FALSE, n = 10L, max_distance) {
   stopifnot(is.matrix(x), nrow(x) > 1, ncol(x) > 1)
@@ -58,8 +58,11 @@ smooth_densify <- function(x, wrap = FALSE, n = 10L, max_distance) {
     # repeat for each segment
     n <- rep(n + 1, n_pts - 1)
   } else {
-    stopifnot(is.numeric(max_distance), length(max_distance) == 1,
-              max_distance > 0)
+    stopifnot(
+      is.numeric(max_distance),
+      length(max_distance) == 1,
+      max_distance > 0
+    )
     # determine number of points based on max distance
     n <- ceiling(point_distance(x) / max_distance) + 1
   }
@@ -67,9 +70,7 @@ smooth_densify <- function(x, wrap = FALSE, n = 10L, max_distance) {
   # generate evenly spaced points for each dimension
   pts_dense <- NULL
   for (i in seq_len(ncol(x))) {
-    sm <- seq_multiple(start = x[1:(n_pts - 1), i],
-                       end = x[2:n_pts, i],
-                       n = n)
+    sm <- seq_multiple(start = x[1:(n_pts - 1), i], end = x[2:n_pts, i], n = n)
     pts_dense <- cbind(pts_dense, sm)
   }
   colnames(pts_dense) <- colnames(x)
@@ -78,5 +79,5 @@ smooth_densify <- function(x, wrap = FALSE, n = 10L, max_distance) {
   if (wrap) {
     pts_dense[nrow(pts_dense), ] <- pts_dense[1, ]
   }
-  return(pts_dense)
+  pts_dense
 }

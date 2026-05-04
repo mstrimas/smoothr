@@ -56,7 +56,7 @@ test_that("fill_holes() works for SpatVector objects", {
 })
 
 test_that("fill_holes() fails for points and lines", {
-  point <- st_point(c(0, 0)) %>%
+  point <- st_point(c(0, 0)) |>
     st_sfc()
   expect_error(fill_holes(point, threshold = 1))
   expect_error(fill_holes(as(st_sfc(point), "Spatial"), threshold = 1))
@@ -67,8 +67,7 @@ test_that("fill_holes() fails for points and lines", {
 
 test_that("fill_holes() fails for invalid thresholds", {
   expect_error(fill_holes(jagged_polygons, threshold = -1))
-  expect_error(fill_holes(jagged_polygons,
-                          threshold = set_units(1, "km")))
+  expect_error(fill_holes(jagged_polygons, threshold = set_units(1, "km")))
 })
 
 test_that("fill_holes() does nothing when threshold = 0", {

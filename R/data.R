@@ -32,4 +32,3 @@
 #'   - **`closed`**: logical; whether the line forms a closed loop or not.
 #'   - **`multipart`**: logical; whether the feature is single or multipart.
 "jagged_lines_3d"
-

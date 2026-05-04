@@ -11,14 +11,15 @@ editor_options:
 
 ```{r setup, include = FALSE}
 run <- tolower(Sys.info()[["sysname"]]) != "sunos"
-knitr::opts_chunk$set(eval = run,
-                      collapse = TRUE,
-                      warning = FALSE,
-                      message = FALSE,
-                      error = FALSE,
-                      fig.align = "center",
-                      out.width = "100%",
-                      comment = "#>"
+knitr::opts_chunk$set(
+  eval = run,
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  error = FALSE,
+  fig.align = "center",
+  out.width = "100%",
+  comment = "#>"
 )
 ```
 
@@ -45,7 +46,7 @@ This package comes with two simple spatial datasets in `sf` format to test the s
 
 ```{r jagged-polygons, echo=FALSE}
 par(mar = c(0, 0, 0, 0), oma = c(4, 0, 0, 0), mfrow = c(3, 3))
-for (i in 1:nrow(jagged_polygons)) {
+for (i in seq_len(nrow(jagged_polygons))) {
   plot(st_geometry(jagged_polygons[i, ]), col = "grey40", border = NA)
 }
 ```
@@ -60,7 +61,7 @@ print(jagged_polygons)
 
 ```{r jagged-lines, echo=FALSE}
 par(mar = c(0, 0, 0, 0), oma = c(0, 0, 0, 0), mfrow = c(3, 3))
-for (i in 1:nrow(jagged_lines)) {
+for (i in seq_len(nrow(jagged_lines))) {
   plot(st_geometry(jagged_lines[i, ]), col = "grey20", lwd = 3)
 }
 ```
@@ -93,9 +94,9 @@ This method can be applied with `smooth(x, method = "chaikin")`. Here's what thi
 ```{r chaikin-polygons, echo=-1}
 par(mar = c(0, 0, 0, 0), oma = c(0, 0, 0, 0), mfrow = c(3, 3))
 p_smooth_chaikin <- smooth(jagged_polygons, method = "chaikin")
-for (i in 1:nrow(jagged_polygons)) {
+for (i in seq_len(nrow(jagged_polygons))) {
   plot(st_geometry(jagged_polygons[i, ]), col = "grey40", border = NA)
-  plot(st_geometry(p_smooth_chaikin[i, ]), col = NA, border = "#E41A1C", 
+  plot(st_geometry(p_smooth_chaikin[i, ]), col = NA, border = "#E41A1C",
        lwd = 2, add = TRUE)
 }
 ```
@@ -105,7 +106,7 @@ And for the lines:
 ```{r chaikin-lines, echo=-1}
 par(mar = c(0, 0, 0, 0), oma = c(0, 0, 0, 0), mfrow = c(3, 3))
 l_smooth_chaikin <- smooth(jagged_lines, method = "chaikin")
-for (i in 1:nrow(jagged_lines)) {
+for (i in seq_len(nrow(jagged_lines))) {
   plot(st_geometry(jagged_lines[i, ]), col = "grey20", lwd = 3)
   plot(st_geometry(l_smooth_chaikin[i, ]), col = "#E41A1C", lwd = 2, add = TRUE)
 }
@@ -122,9 +123,9 @@ This method can be applied with `smooth(x, method = "ksmooth")`. Here's what thi
 ```{r smooth-polygons, echo=-1}
 par(mar = c(0, 0, 0, 0), oma = c(0, 0, 0, 0), mfrow = c(3, 3))
 p_smooth_ksmooth <- smooth(jagged_polygons, method = "ksmooth")
-for (i in 1:nrow(jagged_polygons)) {
+for (i in seq_len(nrow(jagged_polygons))) {
   plot(st_geometry(jagged_polygons[i, ]), col = "grey40", border = NA)
-  plot(st_geometry(p_smooth_ksmooth[i, ]), col = NA, border = "#E41A1C", 
+  plot(st_geometry(p_smooth_ksmooth[i, ]), col = NA, border = "#E41A1C",
        lwd = 2, add = TRUE)
 }
 ```
@@ -134,7 +135,7 @@ And for the lines:
 ```{r ksmooth-lines, echo=-1}
 par(mar = c(0, 0, 0, 0), oma = c(0, 0, 0, 0), mfrow = c(3, 3))
 l_smooth_ksmooth <- smooth(jagged_lines, method = "ksmooth")
-for (i in 1:nrow(jagged_lines)) {
+for (i in seq_len(nrow(jagged_lines))) {
   plot(st_geometry(jagged_lines[i, ]), col = "grey20", lwd = 3)
   plot(st_geometry(l_smooth_ksmooth[i, ]), col = "#E41A1C", lwd = 2, add = TRUE)
 }
@@ -149,11 +150,11 @@ This method can be applied with `smooth(x, method = "spline")`. Here's what this
 ```{r spline-polygons, echo=-1}
 par(mar = c(0, 0, 0, 0), oma = c(0, 0, 0, 0), mfrow = c(3, 3))
 p_smooth_spline <- smooth(jagged_polygons, method = "spline")
-for (i in 1:nrow(jagged_polygons)) {
+for (i in seq_len(nrow(jagged_polygons))) {
   plot(st_geometry(p_smooth_spline[i, ]), col = NA, border = NA)
-  plot(st_geometry(jagged_polygons[i, ]), col = "grey40", border = NA, 
+  plot(st_geometry(jagged_polygons[i, ]), col = "grey40", border = NA,
        add = TRUE)
-  plot(st_geometry(p_smooth_spline[i, ]), col = NA, border = "#E41A1C", 
+  plot(st_geometry(p_smooth_spline[i, ]), col = NA, border = "#E41A1C",
        lwd = 2, add = TRUE)
 }
 ```
@@ -163,7 +164,7 @@ And for the lines:
 ```{r spline-lines, echo=-1}
 par(mar = c(0, 0, 0, 0), oma = c(0, 0, 0, 0), mfrow = c(3, 3))
 l_smooth_spline <- smooth(jagged_lines, method = "spline")
-for (i in 1:nrow(jagged_lines)) {
+for (i in seq_len(nrow(jagged_lines))) {
   plot(st_geometry(l_smooth_spline[i, ]), col = NA)
   plot(st_geometry(jagged_lines[i, ]), col = "grey20", lwd = 3, add = TRUE)
   plot(st_geometry(l_smooth_spline[i, ]), col = "#E41A1C", lwd = 2, add = TRUE)
@@ -187,7 +188,7 @@ l <- jagged_lines$geometry[[2]]
 l_dense <- densify(l, n = 2)
 plot(l, lwd = 5)
 plot(l_dense, col = "red", lwd = 2, lty = 2, add = TRUE)
-plot(l_dense %>% st_cast("MULTIPOINT"), col = "red", pch = 19, add = TRUE)
+plot(l_dense |> st_cast("MULTIPOINT"), col = "red", pch = 19, add = TRUE)
 ```
 
 Or the maximum Euclidean distance between vertices (`max_distance`):
@@ -199,7 +200,7 @@ l <- jagged_lines$geometry[[2]]
 l_dense <- densify(l, max_distance = 0.1)
 plot(l, lwd = 5)
 plot(l_dense, col = "red", lwd = 2, lty = 2, add = TRUE)
-plot(l_dense %>% st_cast("MULTIPOINT"), col = "red", pch = 19, add = TRUE)
+plot(l_dense |> st_cast("MULTIPOINT"), col = "red", pch = 19, add = TRUE)
 ```
 
 ### Drop crumbs
@@ -256,13 +257,13 @@ file <- system.file("extdata", "jagged-raster.tif", package = "smoothr")
 jagged_raster <- rast(file)
 
 # pres/abs map
-r <- classify(jagged_raster, rcl = c(-Inf, 0.5, Inf)) %>% 
+r <- classify(jagged_raster, rcl = c(-Inf, 0.5, Inf)) |>
   as.numeric()
 plot(r, col = c("white", "#4DAF4A"), legend = FALSE, axes = FALSE)
 
 # polygonize
-r_poly <- ifel(r > 0, r, NA) %>%
-  as.polygons() %>% 
+r_poly <- ifel(r > 0, r, NA) |>
+  as.polygons() |>
   st_as_sf()
 plot(r_poly, col = NA, border = "grey20", lwd = 1.5, add = TRUE)
 ```

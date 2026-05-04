@@ -23,7 +23,7 @@ Ignored if \code{n} is specified.}
 A matrix with the coordinates of the smoothed curve.
 }
 \description{
-Spline interpolation uses \code{\link[stats:splinefun]{stats::spline()}} to interpolate between existing
+Spline interpolation uses \code{\link[stats:spline]{stats::spline()}} to interpolate between existing
 vertices using piecewise cubic polynomials. The coordinates are interpolated
 independently. The curve will always pass through the vertices of the
 original feature.
@@ -56,8 +56,8 @@ plot(p, add = TRUE)
 The spline method was inspired by the following StackExchange
 answers:
 \itemize{
-\item \href{https://stackoverflow.com/a/26089377/3591386}{Create polygon from set of points distributed}
-\item \href{https://gis.stackexchange.com/a/24929/26661}{Smoothing polygons in contour map?}
+\item \url{https://stackoverflow.com/a/26089377/3591386}
+\item \url{https://gis.stackexchange.com/a/24929/26661}
 }
 }
 \seealso{

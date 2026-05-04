@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(air format .)",
+      "Bash(Rscript *)",
+      "Bash(R *)",
+      "Bash(git *)",
+      "Bash(gh *)"
+    ]
+  }
+}

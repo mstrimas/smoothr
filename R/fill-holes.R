@@ -27,8 +27,7 @@ fill_holes <- function(x, threshold) {
 
 #' @export
 fill_holes.sfc <- function(x, threshold) {
-  stopifnot(inherits(threshold, c("units", "numeric")),
-            length(threshold) == 1)
+  stopifnot(inherits(threshold, c("units", "numeric")), length(threshold) == 1)
   # check geometry types and get units of feature size
   if (!all(sf::st_is(x, c("POLYGON", "MULTIPOLYGON")))) {
     stop("fill_holes() only works for polygon features.")
@@ -46,8 +45,11 @@ fill_holes.sfc <- function(x, threshold) {
   if (is.na(sf::st_crs(x))) {
     area_units <- units::set_units(1, "m2")
   } else {
-    area_units <- units::set_units(1, units(sf::st_area(x[1])),
-                                   mode = "standard")
+    area_units <- units::set_units(
+      1,
+      units(sf::st_area(x[1])),
+      mode = "standard"
+    )
   }
   threshold <- units::set_units(threshold, area_units, mode = "standard")
 
@@ -98,7 +100,7 @@ fill_holes.Spatial <- function(x, threshold) {
   } else {
     stop(paste("No fill_holes method for class", class(x)))
   }
-  x_sf <- sf::st_set_crs(x_sf,  prj)
+  x_sf <- sf::st_set_crs(x_sf, prj)
 
   clean <- fill_holes(x_sf, threshold = threshold)
 
@@ -107,7 +109,7 @@ fill_holes.Spatial <- function(x, threshold) {
   }
   clean <- sf::as_Spatial(clean)
   sp::proj4string(clean) <- prj
-  return(clean)
+  clean
 }
 
 #' @export
@@ -115,9 +117,11 @@ fill_holes.SpatVector <- function(x, threshold) {
   if (!requireNamespace("terra", quietly = TRUE)) {
     stop("Install the terra package to process SpatVector features.")
   }
-  warning("SpatVector objects are converted to sf objects in smoothr. ",
-          "This conversion may introduce errors and increase the time ",
-          "required to perform smoothing.")
+  warning(
+    "SpatVector objects are converted to sf objects in smoothr. ",
+    "This conversion may introduce errors and increase the time ",
+    "required to perform smoothing."
+  )
 
   # convert to sf object then back
   clean <- fill_holes(sf::st_as_sf(x), threshold = threshold)

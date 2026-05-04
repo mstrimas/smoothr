@@ -86,14 +86,14 @@ test_that("drop_crumbs() works for SpatVector objects", {
 })
 
 test_that("drop_crumbs() fails for points", {
-  point <- st_point(c(0, 0)) %>%
+  point <- st_point(c(0, 0)) |>
     st_sfc()
   expect_error(drop_crumbs(point, threshold = 1))
   expect_error(drop_crumbs(as(st_sfc(point), "Spatial"), threshold = 1))
 })
 
 test_that("drop_crumbs() fails for mixed geometries", {
-  mixed <- list(jagged_polygons$geometry[[1]], jagged_lines$geometry[[1]]) %>%
+  mixed <- list(jagged_polygons$geometry[[1]], jagged_lines$geometry[[1]]) |>
     st_sfc(crs = 4326)
   expect_error(drop_crumbs(mixed, threshold = 1))
 })
@@ -101,6 +101,5 @@ test_that("drop_crumbs() fails for mixed geometries", {
 test_that("drop_crumbs() fails for invalid thresholds", {
   expect_error(drop_crumbs(jagged_polygons, threshold = -1))
   expect_error(drop_crumbs(jagged_polygons, threshold = 0))
-  expect_error(drop_crumbs(jagged_polygons,
-                           threshold = set_units(1, km)))
+  expect_error(drop_crumbs(jagged_polygons, threshold = set_units(1, km)))
 })
