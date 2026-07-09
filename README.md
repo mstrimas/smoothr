@@ -16,7 +16,7 @@ status](https://codecov.io/gh/mstrimas/smoothr/branch/main/graph/badge.svg)](htt
 `smoothr` offers a variety of tools for smoothing and tidying spatial
 features (i.e. polygons and lines) to make them more aesthetically
 pleasing, especially when converting raster data to vector format. This
-package offers support for both `sp` and `sf` spatial objects. The
+package offers support for `sp`, `sf` and `terra` spatial objects. The
 following smoothing methods are available:
 
 - **Chaikin’s corner cutting algorithm**: smoothing using Chaikin’s
