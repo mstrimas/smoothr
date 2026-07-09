@@ -1,3 +1,5 @@
+# smoothr 1.3.1
+
 # smoothr 1.3.0
 
 - Replace magrittr pipe `%>%` with the native R pipe `|>` throughout, fixing a

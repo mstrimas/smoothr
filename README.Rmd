@@ -29,7 +29,7 @@ knitr::opts_chunk$set(
 [![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/smoothr?color=brightgreen)](http://www.r-pkg.org/pkg/smoothr)
 <!-- badges: end -->
 
-`smoothr` offers a variety of tools for smoothing and tidying spatial features (i.e. polygons and lines) to make them more aesthetically pleasing, especially when converting raster data to vector format. This package offers support for both `sp` and `sf` spatial objects. The following smoothing methods are available:
+`smoothr` offers a variety of tools for smoothing and tidying spatial features (i.e. polygons and lines) to make them more aesthetically pleasing, especially when converting raster data to vector format. This package offers support for `sp`, `sf` and `terra` spatial objects. The following smoothing methods are available:
 
 - **Chaikin's corner cutting algorithm**: smoothing using Chaikin's corner cutting algorithm, which iteratively replaces every point by two new points: one 1/4 of the way to the next point and one 1/4 of the way to the previous point. This method applies a moderate amount of smoothing of sharp corners without extensive generalization.
 - **Kernel smoothing:** smoothing using Gaussian kernel regression via the `ksmooth()` function. This approach first densifies the feature (i.e. adds more vertices) then applies the kernel smoothing. Kernel smoothing simultaneously smooths and generalizes curves, and can be tuned to produce extensively smoothed curves.

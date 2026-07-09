@@ -1,17 +1,12 @@
-# smoothr 1.3.0
-
-- Replace magrittr pipe `%>%` with the native R pipe `|>`, fixing a CRAN error
-  caused by `sf` no longer re-exporting `%>%` (issue #20).
-- Minimum R version bumped to 4.1.0 to support the native pipe.
-- Remove `codecov` from `Suggests` and delete `codecov.yml`.
+# smoothr 1.3.1
 
 
 ## Test environments
 
-- local macOS install, R 4.5
-- macOS (github actions), R 4.5
-- Windows (github actions), R 4.5
-- Ubuntu (github actions), R 4.5
+- local macOS install, R 4.6
+- macOS (github actions), R 4.6
+- Windows (github actions), R 4.6
+- Ubuntu (github actions), R 4.6
 - win-builder (devel and release)
 
 ## R CMD check results
